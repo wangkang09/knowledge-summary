@@ -1,0 +1,557 @@
+
+<val data-name="isMobileDevice" data-value="false"></val>
+                        <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>【官方文档】Spring Boot 2.0 迁移指南 - 技术翻译 - 开源中国社区</title>
+<script type="text/javascript" src="https://www.oschina.net/js/2011/jquery-1.5.1.min.js?t=1451964198000"></script>
+<script type="text/javascript" src="https://www.oschina.net/js/syntax-highlighter-2.1.382/scripts/brush.js?t=1451964199000"></script>
+<link type="text/css" rel="stylesheet" href="https://www.oschina.net/js/syntax-highlighter-2.1.382/styles/shCore.css?t=1451964199000"/>
+<link type="text/css" rel="stylesheet" href="https://www.oschina.net/js/syntax-highlighter-2.1.382/styles/shThemeDefault.css?t=1451964199000"/>
+<script type='text/javascript'>
+$(document).ready(function(){
+    $('pre').each(function(){
+        this.className = this.className.replace('toolbar: true;','');
+        SyntaxHighlighter.highlight({toolbar:false},this);
+    });
+});
+</script>
+<style type='text/css'>
+body{padding: 10px;margin: 0;background: white;color: #000000;}
+body,table,input,textarea,select {font-family:微软雅黑,Verdana,sans-serif,宋体;}
+a:link, a:visited {color: #000000;text-decoration: none;background: transparent;}
+img {1px solid #cccccc;background-color: #fff;}
+h1 {border-bottom:2px solid #666;padding:0 0 20px 0;}
+.TextContent {line-height:1.2em;}
+.TextContent pre {margin:10px 0;font-size:9pt;font-family:Courier New,Arial}
+.TextContent code {margin: 0 2px;padding: 0 5px;white-space: nowrap;}
+.TextContent pre>code {margin: 0;padding: 0;white-space: pre;border: none;background: transparent;}
+.TextContent pre code{background-color: transparent;border: none;}
+.TextContent ol,.TextContent ul {margin:20px 0 20px 20px;list-style-position: inside;}
+.TextContent ol{list-style-type:decimal;margin: 0.5em 0 0.5em 1.5em;}
+.TextContent ul{list-style-type:disc;margin: 0.5em 0 0.5em 1.5em;}
+.TextContent img{max-width: 980px;}
+.links{margin-top:1em;padding:1.25em 0;color:#666;}
+.links a, .copyright a {color:#666;}
+.links p{margin: 0; padding: 0;}
+.copyright{padding:1.25em 0; border-top: 1px solid #AAA;color:#666;}
+</style>
+</head>
+<body>
+<h1>【官方文档】Spring Boot 2.0 迁移指南</h1>
+<div class="TextContent">
+<p>
+	本文档主要通过开发指南的方式来帮助您将应用程序迁移到 Spring Boot 2.0。
+</p>
+<h2>
+	在你开始之前
+</h2>
+<p>
+	首先，<strong>Spring Boot 2.0.0 要求 Java 8 或更高版本</strong>，不再支持 Java 6 和 7。
+</p>
+<p>
+	在 Spring Boot 2.0 中，许多配置属性已被重命名或被删除，相应地，开发者需要升级他们的&nbsp;application.properties/application.yml。为了方便升级，Spring Boot 发布了一个新的&nbsp;spring-boot-properties-migrator&nbsp;模块。只要将其作为依赖添加到项目中，它不仅会分析应用程序的环境并在启动时打印诊断信息，而且还会在运行时为项目临时迁移属性。在您的应用程序迁移期间，这个模块是必备的：
+</p>
+<pre>&lt;dependency&gt;
+&nbsp;&nbsp;&lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+&nbsp;&nbsp;&lt;artifactId&gt;spring-boot-properties-migrator&lt;/artifactId&gt;
+&lt;/dependency&gt;</pre>
+<blockquote>
+	<p>
+		注意：迁移完成之后，请确保从项目的依赖关系中移除该模块。
+	</p>
+</blockquote>
+<p>
+	如果你想查看具体内容，请参阅以下资源，或者继续阅读下一节。
+</p>
+<ul>
+	<li>
+		<p>
+			<a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0.0-Release-Notes" target="_blank" rel="nofollow">Spring Boot 2.0.0 发布说明</a> 
+		</p>
+	</li>
+	<li>
+		<p>
+			<a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-with-Java-9" target="_blank" rel="nofollow">使用 Java 9 运行 Spring Boot</a><span style="font-size:10pt;"></span> 
+		</p>
+	</li>
+</ul>
+<h2>
+	构建你的 Spring Boot 应用
+</h2>
+<h3>
+	Spring Boot 的 Maven 插件
+</h3>
+<p>
+	为保持一致性，以及避免与其它插件的冲突，现在暴露的插件配置属性都以&nbsp;spring-boot&nbsp;为前缀。
+</p>
+<p>
+	例如，使用下面的命令行能启用名字为 foo 的配置文件：
+</p>
+<pre>mvn&nbsp;spring-boot:run&nbsp;-Dspring-boot.run.profiles=foo</pre>
+<h4>
+	Surefire 插件的默认值
+</h4>
+<p>
+	惯用的 include/exclude 配置模式已经和最新的 Surefire 插件默认集成。如果依赖于此插件，需要相应地更新插件配置。之前对应的配置如下：
+</p>
+<pre>&lt;plugin&gt;
+	&lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;
+	&lt;artifactId&gt;maven-surefire-plugin&lt;/artifactId&gt;
+	&lt;configuration&gt;
+		&lt;includes&gt;
+			&nbsp;&lt;include&gt;**/*Tests.java&lt;/include&gt;
+			&nbsp;&lt;include&gt;**/*Test.java&lt;/include&gt;
+		&lt;/includes&gt;
+		&lt;excludes&gt;
+			&lt;exclude&gt;**/Abstract*.java&lt;/exclude&gt;
+		&lt;/excludes&gt;
+	&lt;/configuration&gt;
+&lt;/plugin&gt;</pre>
+<blockquote>
+	<p>
+		注意：如果你使用的是 JUnit 5 版本，你应该将 Surefire&nbsp;<a target="_blank" href="http://junit.org/junit5/docs/5.0.0/user-guide/#running-tests-build-maven" rel="nofollow">降级到 2.19.1 版本</a>。**/*Tests.java&nbsp;&nbsp;模式不包含在此版本，所以如果你依赖于它，请确保在你已配置文件中将其添加。
+	</p>
+</blockquote>
+<h3>
+	Spring Boot 的 Gradle 插件
+</h3>
+<p>
+	Spring Boot 的 Gradle 插件经过了重大的重写，并带来了大量的改进。你可以通过参阅<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/gradle-plugin/reference" target="_blank" rel="nofollow">手册</a>和&nbsp;<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/gradle-plugin/api" target="_blank" rel="nofollow">api</a>&nbsp;文档以了解插件的功能。
+</p>
+<h4>
+	依赖管理
+</h4>
+<p>
+	Spring Boot 的 Gradle 插件不再自动应用依赖管理插件。与之代替的是，Spring Boot 的插件现在可以通过导入正确版本的 spring-boot-dependencies bom 来应用依赖管理插件。当依赖管理被配置的时候，这一点会让你有更多的控制权。
+</p>
+<p>
+	对于大多数应用程序，使用应用依赖管理插件就足够了：
+</p>
+<pre>apply&nbsp;plugin:&nbsp;'org.springframework.boot'
+apply&nbsp;plugin:&nbsp;'io.spring.dependency-management'&nbsp;//&nbsp;&lt;--&nbsp;添加这个到你的&nbsp;build.gradle</pre>
+<blockquote>
+	<p>
+		注意：依赖管理插件仍然是 spring-boot-gradle-plugin 的传递依赖项，所以不需要在 buildscript 配置中将其列为类路径依赖项。
+	</p>
+</blockquote>
+<h4>
+	构建可执行的 jar 和 war
+</h4>
+<p>
+	bootRepackage 任务已经被替换成 bootJar&nbsp;和 bootWar 任务，分别用于构建可执行的 jar 包和 war 包。
+</p>
+<h4>
+	配置更新
+</h4>
+<p>
+	BootRun、BootJar 和 BootWar 任务现在都使用 mainClassName 作为属性来配置主类的名称。这使得三个特定于引导的任务相互一致，并将其与 Gradle 自己的应用程序插件进行对齐。
+</p>
+<h2>
+	Spring Boot 特性<br>
+</h2>
+<h3>
+	默认动态代理策略
+</h3>
+<p>
+	Spring Boot现在默认使用CGLIB动态代理(基于类的动态代理), 包括AOP. 如果需要基于接口的动态代理(JDK基于接口的动态代理) , 需要设置spring.aop.proxy-target-class属性为false.
+</p>
+<h3>
+	SpringApplication
+</h3>
+<h4>
+	Web Environment
+</h4>
+<p>
+	Spring Boot 应用现状可以运行于更多的模式, 所以spring.main.web-environment属性现在不赞成使用, 可以使用spring.main.web-application-type提供更多功能.
+</p>
+<p>
+	如果想让应用以非web服务方式启动, 需要更改属性值:
+</p>
+<pre>spring.main.web-application-type=none</pre>
+<blockquote>
+	<p>
+		Tip：可以通过SpringApplication的setWebApplicationType方法实现
+	</p>
+</blockquote>
+<h4>
+	Spring Boot 应用时间变更
+</h4>
+<p>
+	我们提供了一个新的事件(event)-ApplicationStartedEvent. ApplicationStartedEvent在context刷新之后, 应用或命令行调用之前发送(send). ApplicationReadyEvent在应用活命令行调用之后发送. 表名应用以准备好提供服务。
+</p>
+<p>
+	参考&nbsp;<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-application-events-and-listeners" rel="nofollow">updated reference documentation</a>.
+</p>
+<h4>
+	Banner
+</h4>
+<p>
+	我们想要减少Spring Boot使用的命名空间数量, banner-related属性迁移到spring.banner.
+</p>
+<h3>
+	外部化配置
+</h3>
+<h4>
+	Relaxed binding 宽松绑定
+</h4>
+<p>
+	有关宽松绑定的规则<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#boot-features-external-config-relaxed-binding" rel="nofollow">已经收紧</a>。 我们假设有一个的acme.my-project.my-name属性：
+</p>
+<ol>
+	<li>
+		<p>
+			所有前缀必须是kebab格式（小写，连字符分隔），acme.myProject或acme.my_project是无效的 - 你必须在此处使用acme.my-project
+		</p>
+	</li>
+	<li>
+		<p>
+			属性名称可以使用kebab-case（my-name），camel-case（myName）或snake-case（my_name）
+		</p>
+	</li>
+	<li>
+		<p>
+			环境属性（来自OS环境变量）必须使用常规的大写下划线格式，其中下划线只能用于分隔关键词的各个部分，ACME_MYPROJECT_MYNAME
+		</p>
+	</li>
+</ol>
+<p>
+	新的宽松绑定有若干优势：
+</p>
+<ul>
+	<li>
+		只要键值是按照标准格式定义的，就无需担忧在&nbsp;@ConditionalOnProperty: 中键值的结构，被支持的宽松的变量将会自动透明的工作。如果你正在使用&nbsp;prefix&nbsp;属性，你可以简单地通过使用 name 或者value 属性 放入全键值。
+	</li>
+	<li>
+		源于Environment&nbsp;关注自动化，RelaxedPropertyResolver&nbsp;将不再可用：env.getProperty("com.foo.my-bar")&nbsp;将找到一个&nbsp;com.foo.myBar&nbsp;属性。
+	</li>
+</ul>
+<p>
+	org.springframework.boot.bind 包将不再可用，现被&nbsp;<a href="https://github.com/spring-projects/spring-boot/wiki/Relaxed-Binding-2.0" rel="nofollow">new relaxed binding infrastructure</a>&nbsp;替换。
+</p>
+<p>
+	特别是，RelaxedDataBinder&nbsp;相关的应用方式被替换为新的绑定API。下面的列子实现一个&nbsp;com.foo&nbsp;为前缀的配置到一个 POJO。
+</p>
+<pre>new&nbsp;Binder(ConfigurationPropertySources.from(propertySource))
+		.bind("com.foo",&nbsp;Bindable.of(target)))</pre>
+<p>
+	由于现在内置了轻松绑定，因此只要使用其中一种支持的格式，就可以请求任何属性而不必关心案例：
+</p>
+<pre class="cke_widget_element">FlagType flagType = Binder.get(environment)
+		.bind("acme.app.my-flag", FlagType.class)
+		.orElse(FlagType.DEFAULT);</pre>
+<h4>
+	@ConfigurationProperties 校验
+</h4>
+<p>
+	如果要打开校验，需要在@ConfigurationProperties 对象上添加注解@Validated。
+</p>
+<h4>
+	Configuration location 配置位置
+</h4>
+<p>
+	spring.config.location 配置的实现已经配置设定；基于提前添加一个位置到默认配置列表，现在它替换了 默认配置。
+</p>
+<p>
+	如果你是按照以前的方式进行处理，你应该使用spring.config.additional-location进行替换。
+</p>
+<p>
+	<strong>开发网页应用</strong> 
+</p>
+<p>
+	<strong>嵌入式容器封装结构</strong>
+</p>
+<p>
+	为了支持响应式的使用案例，嵌入式容器封装结构已经很大程度上进行重构。EmbeddedServletContainer已经被重命名为WebServer, 同时org.springframework.boot.context.embedded包已经被迁移至org.springframework.boot.web.embedded。例如，如果你之前使用TomcatEmbeddedServletContainerFactory回调接口来自定义嵌入式的Tomcat容器，现在你应该使用TomcatServletWebServerFactory。
+</p>
+<p>
+	<strong>Servlet-specific的关于server的属性</strong>
+</p>
+<p>
+	一些Servlet-specific已经移动到server.servlet的server.*属性：
+</p>
+<p>
+	<br>
+</p>
+<table>
+	<tbody>
+		<tr>
+			<th>
+				旧属性
+			</th>
+			<th>
+				新属性
+			</th>
+		</tr>
+	</tbody>
+	<tbody>
+		<tr>
+			<td>
+				<p>
+					server.context-parameters.*
+				</p>
+			</td>
+			<td>
+				<p>
+					server.servlet.context-parameters.*
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>
+					server.context-path
+				</p>
+			</td>
+			<td>
+				<p>
+					server.servlet.context-path
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>
+					server.jsp.class-name
+				</p>
+			</td>
+			<td>
+				<p>
+					server.servlet.jsp.class-name
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>
+					server.jsp.init-parameters.*
+				</p>
+			</td>
+			<td>
+				<p>
+					server.servlet.jsp.init-parameters.*
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>
+					server.jsp.registered
+				</p>
+			</td>
+			<td>
+				<p>
+					server.servlet.jsp.registered
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<p>
+					server.servlet-path
+				</p>
+			</td>
+			<td>
+				<p>
+					server.servlet.path
+				</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<p>
+	<strong>作为传递性依赖的Web Starter</strong> 
+</p>
+<p>
+	先前一些Spring Boot Starter是依赖于Spring MVC的&nbsp;spring-boot-starter-web。在Spring WebFlux的新的支持下，spring-boot-starter-mustache,&nbsp;spring-boot-starter-freemarker&nbsp;和spring-boot-starter-thymeleaf不再依赖它了。选择并添加spring-boot-starter-web&nbsp;或spring-boot-starter-webflux是开发者的职责。
+</p>
+<p>
+	<br>
+</p>
+<p>
+	<strong>模板引擎</strong> 
+</p>
+<p>
+	Mustache模板默认的文件扩展名
+</p>
+<p>
+	Mustache模板的文件扩展名曾经是.html。现在的扩展名为.mustache,与官方规格和大多数的IDE插件保持一致。你可以通过更改spring.mustache.suffix配置文件的configuration key来重写这个新的默认值。
+</p>
+<p>
+	<strong>Jackson/JSON支持</strong> 
+</p>
+<p>
+	在2.0版本，我们已经设置Jackson配置文件的默认值，将ISO-8601 strings写作了JSR-310。如果你希望返回之前的设置，可以添加spring.jackson.serialization.write-dates-as-timestamps=true&nbsp;到你的配置文件中。
+</p>
+<p>
+	一个新的spring-boot-starter-json&nbsp;starter收集了必要的位去读写JSON。它不仅提供了jackson-databind，而且提供了和Java8一起运作的时候相当有用的组件：jackson-datatype-jdk8,&nbsp;jackson-datatype-jsr310&nbsp;和jackson-module-parameter-names。如果你曾经手动地依赖这些组件，现在可以依赖这个新的starter取代。
+</p>
+<p>
+	<br>
+</p>
+<p><strong>符合默认行为变化的Spring MVC路径</strong></p><p>
+	我们已经决定更改默认关于Spring MVC应用的后缀路径（看<a href="https://github.com/spring-projects/spring-boot/issues/11105" target="_blank" rel="nofollow">#11105</a>）。这个性质已经不再默认启动，请参照<a href="https://docs.spring.io/spring/docs/current/spring-framework-reference/web.html#mvc-ann-requestmapping-suffix-pattern-match" rel="nofollow">best practice documented in Spring Framework</a>。</p><p>
+	如果你的应用期望像<span style="font-family:&quot;background-color:#F6F6F6;">&nbsp;</span>"GET /projects/spring-boot.json"<span style="font-family:&quot;background-color:#F6F6F6;">&nbsp;这样的请求可以被映射到<span style="font-family:monospace, monospace;background-color:#F6F6F6;">@GetMapping("/projects/spring-boot")，这一变化正在影响你。</span></span></p><p><span style="font-family:&quot;background-color:#F6F6F6;">有关的更多信息和如何减少这种变化，请参考<a href="https://docs.spring.io/spring-boot/docs/2.0.0.RC1/reference/html/boot-features-developing-web-applications.html#boot-features-spring-mvc-pathmatch" target="_blank" rel="nofollow"> Spring Boot有关路径匹配和内容协商的参考文档</a>。</span></p><p><span style="font-family:&quot;background-color:#F6F6F6;"><br></span></p><p><span style="font-family:&quot;background-color:#F6F6F6;"><strong>Servlet过滤器</strong></span></p><p><span style="font-family:&quot;background-color:#F6F6F6;">现在Servlet过滤器默认的dispatcher控制器类型是<span style="font-family:monospace, monospace;background-color:#F6F6F6;">DipatcherType.REQUEST；</span>这个Spring Boot的默认值与Servlet specification的默认值保持一致。如果你想要映射一个过滤器到其它的控制器类型，请使用<span style="font-family:monospace, monospace;background-color:#F6F6F6;"><span style="background-color:#FF9900;">FilterRegistrationBean</span>注册你的过滤器。</span></span></p><p>
+	注意：Spring Security和Spring Session过滤器是用来配置<span style="font-family:&quot;background-color:#F6F6F6;">&nbsp;</span>ASYNC<span style="font-family:&quot;background-color:#F6F6F6;">,&nbsp;</span>ERROR<span style="font-family:&quot;background-color:#F6F6F6;">, 和</span>REQUEST的控制器类型。</p>
+<h3>
+	RestTemplateBuilder<br></h3><p style="font-family:&quot;font-size:13.3333px;"><span style="font-family:&quot;font-size:13.3333px;">requestFactory</span>(ClientHttpRequestFactory) 被替换成一个新的requestFactory(Supplier&lt;ClientHttpRequestFactory&gt; requestFactorySupplier). Supplier接口允许每个template使用自己的request factory创建, 从而避免了共享一个工厂方法的不良影响. 参考&nbsp;<a href="https://github.com/spring-projects/spring-boot/issues/11255" rel="nofollow">#11255</a>.</p><h3>
+	WebJars Locator</h3><p><span style="font-family:&quot;font-size:13.3333px;">Spring Boot 1.x 提供的org.webjars:webjars-locator<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">.&nbsp;</span>webjars-locator</span><span style="background-color:#F6F6F6;">依赖管理是</span>&nbsp;<a href="https://github.com/webjars/webjars-locator/tree/ec6b793f2d6f031f6aa384a06c059ff499055652" rel="nofollow">"poorly named library … that wraps the&nbsp;webjars-locator-core&nbsp;project"</a>. org.webjars:webjars-locator依赖应替换成org.webjars:webjars-locator-core.</p>
+<p>
+	<strong>安全性</strong>
+</p>
+<p>
+	Spring Boot 2 极大地简化了默认的安全配置，并且使得新增自定义安全性简单了。不是说Spring Boot 2有一些安全相关的自动配置，而是现在拥有一个单独的避让行为，一旦你添加你自己的WebSecurityConfigurerAdapter。
+</p>
+<p>
+	如果你使用任何如下属性，都会受到影响：
+</p>
+<pre>security.basic.authorize-mode
+security.basic.enabled
+security.basic.path
+security.basic.realm
+security.enable-csrf
+security.headers.cache
+security.headers.content-security-policy
+security.headers.content-security-policy-mode
+security.headers.content-type
+security.headers.frame
+security.headers.hsts
+security.headers.xss
+security.ignored
+security.require-ssl
+security.sessions</pre>
+<p>
+	注意：如果你想知道更多关于改变的内容，参考<a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-Security-2.0" target="_blank" rel="nofollow">安全迁移用例</a>的wiki页面。
+</p>
+<p>
+	<strong>默认的安全性</strong>
+</p>
+<p>
+	安全自动配置尽可能地不再显示选项，不再使用Spring Security的默认值。因为那样一个显著的弊端是使用Spring安全的授权内容协商(form login属性）。
+</p>
+<p>
+	<strong>默认的用户</strong>
+</p>
+<p>
+	Spring Boot默认配置一个单独的用户，拥有生成的密码。该用户可以使用spring.security.user.*下的属性来配置。去进一步定义用户或增加其它用户，你必须暴露一个UserDetailsService&nbsp;bean来取代。<a href="https://github.com/spring-projects/spring-boot/blob/424793d806006144726796b7a656dbaf783d59c6/spring-boot-samples/spring-boot-sample-secure/src/main/java/sample/secure/SampleSecureApplication.java#L41" target="_blank" rel="nofollow">示例</a>。
+</p>
+<p>
+	<br>
+</p>
+<h3>
+	AuthenticationManager&nbsp;bean
+</h3>
+<p>
+	如果你想要暴露Spring Security的AuthenticationManager作为一个bean，在你的WebSecurityConfigurerAdapter重写authenticationManagerBean方法, 并且加上@Bean注解。
+</p>
+<p></p><h3><strong>
+		Oauth2	</strong></h3><p><a href="http://projects.spring.io/spring-security-oauth/" target="_blank" rel="nofollow">Spring Security OAuth</a>项目的功能正在迁移到核心<a href="https://projects.spring.io/spring-security/" target="_blank" rel="nofollow">Spring Security</a>。 不再为依赖关系提供依赖管理，Spring Boot 2通过Spring Security 5提供OAuth 2.0客户端支持。<br><br>如果您依赖尚未迁移的Spring Security OAuth功能，则需要为<a href="https://github.com/spring-projects/spring-security-oauth2-boot" target="_blank" rel="nofollow">org.springframework.security.oauth.boot</a> 添加依赖项。 我们还继续支持Spring Boot 1.5，以便旧版应用程序可以继续使用它，直到提供升级路径。<br></p><h3>
+		Actuator Security	</h3><p>执行器不再有单独的安全自动配置（management.security.* 这种属性配置会被取消）。 每个endpoint 的<span style="font-size:12px;">敏感</span>标志也没有在安全配置中变得更加明确。 如果您依赖于此行为，则需要创建或调整您的安全配置，便于保护你的endpoint 的安全策略。</p><p>
+	例如,你有一下配置文件</p><pre>endpoints.flyway.sensitive=false
+endpoints.info.sensitive=true
+management.security.roles=MY_ADMIN</pre><pre>http
+&nbsp;&nbsp;&nbsp;&nbsp;.authorizeRequests()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.requestMatchers(EndpointRequest.to("health",&nbsp;"flyway")).permitAll()
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;.requestMatchers(EndpointRequest.toAnyEndpoint()).hasRole("MY_ADMIN")</pre><p>请注意，在2.x中，默认情况下 health 和info 是可以被访问的，（默认情况下 health 的详细信息不能被访问显示）。 为了与这些新的默认值保持一致，health 已被添加到首要的mather中。</p>
+<h2>
+	使用关系型数据库<br></h2><h3>
+	配置DataSource</h3><p style="font-family:&quot;font-size:13.3333px;">
+	默认的数据库连接池由Tomcat换成HikariCP. 如果在一个Tomcat应用中用<span style="font-family:monospace, monospace;font-size:13.3333px;background-color:#F6F6F6;">spring.datasource.type来强制使用<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">Hikari连接池</span></span>, 则可以去掉这个<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">override</span>.</p><h3>
+	提示 open-in-view 的警告信息</h3><p style="font-family:&quot;font-size:13.3333px;">从现在开始, 没有明确的启动<span style="font-family:monospace, monospace;font-size:13.3333px;background-color:#F6F6F6;">spring.jpa.open-in-view的应用在启动的时候会有一个警告(WARN)信息</span>. 然而这默认是友好的(<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">friendly default</span>),&nbsp;能帮助排除你没有清楚的意识到对于你来说意味着什么. 这个信息确保你了解数据查询可能会在渲染视图期间执行. 如果确定没问题的话, 可以显示的配置这个属性来禁用这个警告信息.</p><h3>
+	JPA 和 Spring Data</h3><p style="font-family:&quot;font-size:13.3333px;">
+	在 Spring Boot 1.x, 一些开发者继承<span style="font-family:monospace, monospace;font-size:13.3333px;background-color:#F6F6F6;">HibernateJpaAutoConfiguration来提供应用于自动配置的(<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">auto-configured</span>)<span style="font-family:monospace, monospace;font-size:13.3333px;background-color:#F6F6F6;">EntityManagerFactory</span>自定义特性, 为了防止这个错误的使用, 从Spring Boot开始不能在继承这个类</span>.</p><p style="font-family:&quot;font-size:13.3333px;">
+	为了支持这个应用案例, 可以定义一个<span style="font-family:monospace, monospace;font-size:13.3333px;background-color:#F6F6F6;">HibernatePropertiesCustomizer bean来控制<span style="font-family:&quot;font-size:13.3333px;background-color:#F6F6F6;">Hibernate属性</span>, 包含在context注册Hibernate拦截器声明的能力</span>&nbsp;</p>
+<h3>
+	Flyway<br></h3><p>
+	Flyway配置键被移动到spring命名空间（即spring.flyway）中<br><br>升级到Spring Boot 2将把Flyway从3.x升级到5.x。为确保模式升级顺利进行，请按照以下说明操作：<br></p><ul><li><p>
+			首先将你的1.5.x Spring Boot应用程序升级到Flyway 4（在编写本文时为4.2.0），请参阅<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#using-boot-maven-parent-pom" rel="nofollow">Maven</a>及<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/gradle-plugin/reference/html/#managing-dependencies-customizing" rel="nofollow">Gradle</a>的说明		</p></li><li><p>
+			一旦你的架构升级到了Flyway 4，升级到Spring Boot 2并再次运行迁移以将你的应用程序移植到Flyway 5<span style="font-size:10pt;"></span></p></li></ul>
+<h3>
+	Liquibase<br></h3><p>
+	Liquibase配置键被迁移到spring命名空间<span style="font-size:10pt;">(即spring.liquibase)</span></p><h3>
+	数据库初始化</h3><p>
+	基本数据源（DataSource）的初始化目前仅对嵌入式数据源启用，并将在你使用生产数据库时关闭。新的spring.datasource.initialization-mode（替代spring.datasource.initialize）提供了更多的控制。</p><h3>
+	create-drop更新了默认处理策略</h3><p>
+	只有在未使用任何模式管理器（如Liquibase或Flyway）时，spring.jpa.hibernate.ddl-auto属性才会默认使用嵌入式数据库进行create-drop操作。一旦检测到模式管理器，默认行为将变有为无。</p>
+<p><strong>应用NoSQL技术</strong></p><p><strong>Redis</strong></p><p>
+	当你使用spring-boot-starter-redis的时候，Lettuce现已取代Jedis作为Redis驱动。当你使用更好级别的Spring数据结构时，你会发现变化时清晰的。我们仍然支持Jedis，并且你可以任意切换依赖机制，通过排除<span style="background-color:#FF9900;">io.lettuce:lettuce-core</span>和添加<span style="background-color:#FF9900;">redis.clients.jedis</span>的方式。</p><p><strong>Elasticsearch</strong></p><p>
+	Elasticsearch已经被升级到了5.4+版本。与 Elastic宣布：<a href="https://www.elastic.co/blog/elasticsearch-the-server" target="_blank" rel="nofollow">嵌入式的Elasticsearch不再支持</a>&nbsp;保持一致，NodeClient的自动配置已经被移除。TransportClient可以使用spring.data.elasticsearch.cluster-nodes来自动配置，以提供用来连接的一个或多个节点。</p>
+<h2>
+	Caching 缓存<br></h2><h3>
+	针对缓存的专用Hazelcast自动配置</h3><p>
+	它不再能够自动配置常规的HazelcastInstance和用于缓存的专用HazelcastInstance。因此，spring.cache.hazelcast.config属性不再是可用的。</p><h2>
+	Batch 批处理</h2><p>
+	在启动时执行批处理作业的CommandLineRunner的优先级是0。</p><h2>
+	测试<br></h2><h3>
+	Mockito 1.x</h3><p>
+	Mockito 1.x不再支持@MockBean和@SpyBean。如果你没有使用spring-boot-starter-test来管理依赖关系，则应升级到Mockito 2.x.</p>
+<h2>
+	Spring Boot Actuator</h2><p>
+	Spring Boot 2 给 actuator 带来了重要的变化，（包括）内部和面向用户的，请查阅<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle/#production-ready" target="_blank" rel="nofollow">参考指南的更新部分</a>和<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/actuator-api/html" target="_blank" rel="nofollow">新</a>&nbsp;<span style="font-size:13.3333px;"><a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/actuator-api/html" target="_blank" rel="nofollow">actuator API 文档</a>。</span></p><p>
+	你应该期待编程模型、配置键和某些端点的响应格式会发生变化。Actuator 现在本地支持 Spring MVC，Spring WebFlux 和 Jersey。</p><h2>Build</h2><p>Actuator的代码被分成两个模块：现有的spring-boot-actuator和一个新的spring-boot-actuator-autoconfigure。如果你正在使用它<span style="font-size:13.3333px;">的</span>原始模块（spring-boot-actuator）导入actuator，请考虑使用spring-boot-starter-actuator替代。<br></p><h2>配置键结构</h2><p></p><p style="font-family:&quot;font-size:13.3333px;">
+		端点的基础结构键已被协调:	</p><table style="color:#000000;font-family:&quot;font-size:13.3333px;"><tbody><tr><th>
+					旧属性				</th><th>
+					新属性				</th></tr></tbody><tbody><tr><td><p>
+						endpoints.&lt;id&gt;.*					</p></td><td><p>
+						management.endpoint.&lt;id&gt;.*					</p></td></tr><tr><td><p>
+						endpoints.cors.*					</p></td><td><p>
+						management.endpoints.web.cors.*					</p></td></tr><tr><td><p>
+						endpoints.jmx.*					</p></td><td><p>
+						management.endpoints.jmx.*					</p></td></tr><tr><td><p>
+						management.address					</p></td><td><p>
+						management.server.address					</p></td></tr><tr><td><p>
+						management.context-path					</p></td><td><p>
+						management.server.servlet.context-path					</p></td></tr><tr><td><p>
+						management.ssl.*					</p></td><td><p>
+						management.server.ssl.*					</p></td></tr><tr><td><p>
+						management.port					</p></td><td><p>
+						management.server.port					</p></td></tr></tbody></table><p><br></p>
+<h2>
+	Base path 基路径<br></h2><p>
+	所有终端已默认移至<span style="font-family:monospace, monospace;background-color:#F6F6F6;">/actuator</span>中。</p><p>
+	我们修改了management.server.servlet.context-path的含义：它现在是对server.servlet.context-path的终端管理的等价替代（仅在设置了management.server.port时才有效）。另外，你还可以使用新的单独的属性management.endpoints.web.base-path来设置管理终端的基路径。<br><br>例如，如果你已经设置了<span style="font-family:monospace, monospace;background-color:#F6F6F6;">management.server.servlet.context-path=/management</span>和<span style="font-family:monospace, monospace;background-color:#F6F6F6;">management.endpoints.web.base-path=/application</span>，则可以通过以下路径访问运行状况良好的终端：<span style="font-family:monospace, monospace;background-color:#F6F6F6;">/management/application/health</span>。<br><br>如果要恢复1.x版本的行为（即拥有<span style="font-family:monospace, monospace;background-color:#F6F6F6;">/health</span>而不是<span style="font-family:monospace, monospace;background-color:#F6F6F6;">/actuator/health</span>），请设置以下属性：</p><pre>management.endpoints.web.base-path=/</pre>
+<h2>Audit event API 的变化</h2><p>AuditEventRepository 现在是一个带有所有可选参数的单独的方法。</p><h2>端点</h2><p>通过 HTTP 实现一个 actuator 端点，它需要被启用并公开。默认：</p><ul><li><p>只有/health 和 /info 端点被公开，<strong>不管&nbsp;</strong><strong>Spring Security&nbsp;</strong><strong>是否存在并且配置于你的程序中</strong>。</p></li><li><p>所有端点启用，除了 /shutdown 。</p></li></ul><p>你可以公开所有的端点，如下：<br></p><pre>management.endpoints.web.exposure.include=*</pre><p>你可以显式地启用 /shutdown 端点：<br></p><pre>management.endpoint.shutdown.enabled=true</pre><p>公开除&nbsp;env 端点之外的所有(已启用的) web 端点：<br></p><pre>management.endpoints.web.exposure.include=*
+management.endpoints.web.exposure.exclude=env</pre><p>表1.端点的变化<br></p><table><tbody><tr><th>1.x 端点</th><th>变化</th></tr></tbody><tbody><tr><td><p>/actuator</p></td><td><p>不再可用。 然而，一个映射可以在 management.endpoints.web 的根上。提供指向所有公开端点的链接的基本路径。</p></td></tr><tr><td><p>/auditevents</p></td><td><p>&nbsp;after 参数不再是必须</p></td></tr><tr><td><p>/autoconfig</p></td><td><p>重命名为 /conditions</p></td></tr><tr><td><p>/docs</p></td><td><p>不再可用 (<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/actuator-api/html" target="_blank" rel="nofollow">API 文档</a>现在是已发布文档的一部分)</p></td></tr><tr><td><p>/health</p></td><td><p>现在 management.endpoint.health.show-details 的操作为:&nbsp;never,&nbsp;always,&nbsp;when-authenticated，而不是依赖 sensitive 标志来判断 healthendpoint 是否必须显示全部细节。默认情况下,&nbsp; /actuator/health 是公开的，并且不显示细节。</p></td></tr><tr><td><p>/trace</p></td><td><p>重命名为 /httptrace</p></td></tr></tbody></table><p>端点属性的变化如下:</p><ul><li><p>endpoints.&lt;id&gt;.enabled 被移到 management.endpoint.&lt;id&gt;.enabled</p></li><li><p>endpoints.&lt;id&gt;.id 不能替换(端点的 id 不再可配置)</p></li><li><p>endpoints.&lt;id&gt;.sensitive 不能替换（详见&nbsp;<a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide#actuator-security" rel="nofollow">Actuator Security</a>&nbsp;）</p></li><li><p>endpoints.&lt;id&gt;.path 被移到 management.endpoints.web.path-mapping.&lt;id&gt;</p></li></ul>
+<h2>
+	终端格式<br></h2><h3>
+	"/actuator/mappings" Actuator Endpoint的检视</h3><p>
+	JSON格式现已更改为适当地包含有关上下文层次结构、多个DispatcherServlet、已部署的Servlet和Servlet过滤器的信息。有关更多详细信息请参考<a href="https://github.com/spring-projects/spring-boot/issues/9979#issuecomment-357930821" rel="nofollow">#9979</a>。<br><br>Actuator API文档的<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/actuator-api/html/#mappings" rel="nofollow">相关部分</a>提供了一个示例文档。</p><h3>
+	"/actuator/httptrace" Actuator Endpoint的检视</h3><p>
+	response的结构已被细化，以反映终端聚焦跟踪HTTP请求-响应的交互。有关 终端及其response结构的更多细节可在Actuator API文档的<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/actuator-api/html/#http-trace" rel="nofollow">相关部分</a>找到。</p>
+<h2>迁移自定义端点</h2><p>如果你有自定义的 actuator 端点，请<a href="https://spring.io/blog/2017/08/22/introducing-actuator-endpoints-in-spring-boot-2-0" target="_blank" rel="nofollow">查阅专门的博客帖子</a>。团队已经写了一个 wiki 页面描述<a href="https://github.com/spring-projects/spring-boot/wiki/Migrating-a-custom-Actuator-endpoint-to-Spring-Boot-2" target="_blank" rel="nofollow">如何迁移现有的 actuator 端点</a>到新的基础结构中。</p><h2>度量标准</h2><p>Spring Boot 自己的度量标准已经被支持所取代，包括用于&nbsp;<a href="https://micrometer.io/" target="_blank" rel="nofollow">Micrometer</a>&nbsp;和维度指标的 auto-configuration 。</p><h3>配置 Micrometer</h3><p>如果你的 Spring Boot 2.0 程序已经依赖于 Actuator，则 Micrometer 已在此处并自动配置。如果你希望将度量值导出到像 Prometheus、Atlas 或者 Datadog 这样的外部注册表中，Micrometer 为许多注册中心提供了依赖关系；你可以通过 spring.metrics.* 属性来配置你的程序以导出到特定的注册表中。</p><p>有关更多信息，请查看<a href="http://micrometer.io/docs/ref/spring/2.0" target="_blank" rel="nofollow">关于 Spring Boot 2.0 的 Micrometer 文档</a>。</p>
+<h2>
+	迁移自定义Counters/Gauges （计数器/标尺）<br></h2><p>
+	作为在你的应用程序代码中插入CounterService或GaugeService实例的替代，你可以通过以下方式创建各种指标：</p><ul><li><p>
+			插入一个MeterRegistry并调用它的方法		</p></li><li><p>
+			直接调用像<span style="font-family:monospace, monospace;background-color:#F6F6F6;">Counter featureCounter = Metrics.counter("feature");</span>一样的静态方法		</p></li></ul><p><br>千分尺带来许多有趣的功能 - 请查看<a href="http://micrometer.io/docs/concepts" rel="nofollow">“千分尺背后的核心概念”</a>以及<a href="https://docs.spring.io/spring-boot/docs/current-SNAPSHOT/reference/htmlsingle#production-ready-metrics" rel="nofollow">Spring Boot集成的细节</a>。</p><h2>
+	Spring Boot 1.5支持</h2><p>
+	你可以使用<a href="http://micrometer.io/docs/ref/spring/1.5" rel="nofollow">Micrometer Legacy</a>支持，将相同metrics基础架构中的现存Spring Boot 1.5应用程序插入。</p>
+<h1>
+	开发者工具</h1><h2>
+	热拔插（Hot swapping）</h2><p>
+	随着Spring Loaded项目被阁置，它在Spring Boot中的支持已经被移除。我们建议使用Devtools替代。</p><h3>
+	隧道Devtools远程调试</h3><p>
+	对通过HTTP进行隧道远程调试的支持已经从Devtools中删除。</p><h3>
+	已删除的功能</h3><p>
+	以下功能不再可用：</p><ul><li><p>
+	CRaSH支持</p></li><li><p>
+	Spring Mobile的自动配置和依赖管理</p></li><li><p>
+	Spring Social<span style="font-size:13.3333px;">的自动配置和依赖管理，请查阅</span><a href="https://github.com/spring-projects/spring-social" target="_blank" rel="nofollow">Spring Social项目</a>了解更多细节</p></li><li><p>
+	commons-digester的依赖管理</p></li></ul><h3>
+	依赖版本</h3><p>
+	以下库的最低支持版本已经更改：</p><p>
+	Elasticsearch 5.6<br>Gradle 4<br>Hibernate 5.2<br>Jetty 9.4<br>Spring Framework 5<br>Spring Security 5<br>Tomcat 8.5</p><p><br></p>
+</div>
+<div class="links">
+    <p>本文地址：<a href="https://www.oschina.net/translate/spring-boot-2-0-migration-guide">https://www.oschina.net/translate/spring-boot-2-0-migration-guide</a></p>
+    <p>原文地址：<a href="https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide">https://github.com/spring-projects/spring-boot/wiki/Spring-Boot-2.0-Migration-Guide</a></p>
+</div>
+<div class="copyright">
+    本文中的所有译文仅用于学习和交流目的，转载请务必注明文章译者、出处、和本文链接<br/>
+    我们的翻译工作遵照 <a href='http://zh.wikipedia.org/wiki/Wikipedia:CC' target='_blank'>CC 协议</a>，如果我们的工作有侵犯到您的权益，请及时联系我们
+</div>
+</body>
+</html>
+            
+<!-- Generated by OsChina.NET (init:0[ms],page:3[ms],ip:58.213.139.98) -->
