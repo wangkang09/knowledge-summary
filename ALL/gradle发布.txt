@@ -1,0 +1,16 @@
+发布
+apply plugin: 'maven-publish'
+
+publishing{
+	publications{
+		自定义名字(MavenPublication){
+			from components.java
+		}
+	}
+	repositories{
+		maven{
+			name:"自定义"
+			url:''
+		}
+	}
+}

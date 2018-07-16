@@ -1,0 +1,10 @@
+zookeeper-server-start D:\middleware\kafka_2.11-1.1.0\config\zookeeper.properties	#开启zookeeper
+kafka-server-start D:\middleware\kafka_2.11-1.1.0\config\server.properties	#开启kafka
+kafka-topics --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic test	#创建一个topic
+
+kafka-topics --list --zookeeper localhost:2181	#查看当前topic
+
+kafka-console-producer --broker-list localhost:9092 --topic test #创建消息生产者，开启kafka基于命令行的消息生产客户端
+kafka-console-consumer --bootstrap-server localhost:9092 --topic test  #启动kafka基于命令行的消息消费客户端
+
+kafka-console-consumer --bootstrap-server localhost:9092 --topic test --from-beginning #从开头开始点播

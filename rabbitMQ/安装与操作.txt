@@ -1,0 +1,31 @@
+1、下载erlang：http://www.erlang.org，获取exe安装包，直接点击安装
+2、下载RabbitMQ：http://www.rabbitmq.com，获取exe安装包，直接点击安装
+3、配置环境变量：RABBIT_HOME=/PATH/TO/sbin
+
+4、rabbitmq-plugins enable rabbitmq_management		//启动RabbitMQ插件，使用可视化方式
+5、rabbitmqctl.bat list_users	查看用户
+6、rabbitmqctl.bat add_user username password	新增用户
+7、rabbitmqctl.bat set_user_tags username administrator		给用户设置角色
+8、rabbitmqctl.bat  set_user_tags  username tag1 tag2 ...	给用户设置多个角色
+9、rabbitmqctl change_password userName newPassword		更改密码
+10、rabbitmqctl.bat delete_user username	删除用户
+11、http://localhost:15672 	通过网页操作
+
+
+权限相关命令为：
+
+(1) 设置用户权限
+
+rabbitmqctl  set_permissions  -p  VHostPath  User  ConfP  WriteP  ReadP
+
+(2) 查看(指定hostpath)所有用户的权限信息
+
+rabbitmqctl  list_permissions  [-p  VHostPath]
+
+(3) 查看指定用户的权限信息
+
+rabbitmqctl  list_user_permissions  User
+
+(4)  清除用户的权限信息
+
+rabbitmqctl  clear_permissions  [-p VHostPath]  User

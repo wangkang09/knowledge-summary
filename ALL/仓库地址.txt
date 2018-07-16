@@ -1,0 +1,12 @@
+//阿里云仓库
+maven{
+	url 'http://maven.aliyun.com/nexus/content/groups/public/'
+}
+//公司私服		
+maven {
+	credentials {
+		username = "jenkins"
+		password = "cH79eNJB3Jvm"
+	}
+	url = 'http://169.45.120.48:8081/nexus/content/groups/public/'
+}

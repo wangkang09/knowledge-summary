@@ -1,0 +1,13 @@
+﻿发布
+apply plugin: 'maven-publish'
+
+publishing{
+	publications{
+		wk(MavenPublication){
+			from components.java
+		}
+	}
+	repositories{
+		mavenLocal()
+	}
+}

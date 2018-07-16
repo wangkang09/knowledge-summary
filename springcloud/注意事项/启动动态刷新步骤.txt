@@ -1,0 +1,6 @@
+1、子项目中添加actuator依赖
+2、子项目配置文件启用refresh端口：management.endpoints.web.exposure.include=refresh
+3、先获取远程配置文件的摸个属性：http://localhost:5555/from
+4、改变远程配置文件对应属性：from改成其他的值
+5、通过 POST 请求发送http:localhost:5555/actuator/refresh 发送格式是json
+6、重复3，发现值变了

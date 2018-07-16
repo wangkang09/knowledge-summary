@@ -1,0 +1,296 @@
+
+--------------------------------------创建
+mkdir wangkang
+mkdir wang/kang		--创建失败
+mkdir -p wang/kang
+
+
+--------------------------------------删除
+rmdir wangkang
+mkdir wangkang
+
+rmdir wang	--删除失败，wang目录不为空
+rmdir wang/kang	--删除成功，wang/kang目录为空，后wang下没有目录了
+ls wang
+mkdir wang/kang  --创建成功，因为此命令创建的只是kang这个单独目录
+ls wang
+
+rm -rf wangkang  
+rm -rf wang		--删除成功，wang目录整体被删除
+ll
+
+
+--------------------------------------复制
+mkdir des1
+mkdir des2
+mkdir wangkang
+
+cp -r wangkang des1/   --带不带/一样，带了清楚些，若没有des1目录，则是重命名文件
+cp -r wangkang des1/wangkang.bk  --重命名
+cp -a wangkang des2/
+
+ll -i . des1 des2		--发现 -a操作复制文件与源文件属性一模一样；且节点都不一样，是递增的
+
+rm -rf * 	--删除当前路径中所有文件
+
+
+--------------------------------------剪切
+mkdir des1
+mkdir -p des2/wangkang
+
+mv des2/wangkang des1/		--将des2中的wangkang文件剪切到des1文件下
+mv des1/wangkang des2/wang
+
+mv des2 des1/	--剪切属性一模一样
+
+rm -rf *
+
+
+--------------------------------------创建链接
+touch des1 
+echo 1 > des1
+
+--硬链接拥有相同的节点，不能针对目录使用
+--相当于复制，删除任何一个，原文件数据，仍能够范围，因为原文件的节点还在
+
+ln des1 des1.hard
+
+--软链接类似于windows快捷键,拥有自己的节点，节点指向的数据，存放原文件的节点信息
+--删除原文件，软链接就不能用了，因为找不到原文件的节点了，所以不能根据节点找到数据
+--软链接文件会有链接标识
+ln -s des1 des1.soft
+
+ll -i des1 des2		--查看节点信息
+
+rm -rf des1 --删除原文件，软链接无效，硬链接任有效
+
+
+--------------------------------------文件搜索
+
+-------------locate 相对于 find -name
+mkdir ides
+mkdir Ides
+touch ii
+touch Ii
+locate ~/test/i   --搜索i开头的文件
+updatedb
+locate ~/test/i
+locate -i ~/test/i	--不区分大小写
+locate -c ~/test/i	--输出找到的数量
+
+-------------find
+find /root/test -iname ii --匹配的是全名，不区分大小写
+find . -iname i? --通配符，?匹配任意字符,当前文件
+
+find /root -user root --安装所有者查找
+find /root -nouser --查找没有所有者的，1）内核生成的文件2）外来文件3）垃圾文件
+
+find /root -mtime +10	--查找10天前修改的文件
+find /root -mtime -10	--查找10天内修改的文件
+find /root -mtime 10	--查找10当天修改的文件
+
+atime --文件访问时间
+ctime --改变文件属性时间
+mtime --修改文件内容时间
+amin<分钟>
+
+find /root -size -20k -a -size +1k
+find /root/test -size -20k -o -size +30k
+
+find . -name ii -exec ls -ilh {} \;   --1710691
+find . -inum 1710691 -exec rm -rf {} \;
+
+-------------grep在文件中搜索字符串
+echo abc >> Ii
+echo A 	 >> Ii
+
+grep -i a Ii
+grep -v b Ii
+
+find . -name Ii -exec grep -i a {} \;  --牛逼
+
+
+--------------------------------------帮助命令
+man ls 	--查看ls命令帮助
+
+man -f ls --查看命令拥有那个级别
+whatis ls --同上
+
+man -k ls --查看和命令相关的所有帮助，不好用
+
+whereis cd --确定是否是shell内部命令，如果没有显示则是内部命令
+help cd	--获取内部命令帮助
+
+ls --help //获取命令选项的帮助，不好用
+
+
+--------------------------------------压缩
+rm -rf *
+mkdir -p wang/kang
+mkdir wang/mao
+touch des
+
+--------------zip压缩和解压都保留原文件
+zip des.zip des
+zip -r wang.zip wang
+upzip des.zip
+
+--------------gzip压缩和解压原文件会消失,不建议使用
+gzip -r 目录 --压缩目录下所有的子文件！！
+gzip -d 压缩文件	--解压
+gunzip 压缩文件		--解压
+
+--------------bzip2 -k是保留原文件，默认不保留，不能压缩目录，不建议使用
+bzip2 des	--不保留原文件
+bzip2 -k des --保留原文件
+bzip2 -d des.bz2
+bunzip2 des.bz2
+
+--------------tar打包命令，配合gzip命令压缩目录
+tar -cvf 打包文件名 原文件
+-c：打包
+-v：显示过程
+-f：指定打包后的文件名
+
+tar -xvf 打包的文件名	--解打包
+-x：解打包
+
+--------------.tar.gz压缩，，保留原文件！！
+tar -zcvf 压缩包名.tar.gz 原文件
+-z:压缩为.tar.gz格式
+tar -zxvf 压缩包名.tar.gz
+-x:解压缩.tar.gz格式
+
+tar -jcvf 压缩包名.tar.bz2 原文件，，压缩文件可以是任何后缀，但标准系统能识别颜色
+-z:压缩为.tar.bz2格式
+tar -jxvf 压缩包名.tar.bz2
+-x:解压缩.tar.bz2格式
+
+
+--------------------------------------关机
+shutdown [选项] 时间
+选项：
+-c:取消前一个关机命令
+-h:关机
+-r:重启
+
+shutdown -r 08:30 &   &为后台进程，输完命令后，直接enter键即可
+shutdown -c
+shutdown -h 11:30 &
+shutdown -c
+
+系统默认运行级别
+cat /etc/initab
+runlevel --系统当前运行级别
+
+logout	--登出
+
+--------------------------------------挂载
+
+
+--------------------------------------用户登录信息
+w		--查看登录信息，比who详细
+who 	--查看登录信息
+last	--查询当前登录和过去登录的用户信息
+lastlog	--查看所用用户最后一次登录时间
+
+
+--------------------------------------shell脚本
+touch hello.sh
+echo echo 234 > hello.sh
+
+chmod 755 hello.sh
+./hello.sh
+
+bash hello.sh
+
+
+--------------------------------------常用快捷键
+ctrl + c	强制终止当前命令
+ctrl + l	清屏
+ctrl + a	光标移动到行首
+ctrl + e	光标移动到行尾
+ctrl + u 	从光标位置删除到行首
+ctrl + z	把命令放入后台
+ctrl + r	在历史中搜索
+
+
+--------------------------------------别名
+alias	--查看所有别名
+alias 别名='原命令' --临时生效
+unalias 别名
+
+vi ~/.vashrc	--更改其中的别名，永久生效
+执行：source .bashrc 更改立即生效
+
+
+--------------------------------------历史命令
+上下箭头
+!字符串  重复执行最后一条命令
+
+
+--------------------------------------重定向
+wc [选项] [文件名]
+选项：不加则默认都有
+-c:统计字节数
+-w:统计单词数
+-l:统计行数
+
+touch wang
+vim wang	--编辑
+
+wc < wang > log.log		--同时有输入重定向和输出重定向
+
+cat log.log
+ifconfig > log.log	--将输出输入log.log文件
+
+错误命令 2>文件		--将错误命令输入文件
+命令 > 文件 2>&1	--将所有输出都输入文件，
+
+命令 &> 文件		--同上
+命令 > 文件1 2> 文件2	--将正确命令输入文件1，错误命令输入文件2！！！
+
+ls &>/dev/null	--不保存输出
+
+
+--------------------------------------多命令执行
+;	命令1;命令2	--多命令顺序执行，没有逻辑关系
+&&	命令1&&命令2	--命令1成功执行，命令2才可以执行
+||	命令1||命令2	--命令1不成功执行，命令2才执行
+
+date ; ls ; date 	--可以查看命令耗时
+命令&&echo yes || echo no	--命令成功执行，显示yes，否则显示no
+
+
+--------------------------------------管道符
+命令1 | 命令2	--命令1的正确输出作为命令2的操作对象，命令1正确后面才执行
+
+ls -l /etc | more	--分层查看前面ls命令输出的内容
+
+netstat -an | grep ESTABLISHED				--查看本机有多少连接信息
+
+netstat -an | grep ESTABLISHED | wc -l		--查看本机连接的条数
+
+
+--------------------------------------通配符
+?	--匹配任意字符
+*	--匹配0个或多个字符
+[]	--匹配中的任意一个字符，[abc]：即abc中的一个就能匹配
+[-]	--匹配范围，[a-z],[0-9]
+[^]	--不匹配
+
+
+--------------------------------------特殊符
+''	--单引号：说明在单引号中的字符，没有特殊意义
+""	--双引号：说明在其中的字符没有特殊意义，除了 ，"$name":取name的值，"`ls"：引用命令，"\n":转义
+``	--反引号：bb=`ls`，将ls命令的输出赋值给bb变量
+$()	--同上，最好用这个，不易混淆
+#	--注释
+$	--取值
+\	--转义
+
+
+
+
+
+

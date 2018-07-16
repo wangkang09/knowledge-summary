@@ -1,0 +1,33 @@
+1、
+Gradle使用与Maven相同的策略去定位本地Maven缓存的位置。如果在settings.xml中定义了本地Maven仓库的地址，则使用该地址。
+
+在USER_HOME/.m2下的settings.xml文件中的配置会覆盖存放在M2_HOME/conf下的settings.xml文件中的配置。
+
+如果没有settings.xml配置文件，Gradle会使用默认的USER_HOME/.m2/repository地址。
+
+2、
+* 修改gradle初始化脚本
+ 
+
+gradle 生命周期中有一个叫 初始化( Initialization )的过程，这个过程运行在 build script 之前，我们可以在这个地方做一点系统全局的设置，就比如*配置仓库地址*
+
+你可以在这些地方使用你的初始化脚本：
+
+1、命令行 (这个我就不说了
+
+2、放一个init.gradle 文件到USER_HOME/.gradle/目录下
+
+3、放一个后缀是.gradle的文件到 USER_HOME/.gradle/init.d/ 目录下
+
+4、放一个后缀是.gradle的文件到 GRADLE_HOME/init.d/ 目录下.
+
+3、
+init.gradle文件内容：
+allprojects {  
+    repositories {  
+         maven {  
+             name "aliyunmaven"  
+             url "http://maven.aliyun.com/nexus/content/groups/public/"  
+         }  
+    }  
+}  

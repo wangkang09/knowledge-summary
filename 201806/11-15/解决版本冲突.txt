@@ -1,0 +1,26 @@
+解决版本冲突
+1、查看依赖报告
+2、排除传递性依赖
+3、强制一个版本
+
+若有版本冲突，gradle默认使用最高版本的依赖
+
+1、修改默认解决策略
+configuration.all{
+	resolutionStrategy{
+		failOnversionConflict()  //当有版本冲突时，直接报错
+	}
+}
+
+2、排除传递性依赖
+compile('org.hibernate:hibernate-core:3.6.3.Final'){
+	exclude 	group:"org.slf4j" , module:"slf4j-api"
+
+}
+
+3、强制一个版本
+configuration.all{
+	resolutionStrategy{
+		force 'org.slf4j:slf4j-api:1.7.24'
+	}
+}

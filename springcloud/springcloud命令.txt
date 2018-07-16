@@ -1,0 +1,19 @@
+java -jar D:\javaworkspace\imooc-spring-cloud\micro-weather-eureka-server\build\libs\micro-weather-eureka-server-1.0.0.jar
+
+
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-city-eureka\build\libs\msa-weather-city-eureka-1.0.0.jar --server.port=8080
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-city-eureka\build\libs\msa-weather-city-eureka-1.0.0.jar --server.port=8090
+
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-data-eureka\build\libs\msa-weather-data-eureka-1.0.0.jar --server.port=8081
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-data-eureka\build\libs\msa-weather-data-eureka-1.0.0.jar --server.port=8091
+
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-collection-eureka-feign\build\libs\msa-weather-collection-eureka-feign-1.0.0.jar --server.port=8092
+
+
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-report-eureka-feign\build\libs\msa-weather-report-eureka-feign-1.0.0.jar --server.port=8083
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-report-eureka-feign\build\libs\msa-weather-report-eureka-feign-1.0.0.jar --server.port=8093
+
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-city-eureka\build\libs\msa-weather-city-eureka-1.0.0.jar --server.port=8080
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-city-eureka\build\libs\msa-weather-city-eureka-1.0.0.jar --server.port=8090
+
+java -jar D:\javaworkspace\imooc-spring-cloud\msa-weather-eureka-client-zuul\build\libs\msa-weather-eureka-client-zuul-1.0.0.jar --server.port=8085
