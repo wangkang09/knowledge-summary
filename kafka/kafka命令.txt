@@ -9,3 +9,5 @@ kafka-console-producer.bat --broker-list localhost:9092 --topic cctv1	#创建特
 
 kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic cctv1	#创建针对特定主题的消费者
 
+
+注：zookeeper只能启动单数，比如1台 、3台、7台等等，不能偶数台，偶数台的话假设有两台，那么只有一台机器再运行，因为如果是偶数的话，选举出来的管理者有可能两个borker得到的票数相同，奇数的话就不会出现这个情况
