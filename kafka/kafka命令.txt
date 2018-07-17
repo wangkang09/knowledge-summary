@@ -1,0 +1,11 @@
+zookeeper-server-start D:\middleware\kafka_2.11-1.1.0\config\zookeeper.properties	#启动zookeeper
+kafka-server-start D:\middleware\kafka_2.11-1.1.0\config\server.properties	启动kafka
+
+kafka-topics.bat --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic cctv1(主题名）	#创建一个主题
+
+kafka-topics.bat --list --zookeeper localhost:2181	#查看主题下的消息
+
+kafka-console-producer.bat --broker-list localhost:9092 --topic cctv1	#创建特定主题的生产者
+
+kafka-console-consumer.bat --bootstrap-server localhost:9092 --topic cctv1	#创建针对特定主题的消费者
+
