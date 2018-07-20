@@ -1,0 +1,735 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="gb2312" />
+<meta name="applicable-device" content="pc">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<meta http-equiv="Cache-Control" content="no-transform" />
+<title>mysql-8.0.11-winx64.zip安装教程详解_Mysql_脚本之家</title>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<meta name="keywords" content="mysql,winx64,zip安装教程,mysql,zip安装教程" />
+<meta name="description" content="这篇文章主要介绍了mysql-8.0.11-winx64.zip安装教程详解及注意事项，非常不错，具有参考借鉴价值，需要的朋友参考下" />
+<link rel="alternate" media="only screen and(max-width: 640px)" href="https://m.jb51.net/article/139219.htm" />
+<meta http-equiv="mobile-agent" content="format=html5; url=https://m.jb51.net/article/139219.htm" />
+<meta http-equiv="mobile-agent" content="format=xhtml; url=https://m.jb51.net/article/139219.htm" />
+<script type="text/javascript">
+var tougao="mrr",lmname="Mysql",suoyin="no";
+(function(){var reWriteUrl=function(url){if(url){var Splits=url.split("/"),siteName=window.location.pathname;if(typeof siteName!=="undefined"){return "https://m.jb51.net"+siteName}}};if(/Android|webOS|iPhone|iPad|Windows Phone|iPod|BlackBerry|SymbianOS|Nokia|Mobile/i.test(navigator.userAgent)){var url=window.location.href;var pathname=window.location.pathname;if(url.indexOf("?pc")<0){try{window.location.href=reWriteUrl(url)}catch(e){}}}})();
+</script>
+<meta name="referrer" content="always">
+<link type="text/css" href="/skin/2018/css/base.css" rel="stylesheet" />
+<link type="text/css" href="/skin/2018/css/common.css" rel="stylesheet" />
+<script type="text/javascript" src="//apps.bdimg.com/libs/jquery/1.11.3/jquery.min.js"></script>
+<script type="text/javascript">
+    if (typeof jQuery == 'undefined') {
+        document.write(unescape("%3Cscript src='/skin/js/jquery.js' type='text/javascript'%3E%3C/script%3E"));
+    }
+</script>
+<script type=text/javascript src="/js/function.js"></script> 
+</head>
+<body>
+<!--topTools Start -->
+<div class="topTools">
+    <div class="wrap clear_fix">
+		<div class="topToolsLeft">
+			<a href="/" target="_blank">脚本之家</a>
+			<a href="http://s.jb51.net" target="_blank" rel="nofollow">服务器常用软件</a>
+		</div>
+		<div class="right">
+			<ul>
+				<li><i class="sprite md left"></i><a target="_blank" href="https://m.jb51.net/" rel="nofollow">手机版</a></li>
+				<li><i class="sprite tg left"></i><a href="http://tougao.jb51.net" rel="nofollow" target="_blank">投稿中心</a></li>
+				<li id="wxHide"><i class="sprite wx left"></i><a href="javascript:void(0)" target="_blank">关注微信</a>
+					<div id="wxShow" class="wxHide_box"><img src="//files.jb51.net/skin/2018/images/erwm.jpg" alt="扫一扫" width="84" hight="84" data-baiduimageplus-ignore></div>
+				</li>
+			</ul>
+			<!--快捷导航 开始 -->
+			<div class="text_d right" id="navHide">
+        <a rel="nofollow" href="javascript:void(0);">快捷导航 <i id="icon" class="sprite arrowRight"></i></a>
+        <div id="navBox" class="nwebNav" style="display: none;">
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4>
+                                        <a rel="nofollow" href="/softs/" target="_blank">软件下载</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/softs/android.html" target="_blank">android</a>
+                                        <a rel="nofollow" href="/softs/mac.html" target="_blank">MAC</a>
+                                        <a rel="nofollow" href="/qudong/" target="_blank">驱动下载</a>
+                                        <a rel="nofollow" href="/fonts/" target="_blank">字体下载</a>
+                                        <a rel="nofollow" href="/dll/" target="_blank">DLL</a></dd>
+                        </dl>
+                </div>
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4>
+                                        <a rel="nofollow" href="/codes/" target="_blank">源码下载</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/codes/php.html" target="_blank">PHP</a>
+                                        <a rel="nofollow" href="/codes/aspnet.html" target="_blank">ASP.NET</a>
+                                        <a rel="nofollow" href="/codes/asp.html" target="_blank">ASP</a>
+                                        <a rel="nofollow" href="/codes/jsp.html" target="_blank">JSP</a></dd>
+                        </dl>
+                </div>
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4><a rel="nofollow" href="/list/index_84.htm" target="_blank">软件编程</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/list/list_85_1.htm" target="_blank">C#</a>
+                                        <a rel="nofollow" href="/list/list_134_1.htm" target="_blank">JAVA</a>
+                                        <a rel="nofollow" href="/list/list_159_1.htm" target="_blank">C 语言</a>
+                                        <a rel="nofollow" href="/list/list_206_1.htm" target="_blank">Delphi</a>
+                                        <a rel="nofollow" href="/list/list_233_1.htm" target="_blank">Android</a></dd>
+                        </dl>
+                </div>
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4><a rel="nofollow" href="/list/index_1.htm" target="_blank">网络编程</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/list/list_15_1.htm" target="_blank">PHP</a>
+                                        <a rel="nofollow" href="/list/list_21_1.htm" target="_blank">ASP.NET</a>
+                                        <a rel="nofollow" href="/list/list_2_1.htm" target="_blank">ASP</a>
+                                        <a rel="nofollow" href="/list/list_3_1.htm" target="_blank">JavaScript</a></dd>
+                        </dl>
+                </div>
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4><a rel="nofollow" href="http://tools.jb51.net/" target="_blank">在线工具</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/tools/cssyasuo.shtml" target="_blank">CSS格式化</a>
+                                        <a rel="nofollow" href="http://tools.jb51.net/tools/js_geshihua.asp" target="_blank">JS格式化</a>
+                                        <a rel="nofollow" href="/tools/html-js.htm" target="_blank" rel="nofollow">Html转化为Js</a></dd>
+                        </dl>
+                </div>
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4><a rel="nofollow" href="/list/index_104.htm" target="_blank">数据库</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/list/list_112_1.htm" target="_blank">MYSQL</a>
+                                        <a rel="nofollow" href="/list/list_113_1.htm" target="_blank">MSSQL</a>
+                                        <a rel="nofollow" href="/list/list_154_1.htm" target="_blank">oracle</a>
+                                        <a rel="nofollow" href="/list/list_155_1.htm" target="_blank">DB2</a>
+                                        <a rel="nofollow" href="/list/list_252_1.htm" target="_blank">MARIADB</a></dd>
+                        </dl>
+                </div>
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4><a rel="nofollow" href="/cms/" target="_blank">CMS</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/cms/list411_1.html" target="_blank">PHPCMS</a>
+                                        <a rel="nofollow" href="/cms/list408_1.html" target="_blank">DEDECMS</a>
+                                        <a rel="nofollow" href="/cms/list578_1.html" target="_blank">帝国CMS</a>
+                                        <a rel="nofollow" href="/cms/list419_1.html" target="_blank">WordPress</a>
+                                </dd>
+                        </dl>
+                </div>
+                <div class="ndealList clear_fix">
+                        <div class="navTitle left">
+                                <h4><a rel="nofollow" href="javascript:0;" target="_blank">常用工具</a></h4>
+                        </div>
+                        <dl class="right">
+                                <dd>
+                                        <a rel="nofollow" href="/zt/phphuanjing.html" target="_blank">PHP开发工具</a>
+                                        <a rel="nofollow" href="/zt/python.html" target="_blank">python</a>
+                                        <a rel="nofollow" href="/zt/photoshopxz.html" target="_blank">Photoshop</a>
+                                        <a rel="nofollow" href="/bibei/win/index.html" target="_blank">必备软件</a></dd>
+                        </dl>
+                </div>
+        </div>
+</div>
+			<!--快捷导航 结束 -->
+		</div>
+    </div>
+</div>
+<!--topTools end -->
+
+<div class="header">
+	<!-- Logo start -->
+	<div class="wrap">
+		<div class="mtb10 clearfix">
+		  <div class="logo"><a href="//www.jb51.net/"><img src="//www.jb51.net/images/logo.gif" title="脚本之家" alt="脚本之家" /></a></div>
+		  <div class="logom fl"><span id="logo_m" class="jbTestPos"></span></div>
+		  <div class="logor fr"><span id="logo_r" class="jbTestPos"></span></div>
+		</div>
+	</div>
+	<!--Logo end -->
+	
+	<!-- 导航开始 -->
+	<div class="nav_top clearfix">
+		<ul>
+			<li><a href="/">网站首页</a></li>
+			<li><a href="/web/">网页制作</a></li>
+			<li><a href="/list/index_1.htm">网络编程</a></li>
+			<li><a href="/list/index_96.htm">脚本专栏</a></li>
+			<li><a href="/jiaoben/">脚本下载</a></li>
+			<li><a href="/list/index_104.htm">数据库</a></li>
+			<li><a href="/list/list_82_1.htm">服务器</a></li>
+			<li><a href="/books/">电子书籍</a></li>
+			<li><a href="/os/">操作系统</a></li>
+			<li><a href="/yunying/">网站运营</a></li>
+			<li><p><i>其它</i><span>
+				<a href="/pingmian/">平面设计</a>
+				<a href="/media/">媒体动画</a>
+				<a href="/diannaojichu/">电脑基础</a>
+				<a href="/hardware/">硬件教程</a>
+				<a href="/hack/">网络安全</a>	
+			</span></p></li>
+		</ul>
+	</div>
+	<!--导航结束-->
+</div>
+
+<!-- 二级菜单开始 -->
+<div class="wrap">
+	<div class="subnav clearfix">
+<ul><li><a href='/list/list_113_1.htm' title="MsSql">MsSql</a></li>
+<li><a href='/list/list_112_1.htm' title="Mysql">Mysql</a></li>
+<li><a href='/list/list_252_1.htm' title="mariadb">mariadb</a></li>
+<li><a href='/list/list_154_1.htm' title="oracle">oracle</a></li>
+<li><a href='/list/list_155_1.htm' title="DB2">DB2</a></li>
+<li><a href='/list/list_236_1.htm' title="mssql2008">mssql2008</a></li>
+<li><a href='/list/list_210_1.htm' title="mssql2005">mssql2005</a></li>
+<li><a href='/list/list_215_1.htm' title="SQLite">SQLite</a></li>
+<li><a href='/list/list_224_1.htm' title="PostgreSQL">PostgreSQL</a></li>
+<li><a href='/list/list_239_1.htm' title="MongoDB">MongoDB</a></li>
+<li><a href='/list/list_242_1.htm' title="Redis">Redis</a></li>
+<li><a href='/list/list_105_1.htm' title="Access">Access</a></li>
+<li><a href='/list/list_132_1.htm' title="数据库文摘">数据库文摘</a></li>
+<li><a href='/list/list_133_1.htm' title="数据库其它">数据库其它</a></li>
+</ul>
+	</div>
+</div>
+<!-- 二级菜单结束 -->	
+
+<div class="main mb10 clearfix">
+	<div class="clearfix"><span id="tonglan1" class="jbTestPos"></span></div>
+</div>
+<div class="main clearfix">
+	<div class="NavBar clearfix ptb10">
+		<div class="fl w690">
+			<div class="box mb15 mt10"><i class="icon"></i>您的位置：<a href='/'>首页</a> → <a href="/list/index_104.htm" title="数据库">数据库</a> → <a href="/list/list_112_1.htm" title="Mysql">Mysql</a> → 正文内容 mysql winx64 zip安装教程</div>
+		</div>
+		<div class="fr w300"><div class="search">
+		<form action="/do/search.php" target="_blank">
+			<input type="hidden" name="s" value="10520733385329581432">
+			<input type="hidden" name="ie" value="gbk">
+			<input type="text" name="q" class="key_input" placeholder="请输入关键词">
+			<input type="submit" value=" " class="c_btn">
+		</form></div>
+		</div>
+	</div>
+</div>
+<!--content Star -->
+<div id="contents">
+ <!--share start-->
+ <div id="right-share">
+	<div class="right-share jb-share" id="jb-share">
+		<a class="rshare-weixin" title="">微信</a>
+        <a rel="nofollow" class="rshare-qzone" target="_blank" href="//tougao.jb51.net/" title="投稿">投稿</a>
+		<a rel="nofollow" class="rshare-sqq" target="_blank" href="http://shequ.jb51.net/" title="交流社区">交流社区</a>
+		<a rel="nofollow" class="rshare-tsina" target="_blank" href="http://tools.jb51.net/" title="在线工具">在线工具</a>
+	</div>
+	<a class="rshare-top" onClick="javascript:;"></a>
+			
+	<div id="weixin-code" class="hide">
+	<div class="popup_weixin_head"><p>关注微信公众号</p> 
+	<div id="code"><img src="//files.jb51.net/skin/2018/images/erwm.jpg" alt="扫一扫" width="100" hight="100"></div>
+	</div>
+	</div>	
+ </div>
+<!--share end-->
+
+ <div class="main clearfix bgf">
+      <div class="w750 fl">
+      <div class="article-content border">
+      <div class="title">
+            <h1 class="YaHei">mysql-8.0.11-winx64.zip安装教程详解</h1>
+            <p><i>转载</i> &nbsp;更新时间：2018年05月01日 11:56:13 &nbsp; 作者：熊仔其人  &nbsp; <a href="#comments"> <img src="/skin/2018/images/text-message.png" width="15" height="15" /> 我要评论</a> </p>
+        </div>
+        <div class="lbd clearfix"><span id="tit_down" class="jbTestPos"></span></div>
+        <div class="art_desc mt10"><div id="art_demo">这篇文章主要介绍了mysql-8.0.11-winx64.zip安装教程详解及注意事项，非常不错，具有参考借鉴价值，需要的朋友参考下</div></div>
+        <div class="lbd clearfix"><span id="art_up" class="jbTestPos"></span></div>
+        <div id="content">
+            <p>下载zip安装包：</p>
+<p>　　MySQL8.0 For Windows zip包下载地址：<a href="https://dev.mysql.com/downloads/file/&#63;id=476233" rel="external nofollow" >https://dev.mysql.com/downloads/file/&#63;id=476233</a>，进入页面后可以不登录。后点击底部“No thanks, just start my download.”即可开始下载。</p>
+<p>　　或直接下载：<a href="https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.11-winx64.zip" rel="external nofollow" >https://dev.mysql.com/get/Downloads/MySQL-8.0/mysql-8.0.11-winx64.zip</a></p>
+<p>环境：Windows 10</p>
+<p><span style="color: #ff0000"><strong>一，安装</strong></span></p>
+<p>　　1.1，解压zip包到安装目录</p>
+<p>　　比如我的安装目录是：C:\Program Files\MySQL</p>
+<p>　　1.2，配置文件</p>
+<p>　　在Windows系统中，配置文件默认是安装目录下的 my.ini 文件（或my-default.ini），部分配置需要在初始安装时配置，大部分也可以在安装完成后进行更改。当然，极端情况下，所有的都是可以更改的。</p>
+<p>　　我们发现解压后的目录并没有my.ini文件，没关系可以自行创建。在安装根目录下添加 my.ini，比如我这里是：C:\Program Files\MySQL\my.ini，写入基本配置：<br />
+</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+[mysqld]
+# 设置3306端口
+port=3306
+# 设置mysql的安装目录
+basedir=C:\Program Files\MySQL
+# 设置mysql数据库的数据的存放目录
+datadir=E:\database\MySQL\Data
+# 允许最大连接数
+max_connections=200
+# 允许连接失败的次数。这是为了防止有人从该主机试图攻击数据库系统
+max_connect_errors=10
+# 服务端使用的字符集默认为UTF8
+character-set-server=utf8
+# 创建新表时将使用的默认存储引擎
+default-storage-engine=INNODB
+# 默认使用“mysql_native_password”插件认证
+default_authentication_plugin=mysql_native_password
+[mysql]
+# 设置mysql客户端默认字符集
+default-character-set=utf8
+[client]
+# 设置mysql客户端连接服务端时默认使用的端口
+port=3306
+default-character-set=utf8</pre>
+</div>
+<p>注意，里面的 basedir 是我本地的安装目录，datadir 是我数据库数据文件要存放的位置，各项配置需要根据自己的环境进行配置。</p>
+<p>查看所有的配置项，可参考：<a href="https://dev.mysql.com/doc/refman/8.0/en/mysqld-option-tables.html" rel="external nofollow" >https://dev.mysql.com/doc/refman/8.0/en/mysqld-option-tables.html</a></p>
+<p>　　1.3，初始化数据库</p>
+<p>在MySQL安装目录的 bin 目录下执行命令：</p>
+<p><code>mysqld --initialize --console</code></p>
+<p>执行完成后，会打印 root 用户的初始默认密码，比如：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+C:\Users\Administrator&gt;cd C:\Program Files\MySQL\bin
+C:\Program Files\MySQL\bin&gt;mysqld --initialize --console
+2018-04-28T15:57:17.087519Z 0 [System] [MY-013169] [Server] C:\Program Files\MySQL\bin\mysqld.exe (mysqld 8.0.11) initializing of server in progress as process 4984
+2018-04-28T15:57:24.859249Z 5 [Note] [MY-010454] [Server] A temporary password is generated for root@localhost: rI5rvf5x5G,E
+2018-04-28T15:57:27.106660Z 0 [System] [MY-013170] [Server] C:\Program Files\MySQL\bin\mysqld.exe (mysqld 8.0.11) initializing of server has completed
+C:\Program Files\MySQL\bin&gt;</pre>
+</div>
+<p>　　注意！执行输出结果里面有一段： [Note] [MY-010454] [Server] A temporary password is generated for <a href="mailto:root@localhost" rel="external nofollow" rel="external nofollow" >root@localhost</a>: rI5rvf5x5G,E 其中<a href="mailto:root@localhost" rel="external nofollow" rel="external nofollow" >root@localhost</a>:后面的“rI5rvf5x5G,E”就是初始密码（不含首位空格）。在没有更改密码前，需要记住这个密码，后续登录需要用到。</p>
+<p>　　要是你手贱，关快了，或者没记住，那也没事，删掉初始化的 datadir 目录，再执行一遍初始化命令，又会重新生成的。当然，也可以使用安全工具，强制改密码，用什么方法，自己随意。</p>
+<p>参考：<a href="https://dev.mysql.com/doc/refman/8.0/en/data-directory-initialization-mysqld.html" rel="external nofollow" >https://dev.mysql.com/doc/refman/8.0/en/data-directory-initialization-mysqld.html</a></p>
+<p>　　1.4，安装服务</p>
+<p>在MySQL安装目录的 bin 目录下执行命令（以管理员身份打开cmd命令行，或者在安装目录Shift+右键“在此处打开命令行窗口”）：</p>
+<p><code>mysqld --install [服务名]</code></p>
+<p>后面的服务名可以不写，默认的名字为 mysql。当然，如果你的电脑上需要安装多个MySQL服务，就可以用不同的名字区分了，比如 mysql5 和 mysql8。</p>
+<p>安装完成之后，就可以通过命令net start mysql启动MySQL的服务了。</p>
+<p>示例：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+C:\Program Files\MySQL\bin&gt;mysqld --install
+Service successfully installed.
+C:\Program Files\MySQL\bin&gt;net start mysql</pre>
+</div>
+<p>MySQL 服务正在启动 ..<br />
+</p>
+<p>MySQL 服务已经启动成功。</p>
+<p>C:\Program Files\MySQL\bin&gt;</p>
+<p>参考：<a href="https://dev.mysql.com/doc/refman/8.0/en/windows-start-service.html" rel="external nofollow" >https://dev.mysql.com/doc/refman/8.0/en/windows-start-service.html</a></p>
+<p><span style="color: #ff0000"><strong>&nbsp;二，更改密码和密码认证插件</strong></span></p>
+<p>　　在MySQL安装目录的 bin 目录下执行命令：</p>
+<p><code>mysql -u root -p</code><br />
+</p>
+<p>　　这时候会提示输入密码，记住了上面第1.3步安装时的密码，填入即可登录成功，进入MySQL命令模式。</p>
+<p>在MySQL8.0.4以前，执行</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+SET PASSWORD=PASSWORD('[修改的密码]');</pre>
+<br />
+</div>
+<p>就可以更改密码，但是MySQL8.0.4开始，这样默认是不行的。因为之前，MySQL的密码认证插件是“mysql_native_password”，而现在使用的是“caching_sha2_password”。</p>
+<p>　　因为当前有很多数据库工具和链接包都不支持“caching_sha2_password”，为了方便，我暂时还是改回了“mysql_native_password”认证插件。</p>
+<p>修改用户密码，在MySQL中执行命令：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '新密码';</pre>
+</div>
+<p>修改密码验证插件，同时修改密码。</p>
+<p>　　如果想默认使用“<code>mysql_native_password</code>”插件认证，可以在配置文件中配置<code>default_authentication_plugin</code>项。</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+[mysqld]
+default_authentication_plugin=mysql_native_password</pre>
+</div>
+<p>示例：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+C:\Program Files\MySQL\bin&gt;mysql -u root -p
+Enter password: ************
+Welcome to the MySQL monitor. Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.11
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+mysql&gt; ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '新密码';
+Query OK, 0 rows affected (0.06 sec)
+mysql&gt;</pre>
+</div>
+<p>参考：<a href="https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password" rel="external nofollow" >https://dev.mysql.com/doc/refman/8.0/en/upgrading-from-previous-series.html#upgrade-caching-sha2-password</a></p>
+<p>　　到此，安装部署就完成了。官方说测试速度MySQL8比5快两倍。</p>
+<p>　　可以用 命令查看一下默认安装的数据库：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+show databases;
+use mysql;
+show tables;
+mysql&gt; show databases;
++--------------------+
+| Database      |
++--------------------+
+| information_schema |
+| mysql       |
+| performance_schema |
+| sys        |
++--------------------+
+4 rows in set (0.01 sec)
+mysql&gt;</pre>
+</div>
+<p>看到默认初始化了mysql数据库，其中user表里面存储MySQL用户信息。我们可以看一下默认MySQL用户：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+select user,host,authentication_string from mysql.user;
+
+mysql&gt; select user,host,authentication_string from mysql.user;
++------------------+-----------+-------------------------------------------+
+| user       | host   | authentication_string           |
++------------------+-----------+-------------------------------------------+
+| mysql.infoschema | localhost | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE |
+| mysql.session  | localhost | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE |
+| mysql.sys    | localhost | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE |
+| root       | localhost | *27C237A977F4F44D3F551F1A673BE14DFD232961 |
++------------------+-----------+-------------------------------------------+
+4 rows in set (0.00 sec)
+mysql&gt;</pre>
+</div>
+<p>管理员root的host是localhost，代表仅限localhost登录访问。如果要允许开放其他ip登录，则需要添加新的host。如果要允许所有ip访问，可以直接修改成“%”</p>
+<p>创建用户：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+CREATE USER 'xxh'@'%' IDENTIFIED WITH mysql_native_password BY 'xxh123!@#';
+#(需要注意：mysql8.0加密方式修改了)
+#检查用户
+select user, host, plugin, authentication_string from user\G;
+授权远程数据库
+#授权所有权限 
+GRANT ALL PRIVILEGES ON *.* TO 'xxh'@'%'；
+#授权基本的查询修改权限，按需求设置
+GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER ON *.* TO 'xxh'@'%';</pre>
+</div>
+<p>查看用户权限</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+show grants for 'xxh'@'%';</pre>
+</div>
+<p>示例：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+mysql&gt; use mysql;
+Database changed
+mysql&gt; CREATE USER 'xxh'@'%' IDENTIFIED WITH mysql_native_password BY 'xxh123!@#'; #创建用户(注意：mysql8.0加密方式修改了)
+Query OK, 0 rows affected (0.07 sec)
+mysql&gt; </pre>
+</div>
+<p>查看密码加密方式：</p>
+<div class="jb51code">
+<pre class="brush:sql;">
+mysql&gt; select user, host, plugin, authentication_string from user;
++------------------+-----------+-----------------------+-------------------------------------------+
+| user       | host   | plugin        | authentication_string           |
++------------------+-----------+-----------------------+-------------------------------------------+
+| xxh       | %     | mysql_native_password | *70FD6FB4F675E08FF785A754755B5EBA6DA62851 |
+| mysql.infoschema | localhost | mysql_native_password | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE |
+| mysql.session  | localhost | mysql_native_password | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE |
+| mysql.sys    | localhost | mysql_native_password | *THISISNOTAVALIDPASSWORDTHATCANBEUSEDHERE |
+| root       | localhost | mysql_native_password | *27C237A977F4F44D3F551F1A673BE14DFD232961 |
++------------------+-----------+-----------------------+-------------------------------------------+
+5 rows in set (0.00 sec)
+mysql&gt;</pre>
+</div>
+<p>　　另外，如果需要新增账户，或者本机以外的其他人访问MySQL则还需要设置内置账户的host</p>
+<p>总结</p>
+<p>以上所述是小编给大家介绍的mysql-8.0.11-winx64.zip安装教程详解，希望对大家有所帮助，如果大家有任何疑问欢迎给我留言，小编会及时回复大家的！</p>
+            
+            <div class="art_xg">
+<h4>您可能感兴趣的文章:</h4><ul><li><a href="/article/140950.htm" title="Windows下mysql 8.0.11 安装教程" target="_blank">Windows下mysql 8.0.11 安装教程</a></li><li><a href="/article/140949.htm" title="win10下mysql 8.0.11 压缩版安装教程" target="_blank">win10下mysql 8.0.11 压缩版安装教程</a></li><li><a href="/article/140948.htm" title="mysql8.0.11 winx64安装配置方法图文教程(win10)" target="_blank">mysql8.0.11 winx64安装配置方法图文教程(win10)</a></li><li><a href="/article/140944.htm" title="win10下mysql 8.0.11压缩版安装详细教程" target="_blank">win10下mysql 8.0.11压缩版安装详细教程</a></li><li><a href="/article/140943.htm" title="mysql8.0 windows x64 zip包安装配置教程" target="_blank">mysql8.0 windows x64 zip包安装配置教程</a></li><li><a href="/article/140940.htm" title="mysql 8.0.11压缩包版本安装教程" target="_blank">mysql 8.0.11压缩包版本安装教程</a></li><li><a href="/article/98270.htm" title="mysql 8.0 安装配置方法教程" target="_blank">mysql 8.0 安装配置方法教程</a></li><li><a href="/article/139247.htm" title="MySQL8.0.11安装总结教程图解" target="_blank">MySQL8.0.11安装总结教程图解</a></li><li><a href="/article/98284.htm" title="Centos6.4编译安装mysql 8.0.0 详细教程" target="_blank">Centos6.4编译安装mysql 8.0.0 详细教程</a></li><li><a href="/article/140952.htm" title="mysql 8.0 Windows zip包版本安装详细过程" target="_blank">mysql 8.0 Windows zip包版本安装详细过程</a></li></ul>
+</div>
+<div class="clearfix">
+<span id="art_bot" class="jbTestPos"></span>
+</div>
+        </div><!--endmain-->
+<div class="tags clearfix">
+	<i class="icon-tag"></i>
+	<ul class="meta-tags items">
+	  <li class="tag item"><a href="http://common.jb51.net/tag/mysql/1.htm" target="_blank" title="搜索关于mysql的文章" rel="nofollow">mysql</a></li>
+<li class="tag item"><a href="http://common.jb51.net/tag/winx64/1.htm" target="_blank" title="搜索关于winx64的文章" rel="nofollow">winx64</a></li>
+<li class="tag item"><a href="http://common.jb51.net/tag/zip/1.htm" target="_blank" title="搜索关于zip的文章" rel="nofollow">zip</a></li>
+<li class="tag item"><a href="http://common.jb51.net/tag/%E5%AE%89%E8%A3%85/1.htm" target="_blank" title="搜索关于安装的文章" rel="nofollow">安装</a></li>
+
+	</ul>
+</div>        
+
+<div class="lbd clearfix">
+<span id="art_down" class="jbTestPos"></span>
+</div>
+<div id="shoucang"></div>
+
+<div class="xgcomm clearfix">
+	<h2>相关文章</h2>
+	<ul><li class="lbd clearfix"><span id="art_xg" class="jbTestPos"></span></li><li><div class="item-inner"><a href="/article/136021.htm" title="浅谈MySQL的B树索引与索引优化小结" class="img-wrap" target="_blank"> <img alt="浅谈MySQL的B树索引与索引优化小结" src="//files.jb51.net/images/xgimg/bcimg0.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/136021.htm" title="浅谈MySQL的B树索引与索引优化小结">浅谈MySQL的B树索引与索引优化小结</a></p><div class="item-info"><div class="js">这篇文章主要介绍了浅谈MySQL的B树索引与索引优化小结，小编觉得挺不错的，现在分享给大家，也给大家做个参考。一起跟随小编过来看看吧</div><span class="lbtn" style="float:right"> 2018-03-03 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/34022.htm" title="MySql报错Table mysql.plugin doesn’t exist的解决方法" class="img-wrap" target="_blank"> <img alt="MySql报错Table mysql.plugin doesn’t exist的解决方法" src="//files.jb51.net/images/xgimg/bcimg1.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/34022.htm" title="MySql报错Table mysql.plugin doesn’t exist的解决方法">MySql报错Table mysql.plugin doesn’t exist的解决方法</a></p><div class="item-info"><div class="js">一般产生原因是手工更改my.ini的数据库文件存放地址导致的,大家可以参考下下面的方法</div><span class="lbtn" style="float:right"> 2013-02-02 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/71478.htm" title="如何设计高效合理的MySQL查询语句" class="img-wrap" target="_blank"> <img alt="如何设计高效合理的MySQL查询语句" src="//files.jb51.net/images/xgimg/bcimg2.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/71478.htm" title="如何设计高效合理的MySQL查询语句">如何设计高效合理的MySQL查询语句</a></p><div class="item-info"><div class="js">合理的MySQL查询语句可以让我们的MySQL数据库效率更高，那么如何设计高效合理的查询语句就成为了摆在我们面前的问题。</div><span class="lbtn" style="float:right"> 2015-08-08 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/65665.htm" title="通过MySQL优化Discuz!的热帖翻页的技巧" class="img-wrap" target="_blank"> <img alt="通过MySQL优化Discuz!的热帖翻页的技巧" src="//files.jb51.net/images/xgimg/bcimg3.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/65665.htm" title="通过MySQL优化Discuz!的热帖翻页的技巧">通过MySQL优化Discuz!的热帖翻页的技巧</a></p><div class="item-info"><div class="js">这篇文章主要介绍了通过MySQL优化Discuz!的热帖翻页的技巧,包括更新索引来降低服务器负载等方面,需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2015-05-05 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/103090.htm" title="mysql7.x单独安装mysql的方法" class="img-wrap" target="_blank"> <img alt="mysql7.x单独安装mysql的方法" src="//files.jb51.net/images/xgimg/bcimg4.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/103090.htm" title="mysql7.x单独安装mysql的方法">mysql7.x单独安装mysql的方法</a></p><div class="item-info"><div class="js">这篇文章主要介绍了mysql7.x单独安装mysql的方法，要解决这个问题，我们要先下载mysql的repo源，具体操作步骤大家通过本文学习吧</div><span class="lbtn" style="float:right"> 2017-01-01 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/51794.htm" title="mysql之TIMESTAMP（时间戳）用法详解" class="img-wrap" target="_blank"> <img alt="mysql之TIMESTAMP（时间戳）用法详解" src="//files.jb51.net/images/xgimg/bcimg5.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/51794.htm" title="mysql之TIMESTAMP（时间戳）用法详解">mysql之TIMESTAMP（时间戳）用法详解</a></p><div class="item-info"><div class="js">这篇文章主要介绍了mysql之TIMESTAMP（时间戳）用法,需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2014-07-07 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/112768.htm" title="MySQL分页分析原理及提高效率" class="img-wrap" target="_blank"> <img alt="MySQL分页分析原理及提高效率" src="//files.jb51.net/images/xgimg/bcimg6.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/112768.htm" title="MySQL分页分析原理及提高效率">MySQL分页分析原理及提高效率</a></p><div class="item-info"><div class="js">这篇文章主要介绍了MySQL分页分析原理及提高效率的相关资料,需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2017-05-05 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/93936.htm" title="Mysql中Identity 详细介绍" class="img-wrap" target="_blank"> <img alt="Mysql中Identity 详细介绍" src="//files.jb51.net/images/xgimg/bcimg7.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/93936.htm" title="Mysql中Identity 详细介绍">Mysql中Identity 详细介绍</a></p><div class="item-info"><div class="js">这篇文章主要介绍了Mysql中Identity 的相关资料,并附示例代码，需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2016-09-09 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/23265.htm" title="mysql 查看版本的方法图文演示" class="img-wrap" target="_blank"> <img alt="mysql 查看版本的方法图文演示" src="//files.jb51.net/images/xgimg/bcimg8.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/23265.htm" title="mysql 查看版本的方法图文演示">mysql 查看版本的方法图文演示</a></p><div class="item-info"><div class="js">今天打算升级下mysql数据库，可不知道现在的版本是多少，从网上找了一些资料，发现还是这些好用。</div><span class="lbtn" style="float:right"> 2010-04-04 </span></div></div></div></div></li>
+<li><div class="item-inner"><a href="/article/75080.htm" title="使用percona-toolkit操作MySQL的实用命令小结" class="img-wrap" target="_blank"> <img alt="使用percona-toolkit操作MySQL的实用命令小结" src="//files.jb51.net/images/xgimg/bcimg9.png"> </a><div class="rbox"><div class="rbox-inner"><p><a class="link title" target="_blank" href="/article/75080.htm" title="使用percona-toolkit操作MySQL的实用命令小结">使用percona-toolkit操作MySQL的实用命令小结</a></p><div class="item-info"><div class="js">这篇文章主要介绍了使用percona-toolkit操作MySQL的实用命令小结,percona-toolkit是一款强大的MySQL辅助工具软件,需要的朋友可以参考下</div><span class="lbtn" style="float:right"> 2015-11-11 </span></div></div></div></div></li>
+</ul>
+</div>
+<div class="lbd clearfix mt5">
+<span id="art_down2" class="jbTestPos"></span>
+</div>
+<a href="#comments"></a>
+<div id="comments">
+<H2>最新评论</H2>
+<div class="pd5"><div id="SOHUCS" sid="art_139219"></div></div>
+</div>
+      </div><!--endborder-->
+      </div><!--end fl-->
+      
+<div class="w350 fr">
+<div class="article-right">
+<div class="r300 clearfix"><span id="side_up" class="jbTestPos"></span></div>
+<DIV class="tabTitleBar mt10 bgf borderTblue">
+<DIV class="borderTnone pb10 YaHei">
+<H4 class="blue">大家感兴趣的内容</H4>
+<UL class="newsList newList-in">
+<li><EM class="no1">1</EM><a href="/article/23876.htm" title="mysql安装图解 mysql图文安装教程(详细说明)" target="_blank">mysql安装图解 mysql图文安装教程</a></li><li><EM class="no2">2</EM><a href="/article/26505.htm" title="Can''t connect to MySQL server on localhost (10061)解决方法" target="_blank">Can''t connect to MySQL server</a></li><li><EM class="no3">3</EM><a href="/article/39188.htm" title="windows下MySQL5.6版本安装及配置过程附有截图和详细说明" target="_blank">windows下MySQL5.6版本安装及配置</a></li><li><EM class="no4">4</EM><a href="/article/27458.htm" title="Mysql字符串截取函数SUBSTRING的用法说明" target="_blank">Mysql字符串截取函数SUBSTRING的</a></li><li><EM class="no5">5</EM><a href="/article/31850.htm" title="MySQL创建用户与授权方法" target="_blank">MySQL创建用户与授权方法</a></li><li><EM class="no6">6</EM><a href="/article/39454.htm" title="MySQL——修改root密码的4种方法(以windows为例)" target="_blank">MySQL——修改root密码的4种方法</a></li><li><EM class="no7">7</EM><a href="/article/23966.htm" title="MySQL日期数据类型、时间类型使用总结" target="_blank">MySQL日期数据类型、时间类型使用</a></li><li><EM class="no8">8</EM><a href="/article/28680.htm" title="MySQL 的CASE WHEN 语句使用说明" target="_blank">MySQL 的CASE WHEN 语句使用说明</a></li><li><EM class="no9">9</EM><a href="/article/53344.htm" title="mysql update语句的用法详解" target="_blank">mysql update语句的用法详解</a></li><li><EM class="no10">10</EM><a href="/article/48625.htm" title="MySQL提示:The server quit without updating PID file问题的解决办法" target="_blank">MySQL提示:The server quit with</a></li>
+</UL>
+</DIV>
+</DIV>
+<div class="r300 clearfix mt10"><span id="idctu" class="jbTestPos"></span></div>
+<DIV class="tabTitleBar mt10 bgf borderTblue">
+<DIV class="borderTnone pb10 YaHei">
+<H4 class="blue">最近更新的内容</H4>
+<UL class="newsListA">
+<li><a href="/article/35937.htm" title="跟着hsp一步步学mysql优化的方法" target="_blank">跟着hsp一步步学mysql优化的方法</a></li><li><a href="/article/47427.htm" title="101个MySQL优化技巧和提示" target="_blank">101个MySQL优化技巧和提示</a></li><li><a href="/article/30196.htm" title="在Windows主机上定时备份远程VPS(CentOS)数据的批处理" target="_blank">在Windows主机上定时备份远程VPS(CentOS)</a></li><li><a href="/article/66775.htm" title="详解MySQL中ALTER命令的使用" target="_blank">详解MySQL中ALTER命令的使用</a></li><li><a href="/article/24107.htm" title="mysql与mysqli的区别与用法说明" target="_blank">mysql与mysqli的区别与用法说明</a></li><li><a href="/article/27240.htm" title="Mysql 主从数据库同步(centos篇)" target="_blank">Mysql 主从数据库同步(centos篇)</a></li><li><a href="/article/30415.htm" title="mytop 使用介绍 mysql实时监控工具" target="_blank">mytop 使用介绍 mysql实时监控工具</a></li><li><a href="/article/110384.htm" title="MySQL通过触发器解决数据库中表的行数限制详解及实例" target="_blank">MySQL通过触发器解决数据库中表的行数限制</a></li><li><a href="/article/47843.htm" title="手动配置phpmyadmin和mysql密码的两种方案" target="_blank">手动配置phpmyadmin和mysql密码的两种方案</a></li><li><a href="/article/75085.htm" title="快速理解MySQL中主键与外键的实例教程" target="_blank">快速理解MySQL中主键与外键的实例教程</a></li>
+</UL>
+</DIV>
+</DIV>   
+<div class="r300 clearfix mt10"><span id="idctu1" class="jbTestPos"></span></div>
+<DIV class="tabTitleBar mt10 bgf borderTblue">
+<DIV class="borderTnone pb10 YaHei">
+<H4 class="blue">常用在线小工具</H4>
+<ul class="newsListA"><span id="bctools" class="jbTestPos"></span></ul>
+</DIV>
+</DIV>
+<div class="r300 clearfix mt10 mb10"><span id="idctu2" class="jbTestPos"></span></div> 
+<div class="rFixedBox">
+<script type="text/javascript">jb51_a_d("jb51xf");</script>
+</div>
+  </div>   
+      
+      </div><!--end fr-->
+      </div>
+</div><!--end content-->
+<div id="footer">
+<div class="main clearfix">
+<p>
+<a rel="nofollow" href="/about.htm" target="_blank">关于我们</a> - 
+<a rel="nofollow" href="/support.htm" target="_blank">广告合作</a> - 
+<a rel="nofollow" href="/linkus.htm" target="_blank">联系我们</a> -  
+<a rel="nofollow" href="/sm.htm" target="_blank">免责声明</a> -  
+<a rel="nofollow" href="/sitemap.htm" target="_blank">网站地图</a> - 
+<a rel="nofollow" href="tencent://message/?uin=461478385&Site=http://www.jb51.net" target="_blank">投诉建议</a> - 
+<a rel="nofollow" href="/up.htm" target="_blank">在线投稿</a>
+</p>
+<p><a rel="nofollow" class="ba" target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=32031102000137"><img src="https://www.beian.gov.cn/file/ghs.png"/> 苏公网安备 32031102000137号</a>&nbsp;&nbsp;<a href="http://www.miibeian.gov.cn" class="ba" rel="nofollow" target="_blank">苏ICP备14036222号</a></p>
+<p>&copy;CopyRight 2006-2018 JB51.Net Inc All Rights Reserved. 脚本之家 版权所有</p>
+</div>
+</div><!--end footer-->
+<link type="text/css" rel="stylesheet" href="/jslib/syntaxhighlighter/styles/shCore.css" />
+<link type="text/css" rel="Stylesheet" href="/jslib/syntaxhighlighter/styles/shThemeDefault.css" />
+<script type="text/javascript" src="/jslib/syntaxhighlighter/scripts/shCore.js"></script>
+<script type="text/javascript" src="/jslib/syntaxhighlighter/scripts/shAutoloader.js"></script>
+<script type="text/javascript">
+(function(){
+	var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+/*更多导航*/
+$(".nav_top p").hover(function(){$(this).addClass("hover")},function(){$(this).removeClass("hover")});
+
+if (top.location != self.location)top.location=self.location;
+
+var varwindow=$(window);
+$(function(){
+	$('#content').find('img').each(function(){
+        var img = this;
+        if (img.width >= 650){
+            img.style.width = "650px";
+            img.style.height = "auto";
+            //$(img).removeAttr('height');
+            var aTag = document.createElement('a');
+            aTag.href = img.src;
+			aTag.target="_blank";
+            $(aTag).addClass('bPic')
+            .insertAfter(img).append(img)
+          }
+    });
+	varwindow.scroll(function()
+    {	
+    	//rFixedBox跟随滚动
+    	var h = varwindow.height();
+        var top = varwindow.scrollTop();
+    	var rFixedBox = $('.rFixedBox').prev().offset();
+        var fixedTop = rFixedBox.top;
+		
+        if(top>=fixedTop+344)
+        {
+			var h1 = parseInt($('#content').children('.main').height());
+			if(parseInt(top) + 340 < h1){
+				$('.rFixedBox').css({'position':'fixed','top': 0});
+			}else{
+				$('.rFixedBox').css({'position':'absolute','top': h1-510});
+			}
+        }
+        else
+        {
+            $('.rFixedBox').css({'position':'static', 'top':0});   
+        }	
+       /* return true;*/
+	   
+	   /*右侧快捷菜单*/
+	   sideFixed();
+    });
+	var ww = varwindow.width();
+	
+	function sideFixed(){
+	var scrolltop = document.body.scrollTop || document.documentElement.scrollTop;
+	var a1 = 550;
+	if(ww>440){
+		if(a1<=scrolltop){
+			$('#right-share').slideDown();
+			}
+		else{
+			$('#right-share').slideUp();
+			}
+		}
+	}
+	$('.rshare-weixin').hover(function(){
+			$('#weixin-code').removeClass('hide');
+		},function(){
+			$('#weixin-code').addClass('hide');
+		});
+	/*二维码*/
+	$('#right-share .rshare-top').on('click',function(){
+        $('html,body').animate({'scrollTop':0},500);
+    });
+/*$(document).ready(function() {
+  $("#content img").unveil();
+});	*/
+
+if(suoyin=="ok"){
+	GenerateContentList();
+}
+
+SyntaxHighlighter.autoloader(
+	'applescript			/jslib/syntaxhighlighter/scripts/shBrushAppleScript.js',
+	'actionscript3 as3		/jslib/syntaxhighlighter/scripts/shBrushAS3.js',
+	'bash shell				/jslib/syntaxhighlighter/scripts/shBrushBash.js',
+	'coldfusion cf			/jslib/syntaxhighlighter/scripts/shBrushColdFusion.js',
+	'cpp c					/jslib/syntaxhighlighter/scripts/shBrushCpp.js',
+	'obj-c objc				/jslib/syntaxhighlighter/scripts/shBrushObjC.js',
+	'c# c-sharp csharp		/jslib/syntaxhighlighter/scripts/shBrushCSharp.js',
+	'css					/jslib/syntaxhighlighter/scripts/shBrushCss.js',
+	'delphi pascal			/jslib/syntaxhighlighter/scripts/shBrushDelphi.js',
+	'diff patch pas			/jslib/syntaxhighlighter/scripts/shBrushDiff.js',
+	'erl erlang				/jslib/syntaxhighlighter/scripts/shBrushErlang.js',
+	'groovy					/jslib/syntaxhighlighter/scripts/shBrushGroovy.js',
+	'haxe hx				/jslib/syntaxhighlighter/scripts/shBrushHaxe.js',
+	'java					/jslib/syntaxhighlighter/scripts/shBrushJava.js',
+	'jfx javafx				/jslib/syntaxhighlighter/scripts/shBrushJavaFX.js',
+	'js jscript javascript	/jslib/syntaxhighlighter/scripts/shBrushJScript.js',
+	'perl pl				/jslib/syntaxhighlighter/scripts/shBrushPerl.js',
+	'php					/jslib/syntaxhighlighter/scripts/shBrushPhp.js',
+	'text plain				/jslib/syntaxhighlighter/scripts/shBrushPlain.js',
+	'py python				/jslib/syntaxhighlighter/scripts/shBrushPython.js',
+	'ruby rails ror rb		/jslib/syntaxhighlighter/scripts/shBrushRuby.js',
+	'scala					/jslib/syntaxhighlighter/scripts/shBrushScala.js',
+	'sql					/jslib/syntaxhighlighter/scripts/shBrushSql.js',
+	'vb vbnet				/jslib/syntaxhighlighter/scripts/shBrushVb.js',
+	'ps powershell			/jslib/syntaxhighlighter/scripts/shBrushPowerShell.js',
+	'xml xhtml xslt html	/jslib/syntaxhighlighter/scripts/shBrushXml.js'
+);
+SyntaxHighlighter.all();
+});
+var ourl="https://www.cnblogs.com/xiongzaiqiren/archive/2018/04/29/8970203.html";
+</script>
+<script type="text/javascript" src='//icws.jb51.net/good/arcts.js'></script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<script>jbLoader();</script><script class="closetag">jbLoader(true);</script>
+<div id="tongji">
+<script type="text/javascript" src="//icws.jb51.net/tongji/tongji.js"></script>
+</div>
+<script type="text/javascript">
+//tu+
+var cpro_id = "u1893014";
+document.write('<scri'+'pt src="//cpro.baidustatic.com/cpro/ui/i.js" type="text/javascript"></s'+'cript>');
+(function(){
+var src = (document.location.protocol == "http:") ? "http://js.passport.qihucdn.com/11.0.1.js?2f793ca9dd6f4c32488903eed5c7fbcb":"https://jspassport.ssl.qhimg.com/11.0.1.js?2f793ca9dd6f4c32488903eed5c7fbcb";
+document.write('<script src="' + src + '" id="sozz"><\/script>');
+})();
+</script> 
+<script type="text/javascript" src="//www.jb51.net/pl.asp?id=139219"></script>
+<script type="application/ld+json">
+        {
+            "@context": "https://ziyuan.baidu.com/contexts/cambrian.jsonld",
+            "@id": "https://www.jb51.net/article/139219.htm",
+            "appid": "1549322409310619",
+            "title": "mysql-8.0.11-winx64.zip安装教程详解",
+            "description": "这篇文章主要介绍了mysql-8.0.11-winx64.zip安装教程详解及注意事项，非常不错，具有参考借鉴价值，需要的朋友参考下",
+            "pubDate": "2018-05-01T11:56:13",
+			"upDate": "2018-05-01T11:56:13"
+        }
+</script>
+</body>
+</html>
+<!-- published at 2018/6/11 0:18:19By dxycms qq:461478385  -->
