@@ -1,4 +1,4 @@
-1、下载erlang：http://www.erlang.org，获取exe安装包，直接点击安装
+﻿1、下载erlang：http://www.erlang.org，获取exe安装包，直接点击安装  otp_win64_21.0.1
 2、下载RabbitMQ：http://www.rabbitmq.com，获取exe安装包，直接点击安装
 3、配置环境变量：RABBIT_HOME=/PATH/TO/sbin
 
