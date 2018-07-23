@@ -1,0 +1,16 @@
+touch Dockerfile
+
+vim Dockerfile
+
+FROM alpine:latest
+MAINTAINER xbf
+CMD echo "hello docker!"
+
+docker build -t hello_docker .
+
+docker runn hello_docker
+
+docker images 
+
+----------------------
+
