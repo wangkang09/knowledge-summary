@@ -1,0 +1,2 @@
+多版本并发控制Multi-Version Concurrency Control (MVCC). 有人说它比最终一致简单。  
+其他隔离层，比如READ COMMITTED是坏的，因为它们并不能保护你免于底层实现的复杂性，而且它们不允许你有一个真正ACID实现，一个真正ACID实现四个级别属性：原子性Atomicity 一致性Consistency 隔离性Isolation和持久性Durability。
