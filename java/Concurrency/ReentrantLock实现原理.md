@@ -25,6 +25,7 @@
 * 其中最常用的是 lock 和 unlock
 * 因为需要手动释放锁，最好使用try..catch，并在finally块中释放锁，这样即使异常，也能成功释放锁，**所以可以interrupt**
 
+---
 ### 2 AQS ###
 * AbstractQueuedSynchronizer简称AQS，是一个用于构建锁和同步容器的框架
 * AQS解决了在实现同步容器时设计的大量细节问题
@@ -44,7 +45,7 @@
 	* 这个类只有一个变量：exclusiveOwnerThread
 	* 表示当前占用该锁的线程，并且提供了相应的get，set方法
 
-
+---
 ### 3 lock()与unlock()实现原理 ###
 
 #### 3.1 基础知识 ####
@@ -86,7 +87,7 @@
 	* 如果是0则把它置1
 	* 并且设置当前线程为该锁的独占线程
 
-* 非公平性体现在：如果占用锁的线程刚释放，state置0，而排队等待的线程还**未唤醒**时，新来的线程就直接抢占了该锁  
+* <font color=red>非公平性体现在</font>：如果占用锁的线程刚释放，state置0，而排队等待的线程还**未唤醒**时，新来的线程就直接抢占了该锁  
 
 ---
     public final void acquire(int arg) {
@@ -101,7 +102,7 @@
 * **如果有一个线程一直占有，其他线程基本上都被挂起**
 * 点击查看[acquire 内部逻辑详情][1]
 
-#### 3.3 NonfairSync UnLock####
+#### 3.4 NonfairSync UnLock####
     public void unlock() {
     	sync.release(1);
     }
@@ -150,7 +151,97 @@
 	* 若为0，表示已经成功释放，清空独占线程，返回true
 	* 若没有彻底释放，返回false
 
-![ReentrantLock非公平锁获取流程](https://raw.githubusercontent.com/wangkang09/shein-note/master/java/Concurrency/img/AQS_Queue.png "ReentrantLock非公平锁获取流程")
+![ReentrantLock非公平锁获取流程](https://raw.githubusercontent.com/wangkang09/shein-note/master/java/Concurrency/img/ReentrantLock%E9%9D%9E%E5%85%AC%E5%B9%B3%E9%94%81%E8%8E%B7%E5%8F%96%E6%B5%81%E7%A8%8B.png "ReentrantLock非公平锁获取流程")  
 
+---
+#### 3.5 FairSync####
+* 和非公平锁的差别：仅仅是**不去检查state状态**
 
-[1]:D:\github\repository\shein-note\distributedSystem\CAS.md
+        final void lock() {
+            acquire(1);
+        }
+
+---
+### 4 超时机制 ###
+
+* tryLock(long timeout, TimeUnit unit) 提供了超时获取锁的功能
+* 如果在指定的时间内获取到锁，就返回true，否则，返回false
+* tryLock使用的都是非公平锁，即使定义的是公平锁
+
+---
+
+    public boolean tryLock(long timeout, TimeUnit unit)
+    throws InterruptedException {
+    	return sync.tryAcquireNanos(1, unit.toNanos(timeout));
+    }
+
+    public final boolean tryAcquireNanos(int arg, long nanosTimeout)
+    throws InterruptedException {
+    	if (Thread.interrupted())
+	    	throw new InterruptedException();
+	    	return tryAcquire(arg) ||
+	    		doAcquireNanos(arg, nanosTimeout);
+    }
+
+* 如果线程被中断，直接抛异常
+* 未中断，获取锁
+	* 成功，直接返回
+	* 失败，进入doAcquireNanos
+
+---
+    /**
+     * 在有限的时间内去竞争锁
+     * @return 是否获取成功
+     */
+    private boolean doAcquireNanos(int arg, long nanosTimeout)
+    throws InterruptedException {
+	    // 起始时间
+	    long lastTime = System.nanoTime();
+	    // 线程入队
+	    final Node node = addWaiter(Node.EXCLUSIVE);
+	    boolean failed = true;
+	    try {
+		    // 又是自旋!
+		    for (;;) {
+			    // 获取前驱节点
+			    final Node p = node.predecessor();
+			    // 如果前驱是头节点并且占用锁成功,则将当前节点变成头结点
+			    if (p == head && tryAcquire(arg)) {
+				    setHead(node);
+				    p.next = null; // help GC
+				    failed = false;
+				    return true;
+			    }
+			    // 如果已经超时,返回false
+			    if (nanosTimeout <= 0)
+			    	return false;
+			    // 超时时间未到,且需要挂起
+			    if (shouldParkAfterFailedAcquire(p, node) &&
+			    	nanosTimeout > spinForTimeoutThreshold)
+				    // 阻塞当前线程直到超时时间到期
+				    LockSupport.parkNanos(this, nanosTimeout);
+			    long now = System.nanoTime();
+			    // 更新nanosTimeout
+			    nanosTimeout -= now - lastTime;
+			    lastTime = now;
+			    if (Thread.interrupted())
+				    //相应中断
+				    throw new InterruptedException();
+		    }
+	    } finally {
+	    if (failed)
+	    cancelAcquire(node);
+	    }
+    }
+
+* 线程先入队列，然后自旋，尝试获取锁
+	* 成功，则返回
+	* 失败，则在队列里找一个安全点，把自己挂起，直到超时
+* 循环原因
+	* 当前线程节点的前驱节点可能不是SIGNAL
+	* 那么在这一轮循环中线程不会被挂起，然后更新时间，开始新一轮的尝试
+
+### 总结 ###
+**理解AQS，就很容易理解ReentrantLock的实现原理**
+
+[1]:https://github.com/wangkang09/shein-note/blob/master/java/Concurrency/acquires%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91.md
