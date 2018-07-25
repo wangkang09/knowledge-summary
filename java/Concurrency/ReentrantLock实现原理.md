@@ -35,9 +35,9 @@
 ![AQS队列](https://raw.githubusercontent.com/wangkang09/shein-note/master/java/Concurrency/img/AQS_Queue.png "AQS队列")
 
 * AQS中还有一个表示状态的字段state
-	* ReentrantLocky用它表示线程重入锁的次数
-	* Semaphore用它表示剩余的许可数量
-	* FutureTask用它表示任务的状态
+	* ReentrantLocky用它表示线程**重入锁的次数**
+	* Semaphore用它表示剩余的**许可数量**
+	* FutureTask用它表示**任务的状态**
 	* 对state变量值的更新都采用CAS操作保证更新操作的原子性
 
 * AbstractQueuedSynchronizer继承了AbstractOwnableSynchronizer
@@ -73,7 +73,7 @@
 * 默认的是非公平锁
 * 可以指定成公平锁
 
-#### 3.3 NonfairSync ####
+#### 3.3 NonfairSync Lock####
     final void lock() {
     	if (compareAndSetState(0, 1))
     		setExclusiveOwnerThread(Thread.currentThread());
@@ -98,14 +98,59 @@
 * **尝试获取锁**(tryAcquire)。如果成功直接返回
 * **入队**(addWaiter)。由于上文中提到线程A已经占用了锁，所以B和C执行tryAcquire失败，并且入等待队列。如果线程A拿着锁死死不放，那么B和C就会被挂起。
 * **挂起**(acquireQueued)。B和C相继执行acquireQueued(final Node node, int arg)。这个方法让已经入队的线程尝试获取锁，若失败则会被挂起。
+* **如果有一个线程一直占有，其他线程基本上都被挂起**
 * 点击查看[acquire 内部逻辑详情][1]
 
+#### 3.3 NonfairSync UnLock####
+    public void unlock() {
+    	sync.release(1);
+    }
+      
+    public final boolean release(int arg) {
+	    if (tryRelease(arg)) {
+		    Node h = head;
+		    if (h != null && h.waitStatus != 0)
+		    	unparkSuccessor(h);
+		    return true;
+	    }
+	    return false;
+    }
 
+* 先尝试释放锁
+	* 若成功，查看头节点的状态是否是SIGNAL
+		* 如果是，唤醒头结点的下一个节点关联的线程
+	* 若失败，返回false，解锁失败
 
+---
+    /**
+     * 释放当前线程占用的锁
+     * @param releases
+     * @return 是否释放成功
+     */
+    protected final boolean tryRelease(int releases) {
+	    // 计算释放后state值
+	    int c = getState() - releases;
+	    // 如果不是当前线程占用锁,那么抛出异常
+	    if (Thread.currentThread() != getExclusiveOwnerThread())
+	    	throw new IllegalMonitorStateException();
+	    boolean free = false;
+	    if (c == 0) {
+		    // 锁被重入次数为0,表示释放成功
+		    free = true;
+		    // 清空独占线程
+		    setExclusiveOwnerThread(null);
+	    }
+	    // 更新state值
+	    setState(c);
+	    return free;
+    }
 
+* 当前线程若不持有锁，抛出异常
+* 若持有，计算释放后的state值
+	* 若为0，表示已经成功释放，清空独占线程，返回true
+	* 若没有彻底释放，返回false
 
-
-
+![ReentrantLock非公平锁获取流程](https://raw.githubusercontent.com/wangkang09/shein-note/master/java/Concurrency/img/AQS_Queue.png "ReentrantLock非公平锁获取流程")
 
 
 [1]:D:\github\repository\shein-note\distributedSystem\CAS.md
