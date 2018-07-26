@@ -33,7 +33,7 @@
 * **AQS使用一个FIFO的队列表示排队等待锁的线程**
 * 队列头节点称作“哨兵节点”或者“哑节点”，它**不与任何线程关联**
 * 其他的节点与等待线程关联，**每个节点维护一个等待状态**waitStatus
-![AQS队列](https://raw.githubusercontent.com/wangkang09/shein-note/master/java/Concurrency/img/AQS_Queue.png "AQS队列")
+![AQS队列](https://raw.githubusercontent.com/wangkang09/knowledge-summary/master/java/Concurrency/img/AQS_Queue.png "AQS队列")
 
 * AQS中还有一个表示状态的字段state
 	* ReentrantLocky用它表示线程**重入锁的次数**
@@ -151,7 +151,7 @@
 	* 若为0，表示已经成功释放，清空独占线程，返回true
 	* 若没有彻底释放，返回false
 
-![ReentrantLock非公平锁获取流程](https://raw.githubusercontent.com/wangkang09/shein-note/master/java/Concurrency/img/ReentrantLock%E9%9D%9E%E5%85%AC%E5%B9%B3%E9%94%81%E8%8E%B7%E5%8F%96%E6%B5%81%E7%A8%8B.png "ReentrantLock非公平锁获取流程")  
+![ReentrantLock非公平锁获取流程](https://raw.githubusercontent.com/wangkang09/knowledge-summary/master/java/Concurrency/img/ReentrantLock%E9%9D%9E%E5%85%AC%E5%B9%B3%E9%94%81%E8%8E%B7%E5%8F%96%E6%B5%81%E7%A8%8B.png "ReentrantLock非公平锁获取流程")  
 
 ---
 #### 3.5 FairSync####
@@ -244,4 +244,4 @@
 ### 总结 ###
 **理解AQS，就很容易理解ReentrantLock的实现原理**
 
-[1]:https://github.com/wangkang09/shein-note/blob/master/java/Concurrency/acquires%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91.md
+[1]:https://github.com/wangkang09/knowledge-summary/blob/master/java/Concurrency/acquires%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91.md

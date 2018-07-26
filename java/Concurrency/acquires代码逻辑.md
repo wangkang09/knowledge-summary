@@ -79,7 +79,7 @@
 	    }
     }
 
-![CAS队列操作](https://raw.githubusercontent.com/wangkang09/shein-note/master/distributedSystem/img/CAS%E9%98%9F%E5%88%97%E6%93%8D%E4%BD%9C.png "CAS队列操作")
+![CAS队列操作](https://raw.githubusercontent.com/wangkang09/knowledge-summary/master/distributedSystem/img/CAS%E9%98%9F%E5%88%97%E6%93%8D%E4%BD%9C.png "CAS队列操作")
 
 * 经典的**自旋+CAS组合**来实现非阻塞的原子操作
 * 当有多个线程都已经取到tail后
