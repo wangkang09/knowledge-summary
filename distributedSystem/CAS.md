@@ -5,3 +5,26 @@
 为数据的每次修改保存一个用时间戳标记的版本，数据读取不需要加锁，而是在读取事务开始的时候获取当前时间戳(snapshot)，对于每条数据，将版本号小于snapshot的最大已提交版本的内容作为读取结果返回。
 
 * CAS 操作包含三个操作数 —— 内存位置（V）、预期原值（A）和新值(B)。如果内存位置的值与预期原值相匹配，那么处理器会自动将该位置值更新为新值。否则，处理器不做任何操作。无论哪种情况，它都会在 CAS 指令之前返回该位置的值。
+
+## CAS小技巧 ##
+CAS操作通常在循环中执行，一次CAS执行失败后，要重新准备新的compare参数和assign参数。比如原子修改栈顶：
+
+    Node *old_v = top;
+    
+    node→next = old_v;
+    
+    while (old_v != CAS(&top, old_v, node)) {
+    
+    	old_v = top;
+    
+    	node→next = old_v;
+    
+    }
+
+CAS(&top,old_v,node)  
+
+* &top是内存位置，old_V是预期的内存位置的值，node是新值
+* 如果top=old_V，则将top=node
+* 无论是否成功，返回的都是top(即top的值)
+* 所以当，top的值改变时，old_v肯定不等于top的值，不考虑(ABA)
+
