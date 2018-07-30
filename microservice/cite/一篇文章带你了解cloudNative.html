@@ -1,0 +1,1592 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://blog.csdn.net/u011537073/article/details/72360966"/> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="referrer" content="always">
+    <meta name="description" content="背景 
+Cloud Native表面看起来比较容易理解，但是细思好像又有些模糊不清：Cloud Native和Cloud关系是啥？它用来解决什么问题？它是一个新技术还是一个新的方法？什么样的APP符合“云原生”的呢？等等。下面将会一一解读。
+
+Cloud Native介绍 
+Cloud Native是Matt Stine提出的一个概念，它是一个思想的集合，包括DevOps、持续交付（Con" />
+    <meta name="keywords" content="cloud,native" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <script src="https://csdnimg.cn/release/phoenix/vendor/tingyun/tingyun-rum-blog.js"></script>
+
+    <link href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+    <title>一篇文章带你了解Cloud Native - CSDN博客</title>
+    
+            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/detail-dca188fc81.min.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/themes/skin3-template/skin3-template-8a84d6f79d.min.css">
+
+    <script type="text/javascript">
+        var username = "u011537073";
+        var blog_address = "https://blog.csdn.net/u011537073";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = ""; 
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/u011537073/article/details/72360966"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin3-template";
+    </script>
+    <script type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </script>
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="https://csdnimg.cn/rabbit/exposure-click/main-1.0.6.js"></script>
+    <!-- 新版上报 -->
+    <script src="//g.csdnimg.cn/track/1.0.1/track.js" type="text/javascript"></script>
+    <!-- 新版上报end -->
+            <link rel="stylesheet" href="https://csdnimg.cn/public/sandalstrap/1.3/css/sandalstrap.min.css"> 
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+</head>
+<body>    
+    <link rel="stylesheet" href="https://csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css">
+    <script id="toolbar-tpl-scriptId" src="https://csdnimg.cn/public/common/toolbar/js/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></script>
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/blog_code-c3a0c33d5c.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.css">
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/chart-3456820cac.css" />
+
+
+<header>
+	<div class="container d-flex clearfix">
+		<div class="title-box">
+			<h1 class="title-blog">
+				<a href="https://blog.csdn.net/u011537073">Larry的博客</a>
+			</h1>
+			<p class="description"></p>
+		</div>
+		<div class="opt-box d-flex justify-content-end">
+			<a class="btn btn-sm" href="https://blog.csdn.net/u011537073/rss/list">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#csdnc-rss"></use>
+					</svg>RSS订阅</a>
+					</div>
+	</div>
+</header><script src="https://dup.baidustatic.com/js/ds.js"></script>
+<div class="container clearfix pt0" id="mainBox">
+    <main>
+        <div class="blog-content-box">
+	<div class="article-title-box">
+			<span class="article-type type-2 float-left">转</span>		<h1 class="title-article">一篇文章带你了解Cloud Native</h1>
+	</div>
+	<div class="article-info-box">
+		<div class="article-bar-top d-flex">
+												<span class="time">2017年05月17日 11:11:49</span>
+			<div class="float-right">
+				<span class="read-count">阅读数：5569</span>
+											</div>
+		</div>
+	</div>
+	<article>
+		<div id="article_content" class="article_content clearfix csdn-tracking-statistics" data-pid="blog"  data-mod=popu_307  data-dsm = "post" >
+                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-e2445db1a8.css" />
+						<div class="htmledit_views">
+                
+<h3 id="articleHeader0">背景 </h3>
+Cloud Native表面看起来比较容易理解，但是细思好像又有些模糊不清：Cloud Native和Cloud关系是啥？它用来解决什么问题？它是一个新技术还是一个新的方法？什么样的APP符合“云原生”的呢？等等。下面将会一一解读。
+<br /><h3 id="articleHeader1">Cloud Native介绍 </h3>
+Cloud Native是Matt Stine提出的一个概念，它是一个思想的集合，包括DevOps、持续交付（Continuous Delivery）、微服务（MicroServices）、敏捷基础设施（Agile Infrastructure）、康威定律（Conways Law）等，以及根据商业能力对公司进行重组。
+<br /><br />
+可以说，Cloud Native即包含技术（微服务，敏捷基础设施），也包含管理（DevOps，持续交付，康威定律，重组等）。Cloud Native也可以说是一系列Cloud技术、企业管理方法的集合。
+<br /><h3 id="articleHeader2">Cloud Native的价值 </h3>
+企业采用基于Cloud Native的技术和管理方法，可以更好的把业务迁移到云平台，从而享受云的高效和按需资源能力。 <br /><h3 id="articleHeader3">Cloud Native和传统Cloud的关系 </h3>
+Cloud Native的技术部分是建筑在传统Cloud的三层（IaaS、PaaS、SaaS）概念之上的： <br /><ul><li>敏捷基础设施对应IaaS部分。 </li><li>微服务则可以对应PaaS和SaaS部分。 </li></ul><br />
+当然，Cloud Native比传统Cloud 多了一些企业管理方法。 <br /><br /><blockquote>备注：Cloud Native从技术上更强调敏捷基础设施和微服务的概念，这并不意味着它是抛开IaaS、PaaS、SaaS而另起炉灶的。 </blockquote>
+<div><a href="http://dockerone.com/uploads/article/20151111/1d0cb7b7b54582167345bc4e42670b0b.png" rel="nofollow"><img title="01.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211228_676.png" /></a>
+</div>
+<br /><br /><h3 id="articleHeader4">Cloud Native的五个层面： </h3>
+（1） <strong>康威定律</strong>：业务云化推行，从某种意义上讲也是一种变革。既然是变革，必然会涉及组织的各个层面，开发、质量、运维等等都会涉及。康威定律则准确的描述了系统架构和组织的关系：组织决定系统架构！
+<br /><br />
+一个云系统最终长成什么样子，则完全是企业的组织结构决定的，是组织内部、组织之间的沟通结构。 <br /><br />
+如果要想得到一个合理的Cloud架构，仅从技术入手是不够的，还需要从组织架构入手，才真正有效。 <br /><div><a href="http://dockerone.com/uploads/article/20151111/222fe64965b44761ff030b897b23411a.png" rel="nofollow"><img title="02.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211228_926.png" /></a>
+</div>
+<br />
+（2） <strong>DevOps</strong>：（英文Development和Operations的组合）是一组过程、方法与系统的统称，用 于促进开发（应用程序/软件工程）、运维和质量保障（QA）部门之间的沟通、协作与整合。它的出现是由于软件行业日益清晰地认识到：为了按时交付软件产品 和服务，开发和运维必须紧密合作。
+<br /><br />
+（3） <strong>持续交付（Continuous Delivery）</strong>：是一系列的开发实践方法，用来确保让代码能够快 速、安全的部署到产品环境中，它通过将每一次改动都提交到一个模拟产品环境中，使用严格的自动化测试，确保业务应用和服务能符合预期。因为使用完全的自动 化过程来把每个变更自动的提交到测试环境中，所以当业务开发完成时，你有信心只需要按一次按钮就能将应用安全的部署到产品环境中。持续交付可以采 用：CI（持续集成）、代码检查、UT（单元测试），持续部署等方式，打通开发、测试、生产的各个环节，持续的增量的交付产品。
+<br /><br />
+（4） <strong>微服务（MicroServices）</strong>：微服务首先是一个服务，其次该服务的颗粒比较小。微服务可以采用Docker、LXC等技术手段实现。
+<br /><br />
+（5） <strong>敏捷基础设施（Agile Infrastructure）</strong>：提供弹性、按需的计算、存储、网络资源能力。可以通过Openstack、KVM、Ceph、OVS等技术手段实现。
+<br /><h3 id="articleHeader5">Cloud Native兴起的背后诉求 </h3>
+<ul><li>更快的上线速度 </li><li>细致的故障探测和发现 </li><li>故障时能自动隔离 </li><li>故障时能够自动恢复 </li><li>方便的水平扩容 </li></ul><br /><h3 id="articleHeader6">Cloud Native可以解决上面的诉求： </h3>
+<ul><li>持续交付、DevOps、微服务解决--&gt;更快的上线速度 </li><li>微服务解决--&gt;细致的故障探测和发现 </li><li>微服务解决--&gt;故障时能自动隔离 </li><li>敏捷基础设施、微服务解决--&gt;故障时能够自动恢复 </li><li>敏捷基础设施、微服务解决--&gt;方便的水平扩容 </li></ul><br /><h3 id="articleHeader7">如何推行Cloud Native </h3>
+推行Cloud Native可以从如下几方面入手： <br /><ul><li>组织变革：根据康威定律，如果要达到比较理想的云化效果，必须进行组织变革。一个合理的组织架构，将会极大提高云化的推行。相信很多公司，在决定搞云计算后，都大大小小进行了部门合并和组织结构调整。这块水比较深，相信很多人有变革的切肤之痛。
+</li><li>推行DevOps文化：在公司层面推行DevOps文化，倡导开放、合作的组织文化，打破“部门墙”。 </li><li>推行持续交付：联合开发、质量、运维各个环节，打通代码提交、代码检查、UT、开发环境部署、staging环境部署、线上环境部署等流水线。 </li><li>建设敏捷基础设施：这部分是整个Cloud Native的根基。这部分可以采纳的技术非常多，开源的、商用的都比较多。 </li><li>采用微服务架构：微服务架构是Cloud Native的一个核心要素。微服务包含几方面的内容： （1）有支撑微服务的平台。<br />
+（2）有符合微服务平台规范的APP。<br />
+（3）如何引入微服务。<br />
+（4）微服务核心技术点。 </li></ul><br /><h3 id="articleHeader8">微服务的4个方面 </h3>
+<h4>（1）有支撑微服务的平台 </h4>
+支撑微服务的可选技术框架比较多，每个公司都可以根据自身情况选择合适的技术框架。比如： <br /><ul><li>Kubernetes </li><li>Mesos+Docker </li><li>OpenShift V3 </li><li>Machine + Swarm + Compose </li><li>OpenStack + Docker </li><li>Cloud Foundry Lattice 其他技术等等 </li></ul><br />
+这方面的资料非常多，不再细讲。 <br /><br /><h4>（2）有符合微服务平台规范的APP </h4>
+APP要符合12因子（Twelve-Factor）的规范： <br /><ul><li>基准代码（Codebase）：代码必须纳入配置库统一管理。 </li><li>依赖（Dependencies）：显式的声明对其他服务的依赖，比如通过Maven、Bundler、NPM等。 </li><li>配置（Config）：对于不同环境（开发/staging/生产等）的参数配置，是通过环境变量的方式进行注入。 </li><li>后台服务（Backing services）：对于DB、缓存等后台服务，是作为附加资源，可以独立的Bind/Unbind。 </li><li>编译/发布/运行（Build、Release、Run）：Build、Release、Run这三个阶段要清晰的定义和分开。 </li><li>无状态进程（Processes）：App的进程是无状态的，任何状态信息都存储到Backing services（DB，缓存等）。 </li><li>端口绑定（Port binding）：App是自包含的，所有对外服务通过Port Binding暴露，比如通过Http。 </li><li>并发（Concurrency）：App可以水平的Scaling。 </li><li>快速启动终止（Disposability）：App进程可以被安全的、快速的关闭和重启。 </li><li>环境一致性（Dev/prod parity）：尽可能的保持开发、staging、线上环境的一致性。 </li><li>日志（Logs）：把日志作为事件流，不管理日志文件，通过一个集中的服务，由执行环境去收集、聚合、索引、分析日志事件。 </li></ul><br /><h4>（3）如何引入微服务 </h4>
+直接对原有系统进行微服务改造，是比较困难的，几乎是不现实的。比较合理的方法是新系统采用微服务开发，对老系统进行服务封装，系统架构如下所示： <br /><div><a href="http://dockerone.com/uploads/article/20151111/d8d1d94734b57c3a92c135a130134996.png" rel="nofollow"><img title="03.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211229_292.png" /></a>
+</div>
+<br />
+Monolith系统：对应企业老的系统。 <br /><br />
+The Anti-Corruption Layer：反腐层，这层完成对老系统的桥接，并阻止老系统的腐烂蔓延。它包含三部分： <br /><ol><li>Facade：简化对老系统接口的对接。 </li><li>Adapter：Request，Response 请求协议适配 </li><li>Translator：领域模型适配，转换微服务模型和老系统模型。 </li></ol><br />
+新系统（微服务）：新系统开发采用微服务架构。 <br /><h4>（4）微服务核心技术点 </h4>
+主要包含如下几个方面：版本控制的分布式配置中心、服务注册和发现、路由和LB、容错、API网关/边缘服务。 <br /><h5>（4.1）版本控制的分布式配置中心 </h5>
+支持配置信息版本化控制，可审计，安全，配置更新不需要重启，分布式。这部分可以参考Spring Cloud Config Server、Spring Cloud Bus。
+<br /><div><a href="http://dockerone.com/uploads/article/20151111/f6475377da327e17f58822bdc24690f6.png" rel="nofollow"><img title="04.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211229_937.png" /></a>
+</div>
+<br />
+1：用户提交配置更新 <br />
+2：配置server更新 <br />
+3：对APP A发起Refresh更新配置操作 <br />
+4a：发送消息到Bus <br />
+4b：Pull 更新的配置 <br />
+5a：APP C接收消息 <br />
+5b：Pull更新的配置 <br />
+6：其他节点同步更新 <br /><h5>（4.2）服务注册和发现 </h5>
+<div><a href="http://dockerone.com/uploads/article/20151111/763a5b502eeb82de6125b162b2d46220.png" rel="nofollow"><img title="05.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211229_193.png" /></a>
+</div>
+<br />
+这个是传统的服务注册和发现架构图。服务注册方式，常见的包括DNS，基于ZooKeeper的服务注册方案等等。 <br /><br /><blockquote>备注：Consumer和Producer之间一般还有个LB。 </blockquote>
+<h5>（4.3）路由和LB </h5>
+<div><a href="http://dockerone.com/uploads/article/20151111/a88e7819519775c2c9ca51a735f17bf2.png" rel="nofollow"><img title="06.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211230_686.png" /></a>
+</div>
+<br /><h5>（4.4）容错 </h5>
+介绍两种模式： <br />
+（A）电路熔断器（Circuit Breaker）： 该模式的原理类似于电路熔断器，如果电路发生短路，熔断器能够主动熔断电路，以避免灾难性损失 <br /><div><a href="http://dockerone.com/uploads/article/20151111/1ec2c3f576fee6b4347a710c9c34496e.png" rel="nofollow"><img title="07.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211230_959.png" /></a>
+</div>
+<br /><ol><li>正常状态下，电路处于关闭状态（Closed），调用是直接传递给依赖服务的； </li><li>如果调用出错，则进入失败计数状态； </li><li>失败计数达到一定阈值后，进入熔断状态（Open），这时的调用总是返回失败； </li><li>累计一段时间以后，保护器会尝试进入半熔断状态（Half-Open）； </li><li>处于Harf-Open状态时，调用先被传递给依赖的服务，如果成功，则重置电路状态为“Closed”，否则把电路状态置为“Open”； </li></ol><br />
+（B）舱壁（Bulkheads）：该模式像舱壁一样对资源或失败单元进行隔离，如果一个船舱破了进水，只损失一个船舱，其它船舱可以不受影响 。 <br /><br />
+这种模式比较常见的思路为： <br /><ol><li>采用微服务是首选，比如Docker。Docker是进程隔离的，单个Docker失效不会影响其他Docker容器。 </li><li>把大的并行处理工作，由多个线程池来负荷分担。 </li></ol><br /><h5>（4.5）API网关/边缘服务 </h5>
+<div><a href="http://dockerone.com/uploads/article/20151111/d43b27b29e23860480c691c75b25e166.png" rel="nofollow"><img title="08.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211230_840.png" /></a>
+</div>
+<br />
+API Gateway： <br /><br /><ol><li>对设备侧（PC,Mobile等）提供简化的单一服务接口； </li><li>它内部聚合后台几十甚至上百微服务。 </li></ol><br /><blockquote>价值：它的主要作用是简化设备侧开发的复杂度，减少微服务网络调用数量和网络延迟问题。 </blockquote>
+<h3 id="articleHeader9">VIP Cloud Native实践 </h3>
+参考Cloud Native理念，分别介绍VIP实践。 <br /><ol><li><strong>组织层面</strong>：Cloud的推行是由专门的云平台部门来完成的。云平台拉通开发、QA、运维等各个部门， 一起推动电商业务的云化。在推行Cloud过程中，我们也碰到了大部分公司都面临的“部门墙”问题。因此，目前我们在尝试“项目制”运作方式：成立一个项 目组，把相关利益责任人拉进来，由PMO推动落实。
+</li><li><strong>持续交付</strong>：目前我们已经开发了CI、CD，正在并联合QA Tool工具部，线上发布系统，打通开发、QA、运维等，形成端到端的持续交付流程。持续交付的流程图如下：<br /><div><a href="http://dockerone.com/uploads/article/20151111/fd2891c9311f577348786ce2b3ba8568.png" rel="nofollow"><img title="09.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211230_290.png" /></a>
+</div>
+</li><li><strong>敏捷基础设施</strong><br /><div><a href="http://dockerone.com/uploads/article/20151111/74abfb7ddd042ffb118568b65108c6a1.png" rel="nofollow"><img title="10.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211231_958.png" /></a>
+</div>
+</li><li><strong>微服务</strong>：目前唯品会部分业务在尝试采用基于Docker的微服务架构，大部分还是采用SOA服务架 构。一个服务的概念，对应于我们内部的一个业务域概念，目前有1K多的业务域。随着VIP业务的快速发展，单个业务域的容量也会快速增长。因此，业务域也 在逐步的拆分中，业务域数据也会增长几倍。
+</li><li><strong>12因子（Twelve-Factor）评估</strong>：由于是基于SOA架构设计，大部分可以满足12因子（Twelve-Factor）的规范。<br />
+评估参考下面表格：<br /><div><a href="http://dockerone.com/uploads/article/20151111/99b5081155cd632fa2f0cac7535ca8bd.png" rel="nofollow"><img title="11.png" alt="一篇文章带你了解Cloud Native" src="http://static.open-open.com/lib/uploadImg/20151113/20151113211231_734.png" /></a>
+</div>
+</li></ol><br /><h3 id="articleHeader10">Q&amp;A </h3>
+<strong>Q：如何达到分享老师这种技术深度、广度、理念？</strong> <br /><blockquote>A：过奖了，谢谢。有几点可以和大家分享一下： <br /><ol><li>技术都是慢慢积累过来的，你做的久了，自然知道的就多些，做技术贵在坚持。 </li><li>多和一些大牛学习和交流很重要，最直接的就是多向你的直接领导请教； </li><li>多学习，每天坚持学习； </li><li>平台很重要，有个很好的发展平台可以让你多学习很多内容。 </li></ol></blockquote>
+<strong>Q：唯品会属于康威定律中哪类公司，对促进Cloud Native都作了哪些组织结构上的调整？</strong> <br /><blockquote>A：为了推行Cloud Native，我们成立专门的云计算部门。但是为了推行云，我们需要和周边各个部门打交道。推行IaaS还好说，因为这块基本上是标准化的东东，但是在推 行CI、CD时碰到很多问题。CI、CD是和业务密切相关的，规范的推行，必然会给大家带来额外的工作量。针对这些问题，我们是联合多个部门一起搞，项目 制运作。
+</blockquote>
+<strong>Q：在实际使用过程中，12因子是定性的还是定量的，如何检测？</strong> <br /><blockquote>A：应该是定性和定量结合更为合适。比如代码统一放入Git库，这个是定性。但是代码提交次数，代码圈复杂度大小，CI成功率等就是定量的。 </blockquote>
+<strong>Q：针对移动端的自动化测试，你们是怎么做的？你们的服务发现是如何做的？</strong> <br /><blockquote>A：移动端的自动化测试，这块了解有限，暂时无法答复你。服务发现，我们有两种模式：DNS传统模式，另外一个就是基于自研OSP开放平台的服务注册、服务发现模式。
+</blockquote>
+<strong>Q：灰度发布采用的什么策略，是AB两个集群轮流替换的方式吗？</strong> <br /><blockquote>A：目前是按批次分批发布的，比如50个节点，先升级1个，再升级20，最后升级29个。 </blockquote>
+<strong>Q：自动化测试是怎么做的，尤其是Web应用的自动化测试，采用的什么工具？</strong> <br /><blockquote>A：我知道的有Test link。 </blockquote>
+<strong>Q：这些云上的数据库是如何部署的，处理的数据规模有多大，事务吞吐量多少，扩容这块如何实践的？</strong> <br /><blockquote>A：DB有专门的部署工具，对于规模和事务吞吐量、扩容问题，这个比较敏感，可以线下专门交流。 </blockquote>
+<strong>Q：请问，唯品会目前云上用的是什么数据库？</strong> <br /><blockquote>A：MySQL、MongoDB。 </blockquote>
+<strong>Q：请教一下，后台数据库是如何分离的，比如，是不是先从用户微服务中拿用户列表，在用用户ID去商品微服务中去拿这个用户的商品列表？</strong>
+<br /><blockquote>A：后台DB链接信息一般可以作为环境变量注入App中。 </blockquote>
+<strong>Q：在基础设施上您同时使用了虚拟机和Docker，请问这两种基础设施承载业务也不同吗？</strong> <br /><blockquote>A：虚拟机目前是开发测试环境用。Docker后续会直接用在生产环境，主要是无状态App甚至缓存。其实VM大部分场景都可以使用Docker代替。
+</blockquote>
+<strong>Q：在服务注册和发现的图里Consumers应该不会直接连接Producer吧， 一般会通过企业治理esg连接？</strong> <br /><blockquote>A：Producer和Consumer之间一般还有个LB。 </blockquote>
+<strong>Q：能把预发布环境理解为集成测试环境吗？</strong> <br /><blockquote>A：预发布是上线前的一个环节，链接的DB都是线上真实环境的。集成测试环境，还在预发布环节的前面。 </blockquote>
+<strong>Q：作为环境变量到终端DB安全性如何保证，难道是每个用户一个DB？</strong> <br /><blockquote>A：一般是后台service链接DB的吧，用户是无法接触DB的。 </blockquote>
+<strong>Q：那个动态更新配置的服务是需要启动一个守护进程去更新吗？</strong> <br /><blockquote>A：一般来说，client都会安装一个配置agent，它来负责从配置server pull配置进行更新。 </blockquote>
+<strong>Q：怎么理解版本控制的分布式配置中心，主要是配置的哪些信息？</strong> <br /><blockquote>A：比如Nginx配置（端口、vhost等）、tomcat配置、DB链接信息、缓存链接信息等等。 </blockquote>
+<strong>Q：12因子是否过于严格，嘉宾的表格里关于应用无状态也只是部分满足？</strong> <br /><blockquote>A：12因子主要针对App的，它不适用于service层面，比如对于db，mc的服务是不适合的。 </blockquote>
+<strong>Q：Gateway实现是使用开源框架（kong、loopback）还是自己实现？</strong> <br /><blockquote>A：既可以自己实现（比如Java、Nginx），也可以采用开源的，比如Zuul。 </blockquote>
+<strong>Q：必要时进行协议转换（比如Http转为AMQP）？</strong> <br /><blockquote>A：比如外部是通过http rest请求的，拿到这个请求后，把参数封装，然后以mq的方式发给后台其他服务。 </blockquote>
+<strong>Q：微服务一定是无状态的吗？</strong> <br /><blockquote>A：这个不一定的。 </blockquote>
+<strong>Q：能介绍OpenStack 在项目中怎么和Docker等结合使用的吗？</strong> <br /><blockquote>A：目前我们的CI采用Docker，Docker直接跑在VM（VM由OpenStack创建）上。对于OpenStack底层和Docker如何结合，目前还在方案评估中。
+</blockquote>
+            </div>
+                </div>
+				<div class="hide-article-box text-center">
+			<a class="btn btn-red-hollow" id="btn-readmore" data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/u011537073/article/details/72360966,"}' data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/u011537073/article/details/72360966,"}'>阅读更多</a>
+		</div>
+        	</article>
+	
+		<div class="article-bar-bottom">
+						<div class="tags-box artic-tag-box">
+			<span class="label">文章标签：</span>
+						<a class="tag-link" href="http://so.csdn.net/so/search/s.do?q=cloud&t=blog" target="_blank">cloud						<a class="tag-link" href="http://so.csdn.net/so/search/s.do?q=native&t=blog" target="_blank">native						</a>
+		</div>
+						<div class="tags-box">
+			<span class="label">个人分类：</span>
+						<a class="tag-link" href="https://blog.csdn.net/u011537073/article/category/6922958"  target="_blank">IT-Cloud						</a>
+		</div>
+								<div class="tags-box hot-word">
+			<span class="label">相关热词：</span>
+						<a class="tag-link" href="https://blog.csdn.net/hpu_yly_bj/article/details/73730633" target="_blank">
+			下一篇			</a>
+						<a class="tag-link" href="https://blog.csdn.net/skfzc/article/details/50264577" target="_blank">
+			上一篇下一篇修改			</a>
+						<a class="tag-link" href="https://blog.csdn.net/qq_36235922/article/details/78582705" target="_blank">
+			上一篇下一篇功能			</a>
+						<a class="tag-link" href="https://blog.csdn.net/hpu_yly_bj/article/details/73730633" target="_blank">
+			tp上一篇下一篇			</a>
+						<a class="tag-link" href="https://blog.csdn.net/linyiphp/article/details/79021063" target="_blank">
+			上一篇下一篇英文			</a>
+					</div>
+			</div>
+	
+	<!-- !empty($pre_next_article[0]) -->
+			<div class="related-article related-article-prev text-truncate">
+		<a href="https://blog.csdn.net/u011537073/article/details/72358582">
+			<span>上一篇</span>Cloud Native		</a>
+	</div>
+				<div class="related-article related-article-next text-truncate">
+		<a href="https://blog.csdn.net/u011537073/article/details/72496128">
+			<span>下一篇</span>有容云老司机带路， 使用Docker实现丝般顺滑的持续集成		</a>
+	</div>
+	</div>
+<script>
+    $(".MathJax").remove();
+</script>
+
+<script type="text/javascript" src="https://static-blog.csdn.net/mdeditor/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+			"HTML-CSS": {
+					linebreaks: { automatic: true, width: "94%container" },
+					imageFont: null
+			},
+			tex2jax: {
+				preview: "none"
+			},
+			mml2jax: {
+				preview: 'none'
+			}
+	});
+</script>
+<script>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</script>        <div class="p4course_target" ></div><script>window.p4sdk_enable_courseBox=true</script>        <a id="commentBox"></a>
+<div class="comment-box">
+	  	<div class="unlogin-box text-center">
+		想对作者说点什么？
+		<!-- $curl 当前地址 -->
+		<a href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/u011537073/article/details/72360966#commentBox" class="btn btn-sm btn-red">我来说一句</a>
+	</div>
+			<div class="comment-list-container">
+		<a id="comments"></a>
+		<div class="comment-list-box">
+		</div>
+		<div id="commentPage" class="pagination-box d-none"></div>
+		<div class="opt-box text-center">
+			<button class="btn btn-sm btn-link-blue" id="btnMoreComment"></button>
+		</div>
+	</div>
+</div>        <div class="recommend-box">
+            		<div class="recommend-item-box" data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/wh211212/article/details/79667184,BlogCommendFromBaidu_0"}' data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/wh211212/article/details/79667184,BlogCommendFromBaidu_0"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/wh211212/article/details/79667184" target="_blank" title="《<em>Cloud</em> <em>Native</em>》云原生技术汇总">
+				《<em>Cloud</em> <em>Native</em>》云原生技术汇总			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/wh211212" target="_blank">
+					<img src="https://avatar.csdn.net/6/A/9/3_wh211212.jpg" alt="wh211212" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">wh211212</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">03-23</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					470</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/wh211212/article/details/79667184" target="_blank" >
+				
+
+ 
+
+
+
+  An awesome &amp;amp;amp;amp;amp; curated list of best applications and tools for Cloud Native.
+...			</a>
+		</p>
+
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/lizhou828/article/details/78977275,BlogCommendFromBaidu_1"}' data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/lizhou828/article/details/78977275,BlogCommendFromBaidu_1"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/lizhou828/article/details/78977275" target="_blank" title="云原生（<em>Cloud</em><em>Native</em>）将成为应用云化开发的主流方式">
+				云原生（<em>Cloud</em><em>Native</em>）将成为应用云化开发的主流方式			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/lizhou828" target="_blank">
+					<img src="https://avatar.csdn.net/4/E/5/3_lizhou828.jpg" alt="lizhou828" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">lizhou828</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">01-05</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					268</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/lizhou828/article/details/78977275" target="_blank" >
+				云原生（CloudNative）将成为应用云化开发的主流方式
+
+
+
+
+原文地址：https://zhuanlan.zhihu.com/p/27196777
+
+
+
+
+
+1 什么是云...			</a>
+		</p>
+
+	</div>
+														<div class="recommend-item-box recommend-ad-box">
+						<script type="text/javascript" src="//cee1.iteye.com/pkcgstjjm.js"></script>
+					</div>
+							
+				<div class="recommend-item-box" data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/fiboliu/article/details/50529749,BlogCommendFromBaidu_2"}' data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/fiboliu/article/details/50529749,BlogCommendFromBaidu_2"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/fiboliu/article/details/50529749" target="_blank" title="<em>Cloud</em> <em>Native</em>概念">
+				<em>Cloud</em> <em>Native</em>概念			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/fiboliu" target="_blank">
+					<img src="https://avatar.csdn.net/E/2/C/3_fiboliu.jpg" alt="fiboliu" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">fiboliu</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">01-16</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					3529</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/fiboliu/article/details/50529749" target="_blank" >
+				计算机领域有句名言“计算机科学领域的任何问题, 都可以通过添加一个中间层来解决.”...			</a>
+		</p>
+
+	</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_387","con":",https://download.csdn.net/download/u010567227/9970871,BlogCommendFromBaidu_3"}' data-track-click='{"mod":"popu_387","con":",https://download.csdn.net/download/u010567227/9970871,BlogCommendFromBaidu_3"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate oneline">
+					<a href="https://download.csdn.net/download/u010567227/9970871" target="_blank">
+						<em>Cloud</em> <em>Native</em> Java					</a>
+				</h4>
+				<p>
+					<span class="data">2017年09月09日 </span>
+					<span class="size">16.71MB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/u010567227/9970871" target="_blank" strategy="BlogCommendFromBaidu_3">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/pdf.svg" alt="">
+				</a>
+			</div>
+		</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/dicyt/article/details/78065759,BlogCommendFromBaidu_4"}' data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/dicyt/article/details/78065759,BlogCommendFromBaidu_4"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/dicyt/article/details/78065759" target="_blank" title="云原生（<em>Cloud</em> <em>Native</em>）- 移动App研发新范式">
+				云原生（<em>Cloud</em> <em>Native</em>）- 移动App研发新范式			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/dicyt" target="_blank">
+					<img src="https://avatar.csdn.net/4/F/D/3_dicyt.jpg" alt="dicyt" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">dicyt</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">09-22</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					75</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/dicyt/article/details/78065759" target="_blank" >
+				什么是云原生（Cloud Native）App
+云原生的话题近期异常火热，对于它的概念，大家也有不同的解读。从我个人的视角而言，云原生代表了一种应用构建的方法论：如何最大程度地利用云计算服务模型的优...			</a>
+		</p>
+
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/cteng/article/details/77823545,BlogCommendFromBaidu_5"}' data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/cteng/article/details/77823545,BlogCommendFromBaidu_5"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/cteng/article/details/77823545" target="_blank" title="<em>Cloud</em> <em>Native</em> Java-OReilly 2017 读书笔记">
+				<em>Cloud</em> <em>Native</em> Java-OReilly 2017 读书笔记			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/cteng" target="_blank">
+					<img src="https://avatar.csdn.net/5/4/0/3_cteng.jpg" alt="cteng" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">cteng</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">09-03</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					969</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/cteng/article/details/77823545" target="_blank" >
+				Cloud Native Java-OReilly 2017-ReadingNotes.md
+
+Basics
+
+SaaS的12 Factor：
+
+Bootcamp: Introducing...			</a>
+		</p>
+
+	</div>
+								<div class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></div>
+			<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 60,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'right',
+						imageBorderRadius: 0,
+						imageWidth: 90,
+						imageHeight: 60,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 0,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</script>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_387","con":",https://blog.csdn.net/Gamay/article/details/72830570,BlogCommendFromBaidu_6"}' data-track-click='{"mod":"popu_387","con":",https://blog.csdn.net/Gamay/article/details/72830570,BlogCommendFromBaidu_6"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/Gamay/article/details/72830570" target="_blank" title="小团队能做大系统：<em>Cloud</em>_<em>Native</em>云原生架构实践">
+				小团队能做大系统：<em>Cloud</em>_<em>Native</em>云原生架构实践			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/Gamay" target="_blank">
+					<img src="https://avatar.csdn.net/F/C/E/3_gamay.jpg" alt="Gamay" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">Gamay</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">06-01</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					1431</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/Gamay/article/details/72830570" target="_blank" >
+				本文整理自2017云栖大会-成都峰会上阿里云存储服务产品经理大邪的分享讲义，讲义主要分享了Cloud Native的概念及其核心思想之一—康威定律，介绍了DevOps如何利用Cloud Native实...			</a>
+		</p>
+
+	</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_387","con":",https://download.csdn.net/download/peterdyf/9776852,BlogCommendFromBaidu_9"}' data-track-click='{"mod":"popu_387","con":",https://download.csdn.net/download/peterdyf/9776852,BlogCommendFromBaidu_9"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate oneline">
+					<a href="https://download.csdn.net/download/peterdyf/9776852" target="_blank">
+						<em>Cloud</em> <em>Native</em> Java - Preview Edition					</a>
+				</h4>
+				<p>
+					<span class="data">2017年03月10日 </span>
+					<span class="size">8.37MB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/peterdyf/9776852" target="_blank" strategy="BlogCommendFromBaidu_9">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/pdf.svg" alt="">
+				</a>
+			</div>
+		</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_387","con":",https://download.csdn.net/download/wittycollegestudent/10500134,BlogCommendFromBaidu_10"}' data-track-click='{"mod":"popu_387","con":",https://download.csdn.net/download/wittycollegestudent/10500134,BlogCommendFromBaidu_10"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate oneline">
+					<a href="https://download.csdn.net/download/wittycollegestudent/10500134" target="_blank">
+						《<em>Cloud</em> <em>native</em> Java》英文原版					</a>
+				</h4>
+				<p>
+					<span class="data">2018年06月26日 </span>
+					<span class="size">8.37MB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/wittycollegestudent/10500134" target="_blank" strategy="BlogCommendFromBaidu_10">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/pdf.svg" alt="">
+				</a>
+			</div>
+		</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_387","con":",https://download.csdn.net/download/u011433684/10003790,BlogCommendFromBaidu_11"}' data-track-click='{"mod":"popu_387","con":",https://download.csdn.net/download/u011433684/10003790,BlogCommendFromBaidu_11"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate oneline">
+					<a href="https://download.csdn.net/download/u011433684/10003790" target="_blank">
+						<em>Cloud</em> <em>Native</em> Java azw3					</a>
+				</h4>
+				<p>
+					<span class="data">2017年09月30日 </span>
+					<span class="size">10.36MB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/u011433684/10003790" target="_blank" strategy="BlogCommendFromBaidu_11">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/unkonw.svg" alt="">
+				</a>
+			</div>
+		</div>
+			
+            <div class="recommend-loading-box">
+                <img src='https://csdnimg.cn/release/phoenix/images/feedLoading.gif'>
+            </div>
+            <div class="recommend-end-box">
+                <p class="text-center">没有更多推荐了，<a href="https://blog.csdn.net/" class="c-blue c-blue-hover c-blue-focus">返回首页</a></p>
+            </div>
+        </div>
+    </main>
+    <aside>
+		    <div id="asideProfile" class="aside-box">
+    <h3 class="aside-title">个人资料</h3>
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/u011537073">
+                <img src="https://avatar.csdn.net/8/8/7/3_u011537073.jpg" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex justify-content-center flex-column">
+            <p class="name csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                <a href="https://blog.csdn.net/u011537073" target="_blank" class="text-truncate" id="uid">LarryHai6</a>
+            </p>
+                    </div>
+                <div class="opt-box d-flex justify-content-center flex-column">
+            <span  class="csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                                <a class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/u011537073/article/details/72360966" target="_self">关注</a>
+                            </span>
+                    </div>
+            </div>
+    <div class="data-info d-flex item-tiling">
+                <dl class="text-center" title="23">
+                        <dt><a href="https://blog.csdn.net/u011537073?t=1">原创</a></dt>
+            <dd><a href="https://blog.csdn.net/u011537073?t=1"><span class="count">23</span></a></dd>
+                    </dl>
+        <dl class="text-center" title="110">
+            <dt>粉丝</dt>
+            <dd><span class="count" id="fan">110</span></dd>
+        </dl>
+        <dl class="text-center" title="68">
+            <dt>喜欢</dt>
+            <dd><span class="count">68</span></dd>
+        </dl>
+        <dl class="text-center" title="91">
+            <dt>评论</dt>
+            <dd><span class="count">91</span></dd>
+        </dl>
+    </div>
+    <div class="grade-box clearfix">
+        <dl>
+            <dt>等级：</dt>
+            <dd>
+                <a href="https://blog.csdn.net/home/help.html#level" title="6级,点击查看等级说明" target="_blank">
+                    <svg class="icon icon-level" aria-hidden="true">
+                        <use xlink:href="#csdnc-bloglevel-6"></use>
+                    </svg>
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>访问：</dt>
+            <dd title="800955">
+                80万+            </dd>
+        </dl>
+        <dl>
+            <dt>积分：</dt>
+            <dd title="8160">
+                8160            </dd>
+        </dl>
+        <dl title="3428">
+            <dt>排名：</dt>
+            <dd>3428</dd>
+        </dl>
+    </div>
+        <div class="badge-box d-flex">
+        <span>勋章：</span>
+                        <a class="icon-badge" title="持之以恒">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#csdnc-m-lasting"></use>
+            </svg>
+            <div class="icon-arrow"></div>
+            <div class="grade-detail-box item2">
+                <div class="pos-box">
+                    <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#csdnc-m-lasting"></use>
+                        </svg>
+                        <p>持之以恒</p>
+                    </div>
+                    <div class="right-box d-flex justify-content-center align-items-center">
+                        授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！
+                    </div>
+                </div>
+            </div>
+        </a>
+                            </div>
+    </div>		    <div class="csdn-tracking-statistics mb8 box-shadow" data-pid="blog" data-mod="popu_4" style="height:250px;">
+    <div class="aside-content text-center" id="cpro_u2734133">
+              <script type="text/javascript" src="//cee1.iteye.com/lgyyovfyh.js"></script>
+          </div>
+</div>
+		    <div id="asideNewArticle" class="aside-box">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/u011537073/article/details/81216229" target="_blank">httpClient设置忽略SSL（trust all）</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/u011537073/article/details/81141903" target="_blank">HTML-embed标签</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/u011537073/article/details/81132464" target="_blank">Linux TOP命令按内存占用排序和按CPU占用排序</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/u011537073/article/details/81013533" target="_blank">Qcon2017实录|Service Mesh：下一代微服务</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/u011537073/article/details/80975409" target="_blank">Docker CE 还是 Docker EE</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+		    		    <div id="asideCategory" class="aside-box flexible-box">
+    <h3 class="aside-title">个人分类</h3>
+    <div class="aside-content">
+        <ul>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5590815">
+                    IT-编程语言-Perl                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5590855">
+                    IT-编程语言-Java                    <span class="count float-right">44篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5590869">
+                    IT-应用框架-Struts                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5590871">
+                    IT-应用框架-Spring                    <span class="count float-right">36篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5590873">
+                    IT-应用框架-Hibernate                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5590875">
+                    IT-应用框架-Ibatis                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5592545">
+                    数据库                    <span class="count float-right">25篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5598499">
+                    IT-网络安全                    <span class="count float-right">12篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5598505">
+                    IT-通信协议                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5598515">
+                    IT-前端框架                    <span class="count float-right">32篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5600063">
+                    IT-应用框架-Quartz                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5600403">
+                    IT-操作系统                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5610485">
+                    IT-WebService                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5624629">
+                    IT-OS                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5669527">
+                    IT-防火墙                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5669891">
+                    IT-General                    <span class="count float-right">17篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5773519">
+                    IT-云计算和存储                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5776007">
+                    IT-内存缓存框架                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5924007">
+                    IT-应用网络优化                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5929447">
+                    IT-系统架构                    <span class="count float-right">25篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5929785">
+                    IT-服务器集群                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5931675">
+                    IT-MQ                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/5932737">
+                    IT-NoSQL                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6067356">
+                    IT-监控工具和框架                    <span class="count float-right">16篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6086776">
+                    IT-MQ-Kafka                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6086855">
+                    IT-编程语言-Scala                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6190497">
+                    IT-手机移动开发                    <span class="count float-right">46篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6193178">
+                    IT-HTML5                    <span class="count float-right">12篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6253507">
+                    IT-开发平台                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6305542">
+                    IT-Ajax框架-JQuery                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6335022">
+                    IT-分布式框架-RESTFUL                    <span class="count float-right">10篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6363669">
+                    IT-语音识别                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6414484">
+                    IT-文档存储架构                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6429967">
+                    IT-Json                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6438014">
+                    IT-Blockchain                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6441067">
+                    IT-Docker                    <span class="count float-right">34篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6447074">
+                    IT-运维                    <span class="count float-right">11篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6449017">
+                    IT-版本控制工具(SCM)                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6460985">
+                    IT-文本编辑工具                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6461815">
+                    IT-Scrum                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6467641">
+                    IT-网络传输协议                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6474366">
+                    IT-Nodejs                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6485901">
+                    IT-前端框架-ReactJs                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6486136">
+                    IT-JS框架-NodeJs                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6515004">
+                    IBM-Watson                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6520474">
+                    IT-测试框架                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6538685">
+                    IT-敏捷                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6601067">
+                    IT-WebSocket                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6646395">
+                    IBM-Bluemix                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6650514">
+                    IT-Golang                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6667540">
+                    IT-AI                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6673678">
+                    IT-编程语言-Python                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6786441">
+                    IT-AR(虚拟现实)                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6922958">
+                    IT-Cloud                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6928443">
+                    IT-性能                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/6981701">
+                    IT-Microservices                    <span class="count float-right">36篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/7105971">
+                    IT-DevOps                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/7119179">
+                    IT-前端框架-Vue                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/7121831">
+                    IT-SpringCloud                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/7376024">
+                    IT-构建工具                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/u011537073/article/category/7617190">
+                    IT-基础架构-容器编排                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+        <p class="text-center">
+        <a class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</a>
+    </p>
+    </div>
+		    <div id="asideArchive" class="aside-box flexible-box">
+    <h3 class="aside-title">归档</h3>
+    <div class="aside-content">
+        <ul class="archive-list">
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2018/07">
+                    2018年7月                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2018/06">
+                    2018年6月                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2018/05">
+                    2018年5月                    <span class="count float-right">14篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2018/04">
+                    2018年4月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2018/03">
+                    2018年3月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2018/02">
+                    2018年2月                    <span class="count float-right">9篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2018/01">
+                    2018年1月                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/11">
+                    2017年11月                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/10">
+                    2017年10月                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/09">
+                    2017年9月                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/08">
+                    2017年8月                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/07">
+                    2017年7月                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/06">
+                    2017年6月                    <span class="count float-right">31篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/05">
+                    2017年5月                    <span class="count float-right">27篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/04">
+                    2017年4月                    <span class="count float-right">19篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/03">
+                    2017年3月                    <span class="count float-right">39篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/02">
+                    2017年2月                    <span class="count float-right">17篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2017/01">
+                    2017年1月                    <span class="count float-right">29篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/12">
+                    2016年12月                    <span class="count float-right">16篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/11">
+                    2016年11月                    <span class="count float-right">12篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/10">
+                    2016年10月                    <span class="count float-right">40篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/09">
+                    2016年9月                    <span class="count float-right">16篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/08">
+                    2016年8月                    <span class="count float-right">5篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/07">
+                    2016年7月                    <span class="count float-right">23篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/06">
+                    2016年6月                    <span class="count float-right">10篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/05">
+                    2016年5月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/04">
+                    2016年4月                    <span class="count float-right">32篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/03">
+                    2016年3月                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/02">
+                    2016年2月                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2016/01">
+                    2016年1月                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2015/12">
+                    2015年12月                    <span class="count float-right">9篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2015/11">
+                    2015年11月                    <span class="count float-right">24篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2015/10">
+                    2015年10月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2015/09">
+                    2015年9月                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2015/08">
+                    2015年8月                    <span class="count float-right">9篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2015/07">
+                    2015年7月                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/u011537073/article/month/2015/06">
+                    2015年6月                    <span class="count float-right">37篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+        <p class="text-center">
+        <a class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</a>
+    </p>
+    </div>
+		    <div id="asideHotArticle" class="aside-box">
+	<h3 class="aside-title">热门文章</h3>
+	<div class="aside-content">
+		<ul class="hotArticle-list csdn-tracking-statistics tracking-click" data-mod="popu_521">
+							<li>
+					<a href="https://blog.csdn.net/u011537073/article/details/52177204">基于Token的WEB后台认证机制</a>
+					<p class="read">阅读量：<span>31604</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/u011537073/article/details/51999731">iOS开发入门教程</a>
+					<p class="read">阅读量：<span>30110</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/u011537073/article/details/52108369">Oauth2.0 用Spring-security-oauth2 非常简单</a>
+					<p class="read">阅读量：<span>26841</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/u011537073/article/details/54911468">用于HTML5移动开发的10大移动APP开发框架</a>
+					<p class="read">阅读量：<span>21960</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/u011537073/article/details/54898398">h5做app和原生app有什么区别？</a>
+					<p class="read">阅读量：<span>17662</span></p>
+				</li>
+					</ul>
+	</div>
+</div>
+		    <div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/u011537073/article/details/80922472#comments">[问题解决]RedHat7更换Ce...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/KevinSMU" class="user-name" target="_blank">KevinSMU</a>：转载别人文章都不说明一下吗？怎么这么不要脸啊                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/u011537073/article/details/52177204#comments">基于Token的WEB后台认证机制</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/bing_xin_ran_huo" class="user-name" target="_blank">bing_xin_ran_huo</a>：[reply]weixin_39800144[/reply]
+这篇文章就是转载类的...                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/u011537073/article/details/51119468#comments">HttpClient Basic ...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/russle" class="user-name" target="_blank">russle</a>：谢谢！                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/u011537073/article/details/80754816#comments">架构师权威指南-后端架构师技术图谱</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/lims813927980" class="user-name" target="_blank">lims813927980</a>：多谢分享                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/u011537073/article/details/72876139#comments">认证 (authenticatio...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/u013602923" class="user-name" target="_blank">u013602923</a>：通俗易懂！！！                </p>
+            </li>
+                    </ul>
+    </div>
+</div>
+		<div id="asideFooter">
+			
+		<div class="aside-box">
+						<script type="text/javascript" src="//cee1.iteye.com/avneunkwb.js"></script>
+					</div>
+				<div class="aside-box">
+			<div class="persion_article">
+			</div>
+		</div>
+	</div>
+</aside>
+<script src="https://csdnimg.cn/pubfooter/js/publib_footer-1.0.3.js" data-isfootertrack="false" type="text/javascript"></script>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</script>
+</div>
+<div class="mask-dark"></div>
+<div class="pulllog-box" style="display: block;">
+	<div class="pulllog clearfix">
+		<span class="text float-left">
+			<!-- 广告位：PC-博客内页底通 文字链位置 -->
+			<script>
+			(function() {
+				var s = "_" + Math.random().toString(36).slice(2);
+				document.write('<div id="baidufooter_0001"></div>');
+				(window.slotbydup=window.slotbydup || []).push({
+					id: '5851901',
+					container: 'baidufooter_0001',
+					size: '520,40',
+					display: 'inlay-fix'
+				});
+			})();
+			</script>
+			<script src="https://dup.baidustatic.com/js/os.js"></script>
+			<style>
+				#baidufooter_0001{
+					display: none !important;
+				}
+			</style>
+		</span>
+		<div class="pulllog-btn float-right clearfix">
+            <button class="pulllog-login float-left csdn-tracking-statistics tracking-click" data-mod="popu_557">
+                登录
+            </button>
+            <div class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" data-mod="popu_558">
+                <a href="https://passport.csdn.net/account/mobileregister" target="_blank">注册</a>
+            </div>
+            <button class="btn-close">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#csdnc-times"></use>
+                </svg>
+            </button>
+		</div>
+	</div>
+</div>
+<div id="loginWrap" style="display:none"></div>
+<div class="tool-box">
+	<ul class="meau-list">
+		<li>
+			<button class="btn-like " title="点赞">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup"></use>
+				</svg>
+				<p>0</p>
+			</button>
+		</li>
+		<li>
+			<a class="btn-comments" title="写评论" href="#commentBox">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-comments"></use>
+				</svg><br>写评论			</a>
+		</li>
+		<li class="toc-container-box" id="liTocBox">
+			<button class="btn-toc" title="目录">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-contents"></use>
+				</svg><br>目录
+			</button>
+			<div class="toc-container">
+				<div class="pos-box">
+					<div class="icon-arrow"></div>
+					<div class="scroll-box">
+						<div class="toc-box"></div>
+					</div>
+				</div>
+				<div class="opt-box">
+					<button class="btn-opt prev nomore" title="向上">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevronup"></use>
+						</svg>
+					</button>
+					<button class="btn-opt next">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevrondown"></use>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</li>
+		<li>
+			<button class="btn-bookmark" title="收藏">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark"></use>
+				</svg><br>收藏
+			</button>
+		</li>
+				<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_weixin" data-cmd="weixin" title="微信分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-wechat"></use>
+				</svg><br>微信
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_tsina" data-cmd="tsina" title="微博分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-weibo"></use>
+				</svg><br>微博
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_qzone" data-cmd="qzone" title="QQ分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-qq"></use>
+				</svg><br>QQ
+			</a>
+		</li>
+	</ul>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</script>
+<script>
+    var recommendCount = 10;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "一篇文章带你了解Cloud Native";
+    var ChannelId = 2;
+    var articleId = "72360966";
+    var commentscount = 0;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/u011537073/article/details/72360966";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "cloud+native+java+%E4%B8%AD%E6%96%87";
+    var needInsertBaidu = true;
+    // 代码段样式
+    var codeStyle = '';
+    var highlight = ["\u4e00\u7bc7","\u6587\u7ae0","\u5e26\u4f60","\u4e86\u89e3","cloud","native"];//高亮数组
+</script>
+<script src="https://csdnimg.cn/public/sandalstrap/1.3/js/sandalstrap.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.js"></script>
+<script src='https://csdnimg.cn/public/common/gotop/js/goTop-v1.0.min.js?v201803151422'></script>
+<script>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"一篇文章带你了解Cloud Native");
+        }
+    })
+</script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/common-4b943ac97d.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/detail-cdbb97e217.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/themes/skin3-template/skin3-template-46c7bd3d86.min.js"></script>
+<script src="https://csdnimg.cn/search/baidu_search-1.1.2.js?v=201802071056&autorun=true&install=true&keyword=cloud+native+java+%E4%B8%AD%E6%96%87"  type="text/javascript"></script>
+</body>
+<div class="box-box-default">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/mhzzjepzz.js"></script>
+</div>
+<div class="box-box-large">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/idvveasfs.js"></script>
+</div>
+<!-- 第四范式SDK -->
+<script charset="utf-8" src="https://nbrecsys.4paradigm.com/resource/js/sdk-csdn-smallflow.prod.0723.js" async defer></script>
+
+<!-- 高亮未与 markdown兼容  -->
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/chart/chart.css" />
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/chart/lib/chart.min.js"></script>
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/chart/widget2chart.js"></script>
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/codesnippet/lib/highlight/styles/atom-one-dark.css">
+	<script type="text/javascript" src="https://csdnimg.cn/release/phoenix/production/pc_wap_common-93244aa03c.js" /></script>
+
+	<script type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</script>
+</html>
