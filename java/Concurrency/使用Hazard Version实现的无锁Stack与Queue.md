@@ -35,3 +35,11 @@ PUSH操作图
 
 POP操作图
 ---
+<img src="https://raw.githubusercontent.com/wangkang09/knowledge-summary/master/c/img/CAS_POP_%E5%8D%95%E9%93%BE%E8%A1%A8%E5%9B%BE%E7%A4%BA.png"  alt="不见了" width="200" height="200" />
+
+*  Stack状态是 n0->n1->n2,top指向no
+*  线程I将top（即节点A的地址）赋值给curr，并取得curr→next指针（为B）放入寄存器
+*  线程II执行完整pop流程，Stack状态变为B→C，top指向B，节点A被弹出后释放
+*  线程II执行完整pop流程，Stack状态变为C，top指向C，节点B被弹出后释放
+*  线程II执行完整push流程，新申请节点为被复用的A，Stack状态变为A→C，top指向A
+*  线程I继续执行，CAS判断top值仍为A，则原子替换top为B，链表被改坏…
