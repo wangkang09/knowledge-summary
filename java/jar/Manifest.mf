@@ -1,0 +1,2 @@
+Mainfest-Version: 1.0
+Main-Class: COM.sootNsmoke.oolong.Oolong
