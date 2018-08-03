@@ -1,0 +1,1553 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <link rel="canonical" href="https://blog.csdn.net/soonfly/article/details/51131141"/> 
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="renderer" content="webkit"/>
+    <meta name="force-rendering" content="webkit"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="referrer" content="always">
+    <meta name="description" content="前言:复杂类型说明
+    要了解指针,多多少少会出现一些比较复杂的类型,所以我先介绍一下如何完全理解一个复杂类型,要理解复杂类型其实很简单,一个类型里会出现很多运算符,他们也像普通的表达式一样,有优先级,其优先级和运算优先级一样,所以我总结了一下其原则:从变量名处起,根据运算符优先级结合,一步一步分析.下面让我们先从简单的类型开始慢慢分析吧:
+int p; //这是一个普通的整型变量
+int" />
+    <meta name="keywords" content="" />
+    <meta http-equiv="Cache-Control" content="no-siteapp" /><link rel="alternate" media="handheld" href="#" />
+    <meta name="shenma-site-verification" content="5a59773ab8077d4a62bf469ab966a63b_1497598848">
+    <script src="https://csdnimg.cn/release/phoenix/vendor/tingyun/tingyun-rum-blog.js"></script>
+
+    <link href="https://csdnimg.cn/public/favicon.ico" rel="SHORTCUT ICON">
+    <title>让你不再害怕指针——C指针详解(经典,非常详细) - CSDN博客</title>
+    
+            <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/detail-dca188fc81.min.css">
+        <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/themes/skin-yellow/skin-yellow-2eefd34acf.min.css">
+
+    <script type="text/javascript">
+        var username = "soonfly";
+        var blog_address = "https://blog.csdn.net/soonfly";
+        var static_host = "https://csdnimg.cn/release/phoenix/";
+        var currentUserName = ""; 
+        var isShowAds = true;
+        var isOwner = false;
+        var loginUrl = "https://passport.csdn.net/account/login?from=https://blog.csdn.net/soonfly/article/details/51131141"
+        var blogUrl = "https://blog.csdn.net/";
+        //页面皮肤样式
+        var curSkin = "skin-yellow";
+    </script>
+    <script type="text/javascript">
+        // Traffic Stats of the entire Web site By baidu
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?6bcd52f51e9b3dce32bec4a3997715ac";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();
+        // Traffic Stats of the entire Web site By baidu end
+    </script>
+    <script src="https://csdnimg.cn/public/common/libs/jquery/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="https://csdnimg.cn/rabbit/exposure-click/main-1.0.6.js"></script>
+    <!-- 新版上报 -->
+    <script src="//g.csdnimg.cn/track/1.0.1/track.js" type="text/javascript"></script>
+    <!-- 新版上报end -->
+            <link rel="stylesheet" href="https://csdnimg.cn/public/sandalstrap/1.3/css/sandalstrap.min.css"> 
+    <style>
+        .MathJax, .MathJax_Message, .MathJax_Preview{
+            display: none
+        }
+    </style>
+</head>
+<body>    
+    <link rel="stylesheet" href="https://csdnimg.cn/public/common/toolbar/content_toolbar_css/content_toolbar.css">
+    <script id="toolbar-tpl-scriptId" src="https://csdnimg.cn/public/common/toolbar/js/content_toolbar.js" type="text/javascript" domain="https://blog.csdn.net/"></script>
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/blog_code-c3a0c33d5c.css">
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.css">
+<script type="text/javascript" src="//static.mediav.com/js/mvf_news_feed.js"></script>
+
+<link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/chart-3456820cac.css" />
+
+
+<header>
+	<div class="container d-flex clearfix">
+		<div class="title-box">
+			<h1 class="title-blog">
+				<a href="https://blog.csdn.net/soonfly">程序老兵的博客</a>
+			</h1>
+			<p class="description">用来整理我的知识碎片，也希望帮到他人。只要往前走，就不会迟。精疲力尽的时侯应该选择休息，切不可放弃。...</p>
+		</div>
+		<div class="opt-box d-flex justify-content-end">
+			<a class="btn btn-sm" href="https://blog.csdn.net/soonfly/rss/list">
+					<svg class="icon" aria-hidden="true">
+						<use xlink:href="#csdnc-rss"></use>
+					</svg>RSS订阅</a>
+					</div>
+	</div>
+</header><script src="https://dup.baidustatic.com/js/ds.js"></script>
+<div class="container clearfix pt0" id="mainBox">
+    <main>
+        <div class="blog-content-box">
+	<div class="article-title-box">
+			<span class="article-type type-2 float-left">转</span>		<h1 class="title-article">让你不再害怕指针——C指针详解(经典,非常详细)</h1>
+	</div>
+	<div class="article-info-box">
+		<div class="article-bar-top d-flex">
+												<span class="time">2016年04月12日 10:53:34</span>
+			<div class="float-right">
+				<span class="read-count">阅读数：90006</span>
+											</div>
+		</div>
+	</div>
+	<article>
+		<div id="article_content" class="article_content clearfix csdn-tracking-statistics" data-pid="blog"  data-mod=popu_307  data-dsm = "post" >
+                    <link rel="stylesheet" href="https://csdnimg.cn/release/phoenix/template/css/ck_htmledit_views-e2445db1a8.css" />
+						<div class="htmledit_views">
+                
+<h2>前言:复杂类型说明</h2>
+    要了解指针,多多少少会出现一些比较复杂的类型,所以我先介绍一下如何完全理解一个复杂类型,要理解复杂类型其实很简单,一个类型里会出现很多运算符,他们也像普通的表达式一样,有优先级,其优先级和运算优先级一样,所以我总结了一下其原则:从变量名处起,根据运算符优先级结合,一步一步分析.下面让我们先从简单的类型开始慢慢分析吧:<br /><pre><code class="language-cpp">int p; //这是一个普通的整型变量
+int *p; //首先从P 处开始,先与*结合,所以说明P 是一个指针,然后再与int 结合,说明指针所指向的内容的类型为int 型.所以P是一个返回整型数据的指针
+int p[3]; //首先从P 处开始,先与[]结合,说明P 是一个数组,然后与int 结合,说明数组里的元素是整型的,所以P 是一个由整型数据组成的数组
+int *p[3]; //首先从P 处开始,先与[]结合,因为其优先级比*高,所以P 是一个数组,然后再与*结合,说明数组里的元素是指针类型,然后再与int 结合,说明指针所指向的内容的类型是整型的,所以P 是一个由返回整型数据的指针所组成的数组
+int (*p)[3]; //首先从P 处开始,先与*结合,说明P 是一个指针然后再与[]结合(与"()"这步可以忽略,只是为了改变优先级),说明指针所指向的内容是一个数组,然后再与int 结合,说明数组里的元素是整型的.所以P 是一个指向由整型数据组成的数组的指针
+int **p; //首先从P 开始,先与*结合,说是P 是一个指针,然后再与*结合,说明指针所指向的元素是指针,然后再与int 结合,说明该指针所指向的元素是整型数据.由于二级指针以及更高级的指针极少用在复杂的类型中,所以后面更复杂的类型我们就不考虑多级指针了,最多只考虑一级指针.
+int p(int); //从P 处起,先与()结合,说明P 是一个函数,然后进入()里分析,说明该函数有一个整型变量的参数,然后再与外面的int 结合,说明函数的返回值是一个整型数据
+Int (*p)(int); //从P 处开始,先与指针结合,说明P 是一个指针,然后与()结合,说明指针指向的是一个函数,然后再与()里的int 结合,说明函数有一个int 型的参数,再与最外层的int 结合,说明函数的返回类型是整型,所以P 是一个指向有一个整型参数且返回类型为整型的函数的指针
+int *(*p(int))[3]; //可以先跳过,不看这个类型,过于复杂从P 开始,先与()结合,说明P 是一个函数,然后进入()里面,与int 结合,说明函数有一个整型变量参数,然后再与外面的*结合,说明函数返回的是一个指针,,然后到最外面一层,先与[]结合,说明返回的指针指向的是一个数组,然后再与*结合,说明数组里的元素是指针,然后再与int 结合,说明指针指向的内容是整型数据.所以P 是一个参数为一个整数据且返回一个指向由整型指针变量组成的数组的指针变量的函数.</code></pre>说到这里也就差不多了,我们的任务也就这么多,理解了这几个类型,其它的类型对我们来说也是小菜了,不过我们一般不会用太复杂的类型,那样会大大减小程序的可读性,请慎用,这上面的几种类型已经足够我们用了.<br /><br /><h2>一、细说指针</h2>
+指针是一个特殊的变量，它里面存储的数值被解释成为内存里的一个地址。要搞清一个指针需要搞清指针的四方面的内容：指针的类型、指针所指向的类型、指针的值或者叫指针所指向的内存区、指针本身所占据的内存区。让我们分别说明。<br /><br />
+先声明几个指针放着做例子：<br />
+例一：<br /><pre><code class="language-cpp">(1)int*ptr;
+(2)char*ptr;
+(3)int**ptr;
+(4)int(*ptr)[3];
+(5)int*(*ptr)[4];</code></pre>
+<h3>1.指针的类型</h3>
+从语法的角度看，你只要把指针声明语句里的指针名字去掉，剩下的部分就是这个指针的类型。这是指针本身所具有的类型。让我们看看例一中各个指针的类型：<br />
+(1)int*ptr;//指针的类型是int*<br />
+(2)char*ptr;//指针的类型是char*<br />
+(3)int**ptr;//指针的类型是int**<br />
+(4)int(*ptr)[3];//指针的类型是int(*)[3]<br />
+(5)int*(*ptr)[4];//指针的类型是int*(*)[4]<br />
+怎么样？找出指针的类型的方法是不是很简单？<br /><h3>2.指针所指向的类型</h3>
+当你通过指针来访问指针所指向的内存区时，指针所指向的类型决定了编译器将把那片内存区里的内容当做什么来看待。<br />
+从语法上看，你只须把指针声明语句中的指针名字和名字左边的指针声明符*去掉，剩下的就是指针所指向的类型。例如：<br />
+(1)int*ptr; //指针所指向的类型是int<br />
+(2)char*ptr; //指针所指向的的类型是char<br />
+(3)int**ptr; //指针所指向的的类型是int*<br />
+(4)int(*ptr)[3]; //指针所指向的的类型是int()[3]<br />
+(5)int*(*ptr)[4]; //指针所指向的的类型是int*()[4]<br /><br />
+在指针的算术运算中，指针所指向的类型有很大的作用。<br />
+指针的类型(即指针本身的类型)和指针所指向的类型是两个概念。当你对C 越来越熟悉时，你会发现，把与指针搅和在一起的"类型"这个概念分成"指针的类型"和"指针所指向的类型"两个概念，是精通指针的关键点之一。我看了不少书，发现有些写得差的书中，就把指针的这两个概念搅在一起了，所以看起书来前后矛盾，越看越糊涂。<br /><h3>3.指针的值----或者叫指针所指向的内存区或地址</h3>
+指针的值是指针本身存储的数值，这个值将被编译器当作一个地址，而不是一个一般的数值。在32 位程序里，所有类型的指针的值都是一个32 位整数，因为32 位程序里内存地址全都是32 位长。指针所指向的内存区就是从指针的值所代表的那个内存地址开始，长度为si zeof(指针所指向的类型)的一片内存区。以后，我们说一个指针的值是XX，就相当于说该指针指向了以XX 为首地址的一片内存区域；我们说一个指针指向了某块内存区域，就相当于说该指针的值是这块内存区域的首地址。指针所指向的内存区和指针所指向的类型是两个完全不同的概念。在例一中，指针所指向的类型已经有了，但由于指针还未初始化，所以它所指向的内存区是不存在的，或者说是无意义的。<br /><strong><span style="color:#FF0000;">以后，每遇到一个指针，都应该问问：这个指针的类型是什么？指针指的类型是什么？该指针指向了哪里？（重点注意）</span></strong><br /><h3>4 指针本身所占据的内存区</h3>
+<p>指针本身占了多大的内存？你只要用函数sizeof(指针的类型)测一下就知道了。在32 位平台里，指针本身占据了4 个字节的长度。指针本身占据的内存这个概念在判断一个指针表达式（后面会解释）是否是左值时很有用。</p>
+<p><br /></p>
+<br /><h2>二、指针的算术运算</h2>
+指针可以加上或减去一个整数。指针的这种运算的意义和通常的数值的加减运算的意义是不一样的，以单元为单位。例如：<br />
+例二：<br /><pre><code class="language-cpp">char a[20];
+int *ptr=(int *)a; //强制类型转换并不会改变a 的类型
+ptr++;</code></pre>在上例中，指针ptr 的类型是int*,它指向的类型是int，它被初始化为指向整型变量a。接下来的第3句中，指针ptr被加了1，编译器是这样处理的：它把指针ptr 的值加上了sizeof(int)，在32 位程序中，是被加上了4，因为在32 位程序中，int 占4 个字节。由于地址是用字节做单位的，故ptr 所指向的地址由原来的变量a 的地址向高地址方向增加了4 个字节。由于char 类型的长度是一个字节，所以，原来ptr 是指向数组a 的第0 号单元开始的四个字节，此时指向了数组a
+ 中从第4 号单元开始的四个字节。我们可以用一个指针和一个循环来遍历一个数组，看例子：<br />
+例三：<br /><pre><code class="language-cpp">int array[20]={0};
+int *ptr=array;
+for(i=0;i&lt;20;i++)
+{
+    (*ptr)++;
+    ptr++；
+}</code></pre>
+<p>这个例子将整型数组中各个单元的值加1。由于每次循环都将指针ptr加1 个单元，所以每次循环都能访问数组的下一个单元。</p>
+<p><br /></p>
+再看例子：<br />
+例四：<br /><pre><code class="language-cpp">char a[20]="You_are_a_girl";
+int *ptr=(int *)a;
+ptr+=5;</code></pre>
+<p>在这个例子中，ptr 被加上了5，编译器是这样处理的：将指针ptr 的值加上5 乘sizeof(int)，在32 位程序中就是加上了5 乘4=20。由于地址的单位是字节，故现在的ptr 所指向的地址比起加5 后的ptr 所指向的地址来说，向高地址方向移动了20 个字节。<br />
+在这个例子中，没加5 前的ptr 指向数组a 的第0 号单元开始的四个字节，加5 后，ptr 已经指向了数组a 的合法范围之外了。虽然这种情况在应用上会出问题，但在语法上却是可以的。这也体现出了指针的灵活性。如果上例中，ptr 是被减去5，那么处理过程大同小异，只不过ptr 的值是被减去5 乘sizeof(int)，新的ptr 指向的地址将比原来的ptr 所指向的地址向低地址方向移动了20 个字节。<br />
+下面请允许我再举一个例子:(一个误区)</p>
+例五:<br /><pre><code class="language-cpp">#include&lt;stdio.h&gt;
+int main()
+{
+    char a[20]=" You_are_a_girl";
+    char *p=a;
+    char **ptr=&amp;p;
+    //printf("p=%d\n",p);
+    //printf("ptr=%d\n",ptr);
+    //printf("*ptr=%d\n",*ptr);
+    printf("**ptr=%c\n",**ptr);
+    ptr++;
+    //printf("ptr=%d\n",ptr);
+    //printf("*ptr=%d\n",*ptr);
+    printf("**ptr=%c\n",**ptr);
+}</code></pre><strong>误区一、</strong>输出答案为Y 和o<br />
+误解:ptr 是一个char 的二级指针,当执行ptr++;时,会使指针加一个sizeof(char),所以输出如上结果,这个可能只是少部分人的结果.<br /><strong>误区二、</strong>输出答案为Y 和a误解:ptr 指向的是一个char *类型,当执行ptr++;时,会使指针加一个sizeof(char *)(有可能会有人认为这个值为1,那就会得到误区一的答案,这个值应该是4,参考前面内容), 即&amp;p+4; 那进行一次取值运算不就指向数组中的第五个元素了吗?那输出的结果不就是数组中第五个元素了吗?答案是否定的.<br /><strong>正解:</strong> ptr 的类型是char **,指向的类型是一个char *类型,该指向的地址就是p的地址(&amp;p),当执行ptr++;时,会使指针加一个sizeof(char*),即&amp;p+4;那*(&amp;p+4)指向哪呢,这个你去问上帝吧,或者他会告诉你在哪?所以最后的输出会是一个随机的值,或许是一个非法操作.<br /><span style="color:#FF0000;"><strong>总结一下:</strong></span><br />
+一个指针ptrold 加(减)一个整数n 后，结果是一个新的指针ptrnew，ptrnew 的类型和ptrold 的类型相同，ptrnew 所指向的类型和ptrold所指向的类型也相同。ptrnew 的值将比ptrold 的值增加(减少)了n 乘sizeof(ptrold 所指向的类型)个字节。就是说，ptrnew 所指向的内存区将比ptrold 所指向的内存区向高(低)地址方向移动了n 乘sizeof(ptrold 所指向的类型)个字节。指针和指针进行加减：两个指针不能进行加法运算，这是非法操作，因为进行加法后，得到的结果指向一个不知所向的地方，而且毫无意义。两个指针可以进行减法操作，但必须类型相同，一般用在数组方面，不多说了。<br /><br /><h2>三、运算符&amp;和*</h2>
+这里&amp;是取地址运算符，*是间接运算符。<br />
+&amp;a 的运算结果是一个指针，指针的类型是a 的类型加个*，指针所指向的类型是a 的类型，指针所指向的地址嘛，那就是a 的地址。<br />
+*p 的运算结果就五花八门了。总之*p 的结果是p 所指向的东西，这个东西有这些特点：它的类型是p 指向的类型，它所占用的地址是p所指向的地址。<br />
+例六：<br /><pre><code class="language-cpp">int a=12; int b; int *p; int **ptr;
+p=&amp;a; //&amp;a 的结果是一个指针，类型是int*，指向的类型是
+//int，指向的地址是a 的地址。
+*p=24; //*p 的结果，在这里它的类型是int，它所占用的地址是
+//p 所指向的地址，显然，*p 就是变量a。
+ptr=&amp;p; //&amp;p 的结果是个指针，该指针的类型是p 的类型加个*，
+//在这里是int **。该指针所指向的类型是p 的类型，这
+//里是int*。该指针所指向的地址就是指针p 自己的地址。
+*ptr=&amp;b; //*ptr 是个指针，&amp;b 的结果也是个指针，且这两个指针
+//的类型和所指向的类型是一样的，所以用&amp;b 来给*ptr 赋
+//值就是毫无问题的了。
+**ptr=34; //*ptr 的结果是ptr 所指向的东西，在这里是一个指针，
+//对这个指针再做一次*运算，结果是一个int 类型的变量。</code></pre><br /><h2>四、指针表达式</h2>
+一个表达式的结果如果是一个指针，那么这个表达式就叫指针表式。<br />
+下面是一些指针表达式的例子：<br />
+例七：<br /><pre><code class="language-cpp">int a,b;
+int array[10];
+int *pa;
+pa=&amp;a; //&amp;a 是一个指针表达式。
+Int **ptr=&amp;pa; //&amp;pa 也是一个指针表达式。
+*ptr=&amp;b; //*ptr 和&amp;b 都是指针表达式。
+pa=array;
+pa++; //这也是指针表达式。</code></pre><br />
+例八：<br /><pre><code class="language-cpp">char *arr[20];
+char **parr=arr; //如果把arr 看作指针的话，arr 也是指针表达式
+char *str;
+str=*parr; //*parr 是指针表达式
+str=*(parr+1); //*(parr+1)是指针表达式
+str=*(parr+2); //*(parr+2)是指针表达式</code></pre>由于指针表达式的结果是一个指针，所以指针表达式也具有指针所具有的四个要素：指针的类型，指针所指向的类型，指针指向的内存区，指针自身占据的内存。<br />
+好了，当一个指针表达式的结果指针已经明确地具有了指针自身占据的内存的话，这个指针表达式就是一个左值，否则就不是一个左值。在例七中，&amp;a 不是一个左值，因为它还没有占据明确的内存。*ptr 是一个左值，因为*ptr 这个指针已经占据了内存，其实*ptr 就是指针pa，既然pa 已经在内存中有了自己的位置，那么*ptr 当然也有了自己的位置。<br /><br /><h2>五、数组和指针的关系</h2>
+数组的数组名其实可以看作一个指针。看下例：<br />
+例九：<br /><pre><code class="language-cpp">int array[10]={0,1,2,3,4,5,6,7,8,9},value;
+value=array[0]; //也可写成：value=*array;
+value=array[3]; //也可写成：value=*(array+3);
+value=array[4]; //也可写成：value=*(array+4);</code></pre>上例中，一般而言数组名array 代表数组本身，类型是int[10]，但如果把array 看做指针的话，它指向数组的第0 个单元，类型是int* 所指向的类型是数组单元的类型即int。因此*array 等于0 就一点也不奇怪了。同理，array+3 是一个指向数组第3 个单元的指针，所以*(array+3)等于3。其它依此类推。<br />
+例十：<br /><pre><code class="language-cpp">char *str[3]={
+    "Hello,thisisasample!",
+    "Hi,goodmorning.",
+    "Helloworld"
+};
+char s[80]；
+strcpy(s,str[0]); //也可写成strcpy(s,*str);
+strcpy(s,str[1]); //也可写成strcpy(s,*(str+1));
+strcpy(s,str[2]); //也可写成strcpy(s,*(str+2));</code></pre>上例中，str 是一个三单元的数组，该数组的每个单元都是一个指针，这些指针各指向一个字符串。把指针数组名str 当作一个指针的话，它指向数组的第0 号单元，它的类型是char **，它指向的类型是char *。<br />
+*str 也是一个指针，它的类型是char *，它所指向的类型是char，它指向的地址是字符串"Hello,thisisasample!"的第一个字符的地址，即'H'的地址。注意:字符串相当于是一个数组,在内存中以数组的形式储存,只不过字符串是一个数组常量,内容不可改变,且只能是右值.如果看成指针的话,他即是常量指针,也是指针常量.<br />
+str+1 也是一个指针，它指向数组的第1 号单元，它的类型是char**，它指向的类型是char*。<br />
+*(str+1)也是一个指针，它的类型是char*，它所指向的类型是char，它指向"Hi,goodmorning."的第一个字符'H'<br /><br /><strong>下面总结一下数组的数组名(数组中储存的也是数组)的问题:</strong><br />
+声明了一个数组TYPE array[n]，则数组名称array 就有了两重含义：<br />
+第一，它代表整个数组，它的类型是TYPE[n]；<br />
+第二，它是一个常量指针，该指针的类型是TYPE*，该指针指向的类型是TYPE，也就是数组单元的类型，该指针指向的内存区就是数组第0 号单元，该指针自己占有单独的内存区，注意它和数组第0 号单元占据的内存区是不同的。该指针的值是不能修改的，即类似array++的表达式是错误的。在不同的表达式中数组名array 可以扮演不同的角色。在表达式sizeof(array)中，数组名array 代表数组本身，故这时sizeof 函数测出的是整个数组的大小。<br />
+在表达式*array 中，array 扮演的是指针，因此这个表达式的结果就是数组第0 号单元的值。sizeof(*array)测出的是数组单元的大小。<br />
+表达式array+n（其中n=0，1，2，.....）中，array 扮演的是指针，故array+n 的结果是一个指针，它的类型是TYPE *，它指向的类型是TYPE，它指向数组第n号单元。故sizeof(array+n)测出的是指针类型的大小。在32 位程序中结果是4<br />
+例十一:<br /><pre><code class="language-cpp">int array[10];
+int (*ptr)[10];
+ptr=&amp;array;：</code></pre>上例中ptr 是一个指针，它的类型是int(*)[10]，他指向的类型是int[10] ，我们用整个数组的首地址来初始化它。在语句ptr=&amp;array中，array 代表数组本身。<br />
+本节中提到了函数sizeof()，那么我来问一问，sizeof(指针名称)测出的究竟是指针自身类型的大小呢还是指针所指向的类型的大小？<br />
+答案是前者。例如：<br />
+int(*ptr)[10];<br />
+则在32 位程序中，有：<br />
+sizeof(int(*)[10])==4<br />
+sizeof(int[10])==40<br />
+sizeof(ptr)==4<br />
+实际上，sizeof(对象)测出的都是对象自身的类型的大小，而不是别的什么类型的大小。<br /><br /><h2>六、指针和结构类型的关系</h2>
+可以声明一个指向结构类型对象的指针。<br />
+例十二：<br /><pre><code class="language-cpp">struct MyStruct
+{
+    int a;
+    int b;
+    int c;
+};
+struct MyStruct ss={20,30,40};
+//声明了结构对象ss，并把ss 的成员初始化为20，30 和40。
+struct MyStruct *ptr=&amp;ss;
+//声明了一个指向结构对象ss 的指针。它的类型是
+//MyStruct *,它指向的类型是MyStruct。
+int *pstr=(int*)&amp;ss;
+//声明了一个指向结构对象ss 的指针。但是pstr 和
+//它被指向的类型ptr 是不同的。</code></pre><strong>请问怎样通过指针ptr 来访问ss 的三个成员变量？<br />
+答案：</strong><br />
+ptr-&gt;a; //指向运算符，或者可以这们(*ptr).a,建议使用前者<br />
+ptr-&gt;b;<br /><p>ptr-&gt;c;</p>
+<p><br /></p>
+<strong>又请问怎样通过指针pstr 来访问ss 的三个成员变量？<br />
+答案：</strong><br />
+*pstr； //访问了ss 的成员a。<br />
+*(pstr+1); //访问了ss 的成员b。<br />
+*(pstr+2) //访问了ss 的成员c。<br /><p>虽然我在我的MSVC++6.0 上调式过上述代码，但是要知道，这样使用pstr 来访问结构成员是不正规的，为了说明为什么不正规，让我们看看怎样通过指针来访问数组的各个单元: (将结构体换成数组)</p>
+<p><br /></p>
+例十三：<br /><pre><code class="language-cpp">int array[3]={35,56,37};
+int *pa=array;
+//通过指针pa 访问数组array 的三个单元的方法是：
+*pa; //访问了第0 号单元
+*(pa+1); //访问了第1 号单元
+*(pa+2); //访问了第2 号单元</code></pre>从格式上看倒是与通过指针访问结构成员的不正规方法的格式一样。<br />
+所有的C/C++编译器在排列数组的单元时，总是把各个数组单元存放在连续的存储区里，单元和单元之间没有空隙。但在存放结构对象的各个成员时，在某种编译环境下，可能会需要字对齐或双字对齐或者是别的什么对齐，需要在相邻两个成员之间加若干个"填充字节"，这就导致各个成员之间可能会有若干个字节的空隙。<br />
+所以，在例十二中，即使*pstr 访问到了结构对象ss 的第一个成员变量a，也不能保证*(pstr+1)就一定能访问到结构成员b。因为成员a 和成员b 之间可能会有若干填充字节，说不定*(pstr+1)就正好访问到了这些填充字节呢。这也证明了指针的灵活性。要是你的目的就是想看看各个结构成员之间到底有没有填充字节，嘿，这倒是个不错的方法。<br />
+不过指针访问结构成员的正确方法应该是象例十二中使用指针ptr 的方法。<br /><br /><br /><br /><h2>七、指针和函数的关系</h2>
+可以把一个指针声明成为一个指向函数的指针。<br />
+int fun1(char *,int);<br />
+int (*pfun1)(char *,int);<br />
+pfun1=fun1;<br />
+int a=(*pfun1)("abcdefg",7); //通过函数指针调用函数。<br />
+可以把指针作为函数的形参。在函数调用语句中，可以用指针表达式来作为实参。<br />
+例十四：<br /><pre><code class="language-cpp">int fun(char *);
+inta;
+char str[]="abcdefghijklmn";
+a=fun(str);
+int fun(char *s)
+{
+    int num=0;
+    for(int i=0;;)
+    {
+        num+=*s;s++;
+    }
+    return num;
+}</code></pre>这个例子中的函数fun 统计一个字符串中各个字符的ASCII 码值之和。前面说了，数组的名字也是一个指针。在函数调用中，当把str作为实参传递给形参s 后，实际是把str 的值传递给了s，s 所指向的地址就和str 所指向的地址一致，但是str 和s 各自占用各自的存储空间。在函数体内对s 进行自加1 运算，并不意味着同时对str 进行了自加1 运算。<br /><br /><br /><h2>八、指针类型转换</h2>
+当我们初始化一个指针或给一个指针赋值时，赋值号的左边是一个指针，赋值号的右边是一个指针表达式。在我们前面所举的例子中，绝大多数情况下，指针的类型和指针表达式的类型是一样的，指针所指向的类型和指针表达式所指向的类型是一样的。<br />
+例十五：<br /><pre><code class="language-cpp">float f=12.3;
+float *fptr=&amp;f;
+int *p;</code></pre>在上面的例子中，假如我们想让指针p 指向实数f，应该怎么办？<br />
+是用下面的语句吗？<br />
+p=&amp;f;<br />
+不对。因为指针p 的类型是int *，它指向的类型是int。表达式&amp;f 的结果是一个指针，指针的类型是float *,它指向的类型是float。<br />
+两者不一致，直接赋值的方法是不行的。至少在我的MSVC++6.0 上，对指针的赋值语句要求赋值号两边的类型一致，所指向的类型也一致，其它的编译器上我没试过，大家可以试试。为了实现我们的目的，需要进行"强制类型转换"：<br />
+p=(int*)&amp;f;<br />
+如果有一个指针p，我们需要把它的类型和所指向的类型改为TYEP *TYPE， 那么语法格式是： (TYPE *)p；<br />
+这样强制类型转换的结果是一个新指针，该新指针的类型是TYPE *，它指向的类型是TYPE，它指向的地址就是原指针指向的地址。<br />
+而原来的指针p 的一切属性都没有被修改。（切记）<br />
+一个函数如果使用了指针作为形参，那么在函数调用语句的实参和形参的结合过程中，必须保证类型一致，否则需要强制转换<br />
+例十六：<br /><pre><code class="language-cpp">void fun(char*);
+int a=125,b;
+fun((char*)&amp;a);
+void fun(char*s)
+{
+	charc;
+	c=*(s+3);*(s+3)=*(s+0);*(s+0)=c;
+	c=*(s+2);*(s+2)=*(s+1);*(s+1)=c;
+}</code></pre>注意这是一个32 位程序，故int 类型占了四个字节，char 类型占一个字节。函数fun 的作用是把一个整数的四个字节的顺序来个颠倒。注意到了吗？在函数调用语句中，实参&amp;a 的结果是一个指针，它的类型是int *，它指向的类型是int。形参这个指针的类型是char *，它指向的类型是char。这样，在实参和形参的结合过程中，我们必须进行一次从int *类型到char *类型的转换。<br /><strong>结合这个例子，我们可以这样来</strong><br />
+想象编译器进行转换的过程：编译器先构造一个临时指针char *temp，然后执行temp=(char *)&amp;a，最后再把temp 的值传递给s。所以最后的结果是：s 的类型是char *,它指向的类型是char，它指向的地址就是a 的首地址。<br />
+我们已经知道，指针的值就是指针指向的地址，在32 位程序中，指针的值其实是一个32 位整数。<br />
+那可不可以把一个整数当作指针的值直接赋给指针呢？就象下面的语句：<br /><pre><code class="language-cpp">unsigned int a;
+TYPE *ptr; //TYPE 是int，char 或结构类型等等类型。
+a=20345686;
+ptr=20345686; //我们的目的是要使指针ptr 指向地址20345686
+
+ptr=a; //我们的目的是要使指针ptr 指向地址20345686
+//编译一下吧。结果发现后面两条语句全是错的。那么我们的目的就不能达到了吗？不，还有办法：
+unsigned int a;
+TYPE *ptr; //TYPE 是int，char 或结构类型等等类型。
+a=N //N 必须代表一个合法的地址；
+ptr=(TYPE*)a； //呵呵，这就可以了。</code></pre><br />
+严格说来这里的(TYPE *)和指针类型转换中的(TYPE *)还不一样。这里的(TYPE*)的意思是把无符号整数a 的值当作一个地址来看待。上面强调了a 的值必须代表一个合法的地址，否则的话，在你使用ptr 的时候，就会出现非法操作错误。想想能不能反过来，把指针指向的地址即指针的值当作一个整数取出来。完全可以。下面的例子演示了把一个指针的值当作一个整数取出来，然后再把这个整数当作一个地址赋给一个指针：<br />
+例十七：<br /><pre><code class="language-cpp">int a=123,b;
+int *ptr=&amp;a;
+char *str;
+b=(int)ptr; //把指针ptr 的值当作一个整数取出来。
+str=(char*)b; //把这个整数的值当作一个地址赋给指针str。</code></pre>现在我们已经知道了，可以把指针的值当作一个整数取出来，也可以把一个整数值当作地址赋给一个指针。<br /><br /><br /><br /><h2>九、指针的安全问题</h2>
+看下面的例子：<br />
+例十八：<br /><pre><code class="language-cpp">char s='a';
+int *ptr;
+ptr=(int *)&amp;s;
+*ptr=1298；</code></pre>指针ptr 是一个int *类型的指针，它指向的类型是int。它指向的地址就是s 的首地址。在32 位程序中，s 占一个字节，int 类型占四个字节。最后一条语句不但改变了s 所占的一个字节，还把和s 相临的高地址方向的三个字节也改变了。这三个字节是干什么的？只有编译程序知道，而写程序的人是不太可能知道的。也许这三个字节里存储了非常重要的数据，也许这三个字节里正好是程序的一条代码，而由于你对指针的马虎应用，这三个字节的值被改变了！这会造成崩溃性的错误。<br />
+让我们再来看一例：<br />
+例十九：<br /><pre><code class="language-cpp">char a;
+int *ptr=&amp;a;
+ptr++;
+*ptr=115;</code></pre>该例子完全可以通过编译，并能执行。但是看到没有？第3 句对指针ptr 进行自加1 运算后，ptr 指向了和整形变量a 相邻的高地址方向的一块存储区。这块存储区里是什么？我们不知道。有可能它是一个非常重要的数据，甚至可能是一条代码。<br />
+而第4 句竟然往这片存储区里写入一个数据！这是严重的错误。所以在使用指针时，程序员心里必须非常清楚：我的指针究竟指向了哪里。在用指针访问数组的时候，也要注意不要超出数组的低端和高端界限，否则也会造成类似的错误。<br />
+在指针的强制类型转换：ptr1=(TYPE *)ptr2 中，如果sizeof(ptr2的类型)大于sizeof(ptr1 的类型)，那么在使用指针ptr1 来访问ptr2所指向的存储区时是安全的。如果sizeof(ptr2 的类型) 小于sizeof(ptr1 的类型)，那么在使用指针ptr1 来访问ptr2 所指向的存储区时是不安全的。至于为什么，读者结合例十八来想一想，应该会明白的。<br /><br />            </div>
+                </div>
+				<div class="hide-article-box text-center">
+			<a class="btn btn-red-hollow" id="btn-readmore" data-track-view='{"mod":"popu_376","con":",https://blog.csdn.net/soonfly/article/details/51131141,"}' data-track-click='{"mod":"popu_376","con":",https://blog.csdn.net/soonfly/article/details/51131141,"}'>阅读更多</a>
+		</div>
+        	</article>
+	
+		<div class="article-bar-bottom">
+								<div class="tags-box">
+			<span class="label">个人分类：</span>
+						<a class="tag-link" href="https://blog.csdn.net/soonfly/article/category/6178047"  target="_blank">● 【C/C++】						</a>
+		</div>
+								<div class="tags-box hot-word">
+			<span class="label">相关热词：</span>
+						<a class="tag-link" href="https://blog.csdn.net/yanguoyu/article/details/1674816" target="_blank">
+			不再强求			</a>
+						<a class="tag-link" href="https://blog.csdn.net/u014291497/article/details/52975191" target="_blank">
+			不再提示			</a>
+						<a class="tag-link" href="https://blog.csdn.net/eayne/article/details/78572803" target="_blank">
+			摩尔定律不再			</a>
+						<a class="tag-link" href="https://blog.csdn.net/attagain/article/details/11987297" target="_blank">
+			不再sudoer			</a>
+						<a class="tag-link" href="https://blog.csdn.net/u014291497/article/details/52975191" target="_blank">
+			不再提醒			</a>
+					</div>
+			</div>
+	
+	<!-- !empty($pre_next_article[0]) -->
+			<div class="related-article related-article-prev text-truncate">
+		<a href="https://blog.csdn.net/soonfly/article/details/51123627">
+			<span>上一篇</span>int *p[3]和int (*p)[3] 的区别，举例说明		</a>
+	</div>
+				<div class="related-article related-article-next text-truncate">
+		<a href="https://blog.csdn.net/soonfly/article/details/51148880">
+			<span>下一篇</span>c语言typedef的用法		</a>
+	</div>
+	</div>
+<script>
+    $(".MathJax").remove();
+</script>
+
+<script type="text/javascript" src="https://static-blog.csdn.net/mdeditor/public/res/bower-libs/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+			"HTML-CSS": {
+					linebreaks: { automatic: true, width: "94%container" },
+					imageFont: null
+			},
+			tex2jax: {
+				preview: "none"
+			},
+			mml2jax: {
+				preview: 'none'
+			}
+	});
+</script>
+<script>
+	(function(){
+		var btnReadmore = $("#btn-readmore");
+		if(btnReadmore.length>0){
+			var winH = $(window).height();
+			var articleBox = $("div.article_content");
+			var artH = articleBox.height();
+			if(artH > winH*2){
+				articleBox.css({
+					'height':winH*2+'px',
+					'overflow':'hidden'
+				})
+				btnReadmore.click(function(){
+					articleBox.removeAttr("style");
+					$(this).parent().remove();
+				})
+			}else{
+				btnReadmore.parent().remove();
+			}
+		}
+	})()
+</script>        <div class="t0 clearfix">
+                                                <a href="https://blog.csdn.net/vincent040/article/details/51072675" target="_blank" data-track-view='{"mod":"popu_642","con": ",https://blog.csdn.net/vincent040/article/details/51072675,"}' data-track-click='{"mod":"popu_642","con": ",https://blog.csdn.net/vincent040/article/details/51072675,"}'>
+                                                    <div class="text-content">
+                                                        <h4>C语言（彻底理解<em>指针</em>和地址，彻底！）</h4>
+                                                        <div class="description">天啊！为什么你学了3年还是无法正确理解指针地址的概念？别扯淡你一看C语言就懵逼，琢磨LOL英雄属性你挺6啊！
+
+ 
+
+拓展：
+
+有人一提到指针地址，就会一脸懵逼，因为在他们的脑海中，指针的...</div>
+                                                    </div>
+                                                </a>
+                                            </div>        <a id="commentBox"></a>
+<div class="comment-box">
+	  	<div class="unlogin-box text-center">
+		想对作者说点什么？
+		<!-- $curl 当前地址 -->
+		<a href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/soonfly/article/details/51131141#commentBox" class="btn btn-sm btn-red">我来说一句</a>
+	</div>
+			<div class="comment-list-container">
+		<a id="comments"></a>
+		<div class="comment-list-box">
+		</div>
+		<div id="commentPage" class="pagination-box d-none"></div>
+		<div class="opt-box text-center">
+			<button class="btn btn-sm btn-link-blue" id="btnMoreComment"></button>
+		</div>
+	</div>
+</div>        <div class="recommend-box">
+            		<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/zhongrg/article/details/1880444,BlogCommendFromBaidu_7"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/zhongrg/article/details/1880444,BlogCommendFromBaidu_7"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/zhongrg/article/details/1880444" target="_blank" title="彻底搞定C<em>指针</em>">
+				彻底搞定C<em>指针</em>			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/zhongrg" target="_blank">
+					<img src="https://avatar.csdn.net/3/1/7/3_zhongrg.jpg" alt="zhongrg" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">zhongrg</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">11-12</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					1.9万</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/zhongrg/article/details/1880444" target="_blank" >
+				   1．语言中变量的实质    要理解C指针，我认为一定要理解C中“变量”的存储实质，所以我就从“变量”这个东西开始讲起吧！    先来理解理解内存空间吧！请看下图：内存地址→  6      7　...			</a>
+		</p>
+
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/ad_ad_ad/article/details/1522145,BlogCommendFromBaidu_2"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/ad_ad_ad/article/details/1522145,BlogCommendFromBaidu_2"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/ad_ad_ad/article/details/1522145" target="_blank" title="c语言<em>指针</em><em>详解</em>">
+				c语言<em>指针</em><em>详解</em>			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/ad_ad_ad" target="_blank">
+					<img src="https://avatar.csdn.net/7/0/F/3_ad_ad_ad.jpg" alt="ad_ad_ad" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">ad_ad_ad</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">03-06</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					16.3万</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/ad_ad_ad/article/details/1522145" target="_blank" >
+				指针是Ｃ语言中广泛使用的一种数据类型。 运用指针编程是Ｃ语言最主要的风格之一。利用指针变量可以表示各种数据结构； 能很方便地使用数组和字符串；  并能象汇编语言一样处理内存地址，从而编出精练而高效的程...			</a>
+		</p>
+
+	</div>
+														<div class="recommend-item-box recommend-ad-box">
+						<script type="text/javascript" src="//cee1.iteye.com/pkcgstjjm.js"></script>
+					</div>
+							
+				<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/xierhacker/article/details/52516742,BlogCommendFromBaidu_4"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/xierhacker/article/details/52516742,BlogCommendFromBaidu_4"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/xierhacker/article/details/52516742" target="_blank" title="深度长文教你彻底掌握C++/C<em>指针</em>(一):基石">
+				深度长文教你彻底掌握C++/C<em>指针</em>(一):基石			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/xierhacker" target="_blank">
+					<img src="https://avatar.csdn.net/1/1/4/3_xierhacker.jpg" alt="xierhacker" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">xierhacker</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">09-13</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					1.9万</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/xierhacker/article/details/52516742" target="_blank" >
+				一．基础C++或者C里面最容易让人糊涂应该是指针了,不管是初学者甚至是有经验的童鞋有时候在用指针的时候也会出现一些很隐蔽的错误. 
+指针本身就是一个很绕的概念,而指针又能够和很多的结构比如数组(二维数...			</a>
+		</p>
+
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/zhangyulin54321/article/details/7872972,BlogCommendFromBaidu_23"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/zhangyulin54321/article/details/7872972,BlogCommendFromBaidu_23"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/zhangyulin54321/article/details/7872972" target="_blank" title="彻底搞清c/c++中的几个<em>指针</em>概念：悬垂<em>指针</em>和智能<em>指针</em>以及哑<em>指针</em>和野<em>指针</em>">
+				彻底搞清c/c++中的几个<em>指针</em>概念：悬垂<em>指针</em>和智能<em>指针</em>以及哑<em>指针</em>和野<em>指针</em>			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/zhangyulin54321" target="_blank">
+					<img src="https://avatar.csdn.net/D/7/0/3_zhangyulin54321.jpg" alt="zhangyulin54321" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">zhangyulin54321</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">08-16</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					4751</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/zhangyulin54321/article/details/7872972" target="_blank" >
+				先看看下面两段代码运行结果：
+#include
+//#include 
+using namespace std;
+int *p=NULL;
+void fun()
+{int i=10;p=&amp;...			</a>
+		</p>
+
+	</div>
+						<div class="recommend-item-box recommend-download-box clearfix" data-track-view='{"mod":"popu_614","con":",https://download.csdn.net/download/zhenmafan1009/5100643,BlogCommendFromBaidu_1"}' data-track-click='{"mod":"popu_614","con":",https://download.csdn.net/download/zhenmafan1009/5100643,BlogCommendFromBaidu_1"}'>
+			<div class="content float-left">
+				<h4 class="text-truncate oneline">
+					<a href="https://download.csdn.net/download/zhenmafan1009/5100643" target="_blank">
+						C<em>指针</em><em>详解</em>(<em>经典</em>,<em>非常</em><em>详细</em>).pdf					</a>
+				</h4>
+				<p>
+					<span class="data">2013年03月01日 </span>
+					<span class="size">220KB</span>
+					<span class="type">下载</span>
+				</p>
+			</div>
+			<div class="img-box float-right">
+				<a href="https://download.csdn.net/download/zhenmafan1009/5100643" target="_blank" strategy="BlogCommendFromBaidu_1">
+					<img src="https://csdnimg.cn/release/download/old_static/images/minetype/pdf.svg" alt="">
+				</a>
+			</div>
+		</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/sergeycao/article/details/53668722,BlogCommendFromBaidu_3"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/sergeycao/article/details/53668722,BlogCommendFromBaidu_3"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/sergeycao/article/details/53668722" target="_blank" title="你需要知道关于C语言<em>指针</em>的一切">
+				你需要知道关于C语言<em>指针</em>的一切			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/sergeycao" target="_blank">
+					<img src="https://avatar.csdn.net/A/2/6/3_sergeycao.jpg" alt="sergeycao" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">sergeycao</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">12-15</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					4817</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/sergeycao/article/details/53668722" target="_blank" >
+				Everything you need to know about pointers in C
+
+
+你需要知道关于C语言指针的一切
+
+指针的定义
+
+指针是内存地址。
+(嗯，简短的段落。...			</a>
+		</p>
+
+	</div>
+								<div class="recommend-item-box recommend-ad-box" id="a_d_feed_0"></div>
+			<script>
+				var width = $("div.recommend-box").outerWidth() - 48;
+				NEWS_FEED({
+					w: width,
+					h: 60,
+					showid: 'Afihld',
+					placeholderId: 'a_d_feed_0',
+					inject: 'define',
+					define: {
+						imagePosition: 'right',
+						imageBorderRadius: 0,
+						imageWidth: 90,
+						imageHeight: 60,
+						imageFill: 'clip',
+						displayImage: true,
+						displayTitle: true,
+						titleFontSize: 20,
+						titleFontColor: '#333',
+						titleFontFamily: 'Microsoft Yahei',
+						titleFontWeight: 'bold',
+						titlePaddingTop: 0,
+						titlePaddingRight: 0,
+						titlePaddingBottom: 10,
+						titlePaddingLeft: 0,
+						displayDesc: true,
+						descFontSize: 14,
+						descPaddingLeft: 14,
+						descFontColor: '#6b6b6b',
+						descFontFamily: 'Microsoft Yahei',
+						paddingTop: 0,
+						paddingRight: 0,
+						paddingBottom: 0,
+						paddingLeft: 0,
+						backgroundColor: '#fff',
+						hoverColor: '#ca0c16'
+					}
+				})
+			</script>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/g200407331/article/details/52610150,BlogCommendFromBaidu_5"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/g200407331/article/details/52610150,BlogCommendFromBaidu_5"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/g200407331/article/details/52610150" target="_blank" title="理解一般<em>指针</em>和指向<em>指针</em>的<em>指针</em>">
+				理解一般<em>指针</em>和指向<em>指针</em>的<em>指针</em>			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/g200407331" target="_blank">
+					<img src="https://avatar.csdn.net/C/E/7/3_g200407331.jpg" alt="g200407331" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">g200407331</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">09-21</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					1.8万</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/g200407331/article/details/52610150" target="_blank" >
+				理解一般指针和指向指针的指针
+
+
+
+在说指向指针的指针之前，不得不说指向变量的指针。先看如下示例： 
+1. 指向整型指针
+
+先看如下示例： 
+View
+ Code 
+
+ 1 #include 
+ 2 ...			</a>
+		</p>
+
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/hycxag/article/details/78134345,BlogCommendFromBaidu_6"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/hycxag/article/details/78134345,BlogCommendFromBaidu_6"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/hycxag/article/details/78134345" target="_blank" title="<em>指针</em>和运算符优先级">
+				<em>指针</em>和运算符优先级			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/hycxag" target="_blank">
+					<img src="https://avatar.csdn.net/B/E/8/3_hycxag.jpg" alt="hycxag" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">hycxag</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">09-29</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					873</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/hycxag/article/details/78134345" target="_blank" >
+				指针使用未初始化的指针会带来非常大的风险。0：null/nullptr，nullptr可隐式转为bool 
+char *p={&quot;abcd&quot;}建立一个以\0终止的字符串字面值。p为第一个字符的地址。 
+...			</a>
+		</p>
+
+	</div>
+					<div class="recommend-item-box" data-track-view='{"mod":"popu_614","con":",https://blog.csdn.net/huangminqiang201209/article/details/8362804,BlogCommendFromBaidu_8"}' data-track-click='{"mod":"popu_614","con":",https://blog.csdn.net/huangminqiang201209/article/details/8362804,BlogCommendFromBaidu_8"}'>
+		<h4 class="text-truncate oneline">
+			<a href="https://blog.csdn.net/huangminqiang201209/article/details/8362804" target="_blank" title="C语言<em>指针</em>并不难">
+				C语言<em>指针</em>并不难			</a>
+		</h4>
+		<div class="info-box d-flex align-content-center">
+			<p>
+				<a class="avatar" src="https://blog.csdn.net/huangminqiang201209" target="_blank">
+					<img src="https://avatar.csdn.net/C/6/1/3_huangminqiang201209.jpg" alt="huangminqiang201209" class="avatar-pic">
+					<span class="namebox">
+						<span class="name">huangminqiang201209</span>
+						<span class="triangle"></span>
+					</span>
+				</a>
+			</p>
+			<p class="date-and-readNum">
+				<span class="date hover-show">12-21</span>
+				<span class="read-num hover-hide">
+					<svg class="icon csdnc-yuedushu" aria-hidden="true">
+						<use xlink:href="#csdnc-yuedushu"></use>
+					</svg>
+					3万</span>
+			</p>
+		</div>
+		<p class="content oneline">
+			<a class="oneline" href="https://blog.csdn.net/huangminqiang201209/article/details/8362804" target="_blank" >
+				C语言的核心在于指针，这2个指针题目，如果你不用编译就能得出正确的答案，那你一定是C的高手，不择不扣的高手—指针并不难！ 
+ 
+第一题：求p[-1]、p[-5]的值（此题重点在于负号，很简单，考察对指...			</a>
+		</p>
+
+	</div>
+			
+            <div class="recommend-loading-box">
+                <img src='https://csdnimg.cn/release/phoenix/images/feedLoading.gif'>
+            </div>
+            <div class="recommend-end-box">
+                <p class="text-center">没有更多推荐了，<a href="https://blog.csdn.net/" class="c-blue c-blue-hover c-blue-focus">返回首页</a></p>
+            </div>
+        </div>
+    </main>
+    <aside>
+		    <div id="asideProfile" class="aside-box">
+    <h3 class="aside-title">个人资料</h3>
+    <div class="profile-intro d-flex">
+        <div class="avatar-box d-flex justify-content-center flex-column">
+            <a href="https://blog.csdn.net/soonfly">
+                <img src="https://avatar.csdn.net/3/5/1/3_soonfly.jpg" class="avatar_pic">
+            </a>
+        </div>
+        <div class="user-info d-flex justify-content-center flex-column">
+            <p class="name csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                <a href="https://blog.csdn.net/soonfly" target="_blank" class="text-truncate" id="uid">唐大麦</a>
+            </p>
+                    </div>
+                <div class="opt-box d-flex justify-content-center flex-column">
+            <span  class="csdn-tracking-statistics tracking-click" data-mod="popu_379">
+                                <a class="btn btn-sm btn-red-hollow" href="https://passport.csdn.net/account/login?from=https://blog.csdn.net/soonfly/article/details/51131141" target="_self">关注</a>
+                            </span>
+                    </div>
+            </div>
+    <div class="data-info d-flex item-tiling">
+                <dl class="text-center" title="142">
+                        <dt><a href="https://blog.csdn.net/soonfly?t=1">原创</a></dt>
+            <dd><a href="https://blog.csdn.net/soonfly?t=1"><span class="count">142</span></a></dd>
+                    </dl>
+        <dl class="text-center" title="330">
+            <dt>粉丝</dt>
+            <dd><span class="count" id="fan">330</span></dd>
+        </dl>
+        <dl class="text-center" title="107">
+            <dt>喜欢</dt>
+            <dd><span class="count">107</span></dd>
+        </dl>
+        <dl class="text-center" title="104">
+            <dt>评论</dt>
+            <dd><span class="count">104</span></dd>
+        </dl>
+    </div>
+    <div class="grade-box clearfix">
+        <dl>
+            <dt>等级：</dt>
+            <dd>
+                <a href="https://blog.csdn.net/home/help.html#level" title="6级,点击查看等级说明" target="_blank">
+                    <svg class="icon icon-level" aria-hidden="true">
+                        <use xlink:href="#csdnc-bloglevel-6"></use>
+                    </svg>
+                </a>
+            </dd>
+        </dl>
+        <dl>
+            <dt>访问：</dt>
+            <dd title="450525">
+                45万+            </dd>
+        </dl>
+        <dl>
+            <dt>积分：</dt>
+            <dd title="5402">
+                5402            </dd>
+        </dl>
+        <dl title="6732">
+            <dt>排名：</dt>
+            <dd>6732</dd>
+        </dl>
+    </div>
+        <div class="badge-box d-flex">
+        <span>勋章：</span>
+                <a class="icon-badge" title="专栏达人">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#csdnc-m-columns"></use>
+            </svg>
+            <div class="icon-arrow"></div>
+            <div class="grade-detail-box item1">
+                <div class="pos-box">
+                    <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#csdnc-m-columns"></use>
+                        </svg>
+                        <p>专栏达人</p>
+                    </div>
+                    <div class="right-box d-flex justify-content-center align-items-center">
+                        授予成功创建个人博客专栏的用户。专栏中添加五篇以上博文即可点亮！撰写博客专栏浓缩技术精华，专栏达人就是你！
+                    </div>
+                </div>
+            </div> 
+        </a>  
+                        <a class="icon-badge" title="持之以恒">
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#csdnc-m-lasting"></use>
+            </svg>
+            <div class="icon-arrow"></div>
+            <div class="grade-detail-box item2">
+                <div class="pos-box">
+                    <div class="left-box d-flex justify-content-center align-items-center flex-column">
+                        <svg class="icon" aria-hidden="true">
+                            <use xlink:href="#csdnc-m-lasting"></use>
+                        </svg>
+                        <p>持之以恒</p>
+                    </div>
+                    <div class="right-box d-flex justify-content-center align-items-center">
+                        授予每个自然月内发布4篇或4篇以上原创或翻译IT博文的用户。不积跬步无以至千里，不积小流无以成江海，程序人生的精彩需要坚持不懈地积累！
+                    </div>
+                </div>
+            </div>
+        </a>
+                            </div>
+    </div>		    <div class="csdn-tracking-statistics mb8 box-shadow" data-pid="blog" data-mod="popu_4" style="height:250px;">
+    <div class="aside-content text-center" id="cpro_u2734133">
+              <script type="text/javascript" src="//cee1.iteye.com/lgyyovfyh.js"></script>
+          </div>
+</div>
+		    <div id="asideNewArticle" class="aside-box">
+    <h3 class="aside-title">最新文章</h3>
+    <div class="aside-content">
+        <ul class="inf_list clearfix csdn-tracking-statistics tracking-click" data-mod="popu_382">
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/soonfly/article/details/78616480" target="_blank">在Scrapy中启动shell来调试</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/soonfly/article/details/78391285" target="_blank">常见的Python 2 和 3 差别</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/soonfly/article/details/78361819" target="_blank">理解Python协程:从yield/send到yield from再到async/await</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/soonfly/article/details/78008632" target="_blank">maven项目test报错Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin</a>
+            </li>
+                        <li class="clearfix">
+                <a href="https://blog.csdn.net/soonfly/article/details/77946894" target="_blank">热门移动端H5开源前端开发框架搜集整理</a>
+            </li>
+                    </ul>
+    </div>
+</div>
+		    <div id="asideColumn" class="aside-box">
+    <h3 class="aside-title">博主专栏</h3>
+    <div class="aside-content">
+        <ul class="column-box csdn-tracking-statistics tracking-click" data-mod="popu_520" >
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/15086.html">
+                            <img src="https://img-blog.csdn.net/20170331195619402?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/15086.html">MyBatis学习教程</a></p>
+                        <div class="data">阅读量：<span>41227</span><span class="count">18 篇</span></div>
+                    </div>
+                </li>
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/15088.html">
+                            <img src="https://img-blog.csdn.net/20170404160605487?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/15088.html">Spring学习点滴</a></p>
+                        <div class="data">阅读量：<span>50894</span><span class="count">36 篇</span></div>
+                    </div>
+                </li>
+                            <li class="clearfix">
+                    <div class="img-box float-left">
+                        <a class="d-flex align-items-center" href="https://blog.csdn.net/column/details/15464.html">
+                            <img src="https://img-blog.csdn.net/20170504211442844?imageView2/5/w/120/h/120" alt="">
+                        </a>
+                    </div>
+                    <div class="info">
+                        <p class="title"><a href="https://blog.csdn.net/column/details/15464.html">Java多线程/并发</a></p>
+                        <div class="data">阅读量：<span>31397</span><span class="count">27 篇</span></div>
+                    </div>
+                </li>
+                    </ul>
+    </div>
+    </div>
+		    <div id="asideCategory" class="aside-box flexible-box">
+    <h3 class="aside-title">个人分类</h3>
+    <div class="aside-content">
+        <ul>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6034313">
+                    ●设计模式                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/7252746">
+                    ● Python                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6795889">
+                    ● Java                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796178">
+                    -------【Java基础】                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796181">
+                    -------【Java多线程】                    <span class="count float-right">28篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796262">
+                    -------【Spring】                    <span class="count float-right">36篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796264">
+                    -------【Mybatis】                    <span class="count float-right">18篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796269">
+                    -------【SpringMVC】                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796214">
+                    ● PHP                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6034277">
+                    -------【PHP开发】                    <span class="count float-right">32篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6299451">
+                    -------【CodeIgniter源码剖析】                    <span class="count float-right">15篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6178047">
+                    ● 【C/C++】                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796204">
+                    ● Linux                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796209">
+                    -------【Linux基础】                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796296">
+                    -------【运维及部署】                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796354">
+                    ● Web知识                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6034271">
+                    ● TCP/IP                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6034307">
+                    ● 黑客及安全                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796358">
+                    ● 数据/存储/应用                    <span class="count float-right">6篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796436">
+                    -------【Mysql】                    <span class="count float-right">8篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796444">
+                    -------【Redis】                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6796432">
+                    -------【Sphinx / Coreseek】                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6184913">
+                    -------【大数据】                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6798634">
+                    ● 读书笔记                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/6798645">
+                    ● 系统架构                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <li>
+                <a href="https://blog.csdn.net/soonfly/article/category/7133427">
+                    ● 移动开发                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+        <p class="text-center">
+        <a class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</a>
+    </p>
+    </div>
+		    <div id="asideArchive" class="aside-box flexible-box">
+    <h3 class="aside-title">归档</h3>
+    <div class="aside-content">
+        <ul class="archive-list">
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/11">
+                    2017年11月                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/10">
+                    2017年10月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/09">
+                    2017年9月                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/08">
+                    2017年8月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/07">
+                    2017年7月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/06">
+                    2017年6月                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/05">
+                    2017年5月                    <span class="count float-right">9篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/04">
+                    2017年4月                    <span class="count float-right">44篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/03">
+                    2017年3月                    <span class="count float-right">32篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/02">
+                    2017年2月                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2017/01">
+                    2017年1月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/12">
+                    2016年12月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/11">
+                    2016年11月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/10">
+                    2016年10月                    <span class="count float-right">3篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/09">
+                    2016年9月                    <span class="count float-right">7篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/08">
+                    2016年8月                    <span class="count float-right">14篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/07">
+                    2016年7月                    <span class="count float-right">15篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/06">
+                    2016年6月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/05">
+                    2016年5月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/04">
+                    2016年4月                    <span class="count float-right">18篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/03">
+                    2016年3月                    <span class="count float-right">13篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/02">
+                    2016年2月                    <span class="count float-right">4篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2016/01">
+                    2016年1月                    <span class="count float-right">2篇</span>
+                </a>
+            </li>
+                        <!--归档统计-->
+            <li>
+                <a href="https://blog.csdn.net/soonfly/article/month/2015/12">
+                    2015年12月                    <span class="count float-right">1篇</span>
+                </a>
+            </li>
+                    </ul>
+    </div>
+        <p class="text-center">
+        <a class="btn btn-link-blue flexible-btn" data-fbox="aside-archive">展开</a>
+    </p>
+    </div>
+		    <div id="asideHotArticle" class="aside-box">
+	<h3 class="aside-title">热门文章</h3>
+	<div class="aside-content">
+		<ul class="hotArticle-list csdn-tracking-statistics tracking-click" data-mod="popu_521">
+							<li>
+					<a href="https://blog.csdn.net/soonfly/article/details/51131141">让你不再害怕指针——C指针详解(经典,非常详细)</a>
+					<p class="read">阅读量：<span>89955</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/soonfly/article/details/70147205">几张图轻松理解String.intern()</a>
+					<p class="read">阅读量：<span>14045</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/soonfly/article/details/64499423">【MyBatis学习15】mybatis-generator生成逆向工程两种方式</a>
+					<p class="read">阅读量：<span>12274</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/soonfly/article/details/70238902">MySQL中的锁（表锁、行锁，共享锁，排它锁，间隙锁）</a>
+					<p class="read">阅读量：<span>11780</span></p>
+				</li>
+							<li>
+					<a href="https://blog.csdn.net/soonfly/article/details/70677138">详解Mysql分布式事务XA（跨数据库事务）</a>
+					<p class="read">阅读量：<span>11704</span></p>
+				</li>
+					</ul>
+	</div>
+</div>
+		    <div id="asideNewComments" class="aside-box">
+    <h3 class="aside-title">最新评论</h3>
+    <div class="aside-content">
+        <ul class="newcomment-list">
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/soonfly/article/details/51131141#comments">让你不再害怕指针——C指针详解(经...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/u014795270" class="user-name" target="_blank">u014795270</a>：好文章，作者很棒！非常感谢                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/soonfly/article/details/70147205#comments">几张图轻松理解String.int...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/kuishao1314aa" class="user-name" target="_blank">kuishao1314aa</a>：[reply]whp1473[/reply]
+你这个没写对，str2.intern有返回值的，返回...                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/soonfly/article/details/52627683#comments">理解PHP依赖注入容器(depen...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/fujiafeihudui" class="user-name" target="_blank">fujiafeihudui</a>：讲的很有趣，很赞                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/soonfly/article/details/51131141#comments">让你不再害怕指针——C指针详解(经...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/Tp_zhu" class="user-name" target="_blank">Tp_zhu</a>：谢谢  大佬                </p>
+            </li>
+                        <li>
+                <a class="title text-truncate" target="_blank" href="https://blog.csdn.net/soonfly/article/details/70147205#comments">几张图轻松理解String.int...</a>
+                <p class="comment">
+                    <a href="https://my.csdn.net/cmsuren" class="user-name" target="_blank">cmsuren</a>：谢谢博主，讲的真好，网上讲的好多都是过时的了                </p>
+            </li>
+                    </ul>
+    </div>
+</div>
+		<div id="asideFooter">
+			
+		<div class="aside-box">
+						<script type="text/javascript" src="//cee1.iteye.com/mhzzpwgzj.js"></script>
+					</div>
+				<div class="aside-box">
+			<div class="persion_article">
+			</div>
+		</div>
+	</div>
+</aside>
+<script src="https://csdnimg.cn/pubfooter/js/publib_footer-1.0.3.js" data-isfootertrack="false" type="text/javascript"></script>
+<script>
+	$("a.flexible-btn").click(function(){
+		$(this).parents('div.aside-box').removeClass('flexible-box');
+		$(this).remove();
+	})
+</script>
+</div>
+<div class="mask-dark"></div>
+<div class="pulllog-box" style="display: block;">
+	<div class="pulllog clearfix">
+		<span class="text float-left">
+			<!-- 广告位：PC-博客内页底通 文字链位置 -->
+			<script>
+			(function() {
+				var s = "_" + Math.random().toString(36).slice(2);
+				document.write('<div id="baidufooter_0001"></div>');
+				(window.slotbydup=window.slotbydup || []).push({
+					id: '5851901',
+					container: 'baidufooter_0001',
+					size: '520,40',
+					display: 'inlay-fix'
+				});
+			})();
+			</script>
+			<script src="https://dup.baidustatic.com/js/os.js"></script>
+			<style>
+				#baidufooter_0001{
+					display: none !important;
+				}
+			</style>
+		</span>
+		<div class="pulllog-btn float-right clearfix">
+            <button class="pulllog-login float-left csdn-tracking-statistics tracking-click" data-mod="popu_557">
+                登录
+            </button>
+            <div class="pulllog-sigin float-left csdn-tracking-statistics tracking-click" data-mod="popu_558">
+                <a href="https://passport.csdn.net/account/mobileregister" target="_blank">注册</a>
+            </div>
+            <button class="btn-close">
+                <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#csdnc-times"></use>
+                </svg>
+            </button>
+		</div>
+	</div>
+</div>
+<div id="loginWrap" style="display:none"></div>
+<div class="tool-box">
+	<ul class="meau-list">
+		<li>
+			<button class="btn-like " title="点赞">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-thumbsup"></use>
+				</svg>
+				<p>116</p>
+			</button>
+		</li>
+		<li>
+			<a class="btn-comments" title="写评论" href="#commentBox">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-comments"></use>
+				</svg><br>写评论			</a>
+		</li>
+		<li class="toc-container-box" id="liTocBox">
+			<button class="btn-toc" title="目录">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-contents"></use>
+				</svg><br>目录
+			</button>
+			<div class="toc-container">
+				<div class="pos-box">
+					<div class="icon-arrow"></div>
+					<div class="scroll-box">
+						<div class="toc-box"></div>
+					</div>
+				</div>
+				<div class="opt-box">
+					<button class="btn-opt prev nomore" title="向上">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevronup"></use>
+						</svg>
+					</button>
+					<button class="btn-opt next">
+						<svg class="icon" aria-hidden="true">
+							<use xlink:href="#csdnc-chevrondown"></use>
+						</svg>
+					</button>
+				</div>
+			</div>
+		</li>
+		<li>
+			<button class="btn-bookmark" title="收藏">
+				<svg class="icon active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark-ok"></use>
+				</svg><svg class="icon no-active" aria-hidden="true">
+					<use xlink:href="#csdnc-bookmark"></use>
+				</svg><br>收藏
+			</button>
+		</li>
+				<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_weixin" data-cmd="weixin" title="微信分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-wechat"></use>
+				</svg><br>微信
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_tsina" data-cmd="tsina" title="微博分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-weibo"></use>
+				</svg><br>微博
+			</a>
+		</li>
+		<li class="bdsharebuttonbox">
+			<a class="btn-comments bds_qzone" data-cmd="qzone" title="QQ分享">
+				<svg class="icon" aria-hidden="true">
+					<use xlink:href="#csdnc-qq"></use>
+				</svg><br>QQ
+			</a>
+		</li>
+	</ul>
+</div>
+<script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "1", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "16" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'https://csdnimg.cn/static/api/js/share.js?v=89860594'];</script>
+<script>
+    var recommendCount = 9;
+    recommendCount = recommendCount > 1 ? (recommendCount + (recommendCount>6 ? 2 : 1)) : recommendCount;
+    var articleTit = "让你不再害怕指针——C指针详解(经典,非常详细)";
+    var ChannelId = 16;
+    var articleId = "51131141";
+    var commentscount = 17;
+    var islock = false;
+    var curentUrl = "https://blog.csdn.net/soonfly/article/details/51131141";
+    var myUrl = "https://my.csdn.net/";
+    //1禁止评论，2正常
+    var commentAuth = 2;
+    //百度搜索
+    var baiduKey = "c%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A3";
+    var needInsertBaidu = true;
+    // 代码段样式
+    var codeStyle = '';
+    var highlight = ["\u4e0d\u518d","\u5bb3\u6015","\u6307\u9488","\u6307\u9488","\u8be6\u89e3","\u7ecf\u5178","\u975e\u5e38","\u8be6\u7ec6"];//高亮数组
+</script>
+<script src="https://csdnimg.cn/public/sandalstrap/1.3/js/sandalstrap.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/vendor/pagination/paging.js"></script>
+<script src='https://csdnimg.cn/public/common/gotop/js/goTop-v1.0.min.js?v201803151422'></script>
+<script>
+    GoTop({
+        right: 8,
+        hasReport: true,
+        reportFun: function() {
+            showReport(false,"让你不再害怕指针——C指针详解(经典,非常详细)");
+        }
+    })
+</script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/common-4b943ac97d.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/template/js/detail-cdbb97e217.min.js"></script>
+<script src="https://csdnimg.cn/release/phoenix/themes/skin-yellow/skin-yellow-22f3069ef3.min.js"></script>
+<script src="https://csdnimg.cn/search/baidu_search-1.1.2.js?v=201802071056&autorun=true&install=true&keyword=c%E8%AF%AD%E8%A8%80%E6%8C%87%E9%92%88%E8%AF%A6%E8%A7%A3"  type="text/javascript"></script>
+</body>
+<div class="box-box-default">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/mhzzjepzz.js"></script>
+</div>
+<div class="box-box-large">
+    <a class="btn-remove">
+        关闭
+    </a>
+    <script type="text/javascript" src="//cee1.iteye.com/idvveasfs.js"></script>
+</div>
+<!-- 第四范式SDK -->
+<script charset="utf-8" src="https://nbrecsys.4paradigm.com/resource/js/sdk-csdn-smallflow.prod.0723.js" async defer></script>
+
+<!-- 高亮未与 markdown兼容  -->
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/chart/chart.css" />
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/chart/lib/chart.min.js"></script>
+	<script type="text/javascript" src="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/chart/widget2chart.js"></script>
+	<link rel="stylesheet" href="https://csdnimg.cn/release/blog_editor_html/release1.3.1/ckeditor/plugins/codesnippet/lib/highlight/styles/atom-one-dark.css">
+	<script type="text/javascript" src="https://csdnimg.cn/release/phoenix/production/pc_wap_common-93244aa03c.js" /></script>
+
+	<script type="text/javascript">
+	$(function(){
+		var allEscRegex = /&(lt|gt|amp|quot|nbsp|shy|#\d{1,5});/g,
+		    namedEntities = {
+					lt: '<',
+					gt: '>',
+					amp: '&',
+					quot: '"',
+					nbsp: '\u00a0',
+					shy: '\u00ad'
+				}
+		var allEscDecode = function( match, code ) {
+				return namedEntities[ code ];
+		};
+		htmlDecodeAttr = function( text ) {
+				return text.replace( allEscRegex, allEscDecode );
+		}
+	  hljs.initHighlightingOnLoad();
+	  hljs.initCopyButtonOnLoad();
+	  hljs.initLineNumbersOnLoad();
+		if($('pre .language-plain').length>0){
+			$('pre .language-plain').each(function(i,e){
+				var highlightRe = hljs.highlightAuto(htmlDecodeAttr(e.innerHTML))
+				e.innerHTML = highlightRe.value;
+				e.className = 'language-'+highlightRe.language;
+			});
+		}
+	})
+	</script>
+</html>

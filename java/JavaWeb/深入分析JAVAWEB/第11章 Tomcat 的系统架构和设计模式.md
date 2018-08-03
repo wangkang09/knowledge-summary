@@ -43,7 +43,7 @@
     	lifecycle.fireLifecycleEvent(AFTER_START_EVENT,null);
     }
 
-### 11.4 Connector 组件 ###
+### 11.4 Connector  ###
 * 负责接收浏览器发送过来的TCP连接请求，创建一个 Request 和 Response 对象，分别用于和请求端交换数据
 * 然后会产生一个线程来处理这个请求，并把产生的 Request 和 Response 对象传给这个请求的线程
 * 处理这个请求的线程由 Container 组件完成
@@ -74,3 +74,13 @@
 	* 装载Servlet后就会调用Servlet的init方法，同时会传一个StandardWrapperFacade对象给Servlet
 	* Servlet初始化完成后，就等着StandardWrapperValue去调用它的Service方法了
 	* 调用Service方法之前，要调用Servlet所有的filter
+
+
+### 11.6 Tomcat 其他组件 ###
+* Logger：负责记录各种事件
+* Loader：负责加载类文件，如加载应用程序中的Servlet
+* Manager：负责管理Session
+* Realm：负责用户验证与授权
+* Pipeline：负责完成容器invoke方法的调用，对请求进行处理(责任链模式的经典应用)
+
+* 当Tomcat容器启动时，这些组件也要
