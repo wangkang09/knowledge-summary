@@ -1,4 +1,4 @@
-## 第11章 Tomcat 的系统架构和设计模式 ##
+## 11 Tomcat 的系统架构和设计模式 ##
 * Tomcat 有两个核心组件：Connector 和 Container
 * 多个Connector 和一个 Container 就行成了一个 Service，可以对外提供服务了
 * Service 需要一个生存环境，有Server 提供，Tomcat 的生命周期由Server控制
@@ -84,3 +84,4 @@
 * Pipeline：负责完成容器invoke方法的调用，对请求进行处理(责任链模式的经典应用)
 
 * 当Tomcat容器启动时，这些组件也要
+

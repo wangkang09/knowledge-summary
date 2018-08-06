@@ -1,4 +1,4 @@
-## 第10章 深入理解 Session 与 Cookie ##
+## 10 深入理解 Session 与 Cookie ##
 * Session 与 Cookie 的作用都是为了保持访问用户与后端服务器的交互状态，各有优缺点
 	* Cookie 字节数大，当访问量很大时，占有带宽多
 	* Session 不容易在多台服务器之间共享

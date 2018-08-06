@@ -202,3 +202,261 @@ I/O是整个人机交互的核心问题，且I/O问题尤其突出，很容易�
 		* 减少数据从内核到用户空间的复制，数据直接在内核空间移动
 	* FileChannel.map
 		* 内存映射，适合大文件的只读性操作，如大文件的MD5校验
+
+## 3 Java Web 中的中文编码问题
+
+### 3.1 为什么要编码
+
+- 计算机存储信息的最小单元是1byte，即8个bit，所以只能表示的字符范围是0-225个
+- 人类表示的符号太多，无法用1个byte完全表示
+- 必须要有一个新的数据结构char，从char到byte必须编码
+- char的字节数从1-8个不等，根据编码方式
+
+### 3.2 几种常见的编码方式
+
+- ASCII码
+  - 共用128个，用一个字节的低7位表示
+- ISO-8859-1
+  - 扩展ASCII码，仍然是单字节，有256个字符
+- GB2312
+  - 双字节编码
+- GBK
+  - 扩展GB2312加入了更多的汉子
+- UTF-16
+  - 定义了Unicode字符在计算机中的存取方法
+  - 用两个字节表示Unicode的转化格式，为定长方法
+  - 是Java 和 XML 的基础
+  - 每两个字节表示一个字符，大大简化了字符串操作
+- UTF-8
+  - 变长编码
+
+### 3.3 在I/O操作中存在的编码
+
+- Reader类读的是字符，InputStream 读的是字节
+- 解码工作交给了StreamDecoder
+- 中文环境默认GBK编码
+- 不建议使用默认编码，跨环境是会出现乱码
+
+### 3.4 在内存操作中的编码
+
+- Java中用String表示字符串，所以String类中就提供了转换到字节的方法
+
+------
+
+```
+String s = "这是一段中文字符串";
+byte[] b = s.getBytes("UTF-8");
+String n = new String(b,"UTF-8");
+```
+
+- char[] 到 byte[]的编码
+- ByteBuffer类提供，char到byte的软转换
+
+### 3.5 在Java Web 中的编解码
+
+#### 3.5.1 URL的编解码
+
+- 每个浏览器对URL的编码都不太一样
+- 以Tomcat为例：
+- URL的URI部分进行解码的字符集是在connector的<Connector URIEncoding="UTF-8"/>中设置的，默认是 ISO-8859-1，所以在有中文URL时，最好把URIEncoding设置成UTF-8编码
+- QueryString的解码，要么使用header中的ContentType定义的CharSet，要么为默认值ISO-8859-1
+- 如果要使用contentType中的编码，则要<Connector URIEncoding="UTF-8" useBodyEncodingForURI="true"/>
+
+#### 3.5.2 HTTP Header 的编解码
+
+- 默认是ISO-8859-1
+- 最好不要在Header中传递非ASCII字符
+
+#### 3.5.3 POST 表单的编解码
+
+- post表单的参数传递方式与QueryString 不同，是通过HTTP 的 BODY 传递到服务端的
+- 浏览器根据 ContentType的CharSet对表单进行编码
+- 服务器端也是根据ContentType的CharSet进行解码，所以一般不会出错
+
+#### 常见问题
+
+- 中文变成了看不懂的字符
+  - 在解码时，字符集与编码字符集不一致会导致，一个汉字字符变成两个乱码字符
+- 一个汉字变成一个问号
+  - 中文和正文字符经过不支持中文的ISO-8859-1编码后，遇到不在范围的值统一用3f表示
+- 一个汉字变成两个问号
+
+## 4 Javac 编译原理
+
+- Java 语言有Java语言规范，这个规范详细描述了Java语言有哪些词法和语法
+- Java虚拟机也有Java虚拟机规范
+- 这两个规范完全不是一回事，都有自己的词法和语法解析规范
+- **Javac编译器的任务就是将Java语言规范转换成Java虚拟机规范，完成翻译工作**
+
+### 4.1 Javac 是什么
+
+- Javac 是一种编译器，能将一种语言规范转换成另一种语言规范
+- Javac 的任务是将Java源代码语言先转换成JVM能够识别的语言（Java字节码，JVM能够识别的二进制码），**然后JVM将JVM语言再转换成机器语言**
+- JVM 消除了不同种类，不同平台机器之间的差异，使Java 能够一次编译，处处运行
+
+### 4.2 Javac 编译器的基本模块
+
+- 词法分析器
+  - 读取源码，找出其中的语法关键字，识别哪些是合法的，哪些不合法
+  - 形成一些规范化的Token流
+- 语法分析器
+  - 对Token流进行分析，检查这些关键字组合在一起是否符合Java语言规范
+  - 形成一个符合Java语言规范的抽象语法树
+- 语义分析器
+  - 把一些复杂的语法转换成简单的语法，如foreach，注解等
+  - 使得语法树更接近目标语言的语法规则
+- 代码生成器
+  - 通过字节码生成器生成字节码，将抽象语法树转换成字节码
+
+## 7 Servlet 工作原理解析
+
+### 7.1 Web 应用的初始化工作
+
+- 应用的初始化主要是解析 web.xml 文件，这个文件描述了一个 Web 应用的关键信息，也是一个 Web 应用入口
+- 将 WebXML 对象中的属性设置到 Context 容器中
+  - Servlet对象
+  - filter
+  - listener
+
+## 10 深入理解 Session 与 Cookie
+
+- Session 与 Cookie 的作用都是为了保持访问用户与后端服务器的交互状态，各有优缺点
+  - Cookie 字节数大，当访问量很大时，占有带宽多
+  - Session 不容易在多台服务器之间共享
+
+### 10.1 Cookie 的定义
+
+- 当一个用户通过HTTP访问一个服务器是，这个服务器会将一些Key/Value键值对返回给客户端浏览器，并给这些数据加上一些限制条件（存活时间等）
+- 在条件符合时，这个用户下次访问这个服务器时，数据又被完整地带回给服务器
+- 如超市购物时，办理购物卡一样，下次直接就可识别购物卡了
+
+- 当我们请求某个URL路径时，浏览器会根据这个URL路径，将符合条件的Cookie放在Request请求头中，传给服务端，服务端通过 request.getCookies()来取得所有Cookie
+
+### 10.2 Cookie 的问题
+
+- 不同浏览器的Cookie的大小限制不同
+- Cookie 管理的混乱
+- 安全问题
+
+### 10.3 Session 的定义
+
+- SessionId 是客户端第一次访问时，会在服务端生成一个session，包含一个sessionId属性。由tomcat生成的sessionId叫做jsessionId
+- 是在访问tomcat服务器httpServletRequest的getSession(true)的时候创建的(如果内存中有直接返回，没有重新创建)
+- tomcat的ManagerBase抽象类提供创建sessionId的受保护方法：随机数+时间+jvmId
+- tomcat的StandardManager类管理session(存储在内存中)，定时检查，持久化(到file,数据库，一些缓存如redis)，失效等操作
+
+- 当浏览器不支持Cookie时，浏览器会将用户的SessionCookieName 重写到用户请求的URL参数中
+- SessionCookieName是在web.xml中配置session-config项中的cookie-config下的name属性就是sessionCookieName的值，默认就是“JSESSIONID”
+- 服务端会将sessionID设置到cookie中
+- 如果客户端支持cookie，Tomcat会解析Cookie中的SessionID，并覆盖URL中的SessionID
+- 有一个后台进程会定期检查Session是否过期，并且每次调用request.getSession()时，如果没取到(即过期清除了)，则会创建一个新的session和新的sessionID,但里面的值已经没了
+- <Manager pathname="" maxInactiveInterval="60" />设置过期时间，默认是60s，当为-1时，表示不过期
+
+### 10.4 Cookie 的安全问题
+
+- Cookie 所有的数据都存在客户端中，通过HTTP的头部从客户端传到服务端，再从服务端传回客户端
+- 这些数据可以被访问到，甚至被修改，所以很不安全
+- 而Session数据是存在服务端的，客户端只保存一个SessionId，所以更适合存储用户隐私和重要数据
+
+### 10.5 分布式Session框架
+
+- 通过一个订阅服务器集中管理
+- 通过同步使每个节点保存完整的session集合
+
+### 10.6 Cookie 的压缩和编解码
+
+- 通过压缩和编码使压缩后的的格式正确，且数据量小
+
+## 11 Tomcat 的系统架构和设计模式
+
+- Tomcat 有两个核心组件：Connector 和 Container
+- 多个Connector 和一个 Container 就行成了一个 Service，可以对外提供服务了
+- Service 需要一个生存环境，有Server 提供，Tomcat 的生命周期由Server控制
+- Tomcat 的各个组件是通过Pipeline连在一起的，而各个组件的功能都封装在各个Pipeline的BaseValue中
+
+### 11.1 Service
+
+- Connector 负责和外部交流，Container 负责处理内部事务
+- Service 将它们包装起来，并添加了一些其他元素，向外面提供服务
+- 在 Tomcat 中 Service 接口的标准实现类是 StandardService，它不仅实现了 Service接口，同时还实现了 Lifecycle接口，这样就可以控制下面组件的生命周期了
+- Service将Connector放在一个数组中
+
+### 11.2 Server
+
+- 提供一个接口，让其他程序能够访问到这个 Service 集合
+- 同时维护它包含的所有Service的生命周期，包括如何初始化、如何结束服务、如何找到别人要访问的Service
+- 它的标准实现类是 StandardServer，同时也实现了 Lifecycle、MbeanRegistration接口方法
+- Server也像 Service管理Connector一样，将Service放在一个数组中
+
+### 11.3 Lifecycle 组件的生命线
+
+- Tomcat 组件的生命周期是通过 Lifecycle 接口来控制的，组件主要继承这个接口并实现其中的方法就可以统一被拥有它的组件控制了
+- 直到最高级的组件(Server)就可以控制 Tomcat 中的所有组件的生命周期了
+- 而控制Server的是Startup，也就是启动和关闭Tomcat
+- 父组件的start方法，调用子组件的start方法，同理stop
+- 监听代码会包围Service组件的启动、关闭过程
+
+------
+
+```
+public void start() throws LifecycleException {
+	if(started) {
+		log.debug(sm.getString("standardServer.start.started"));
+		return;
+	}
+	lifecycle.fireLifecycleEvent(BEFORE_START_EVENT,null);	
+	lifecycle.fireLifecycleEvent(START_EVENT,null);
+	started = true;
+	synchronized(services) {
+		for(int i=0; i<services.length; i++) {
+			if(services[i] instanceof Lifecycle) {
+				((Lifecycle) servicees[i]).start();
+			}
+		}
+	}
+	lifecycle.fireLifecycleEvent(AFTER_START_EVENT,null);
+}
+```
+
+### 11.4 Connector
+
+- 负责接收浏览器发送过来的TCP连接请求，创建一个 Request 和 Response 对象，分别用于和请求端交换数据
+- 然后会产生一个线程来处理这个请求，并把产生的 Request 和 Response 对象传给这个请求的线程
+- 处理这个请求的线程由 Container 组件完成
+- Connector 最重要的功能就是接收请求，然后分配线程让 Container 来处理，所以是多线程的，这是Connector设计的核心
+
+### 11.5 Container
+
+- Container 是容器的父接口，所有子接口必须实现这个接口
+- 容器的设计是典型的责任链设计模式
+  - 由4个子容器组件构成，Engine、Host、Context和Wrapper
+  - 这4个组件不是平行的，而是父子关系
+  - Engine 包含 Host，Host 包含 Context，Context 包含 Wrapper
+  - 通常一个 Servlet Class 对应一个 Wrapper
+- Engine
+  - 决定从Connector过来的请求交给那个Host来处理
+  - StandardEngineValue只是从request中拿到Host，然后调用Host组件的Pipeline
+- Host
+  - 代表Engine下的一个虚拟主机，用于运行多个应用
+  - 负责安装和展开这些应用，并标识这个应用，以便能够区分它们
+- Context
+  - 提供Servlet运行的基本环境，各种资源组件和管理主机，启动子容器和pipeline
+  - 理论上只要有Context就能运行Servlet，可以没有Engine和Host
+  - 管理Servlet实例，包装Servlet实例成Wrapper对象
+  - 有个reloadable属性，当为true时，war被修改后Tomcat会自动重新加载这个应用
+  - 这个功能是在ContainerBase类中内部类中实现周期调用的，因为所以容器都会继承ContainerBase类，所以能够监听所有Servlet
+- Wrapper
+  - Servlet的包装类，负责管理一个Servlet，包括装载、初始化、执行及资源回收
+  - 装载Servlet后就会调用Servlet的init方法，同时会传一个StandardWrapperFacade对象给Servlet
+  - Servlet初始化完成后，就等着StandardWrapperValue去调用它的Service方法了
+  - 调用Service方法之前，要调用Servlet所有的filter
+
+### 11.6 Tomcat 其他组件
+
+- Logger：负责记录各种事件
+- Loader：负责加载类文件，如加载应用程序中的Servlet
+- Manager：负责管理Session
+- Realm：负责用户验证与授权
+- Pipeline：负责完成容器invoke方法的调用，对请求进行处理(责任链模式的经典应用)
+- 当Tomcat容器启动时，这些组件也要
+
