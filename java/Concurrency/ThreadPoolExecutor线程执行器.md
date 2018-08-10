@@ -128,11 +128,11 @@ private class CustomRejectedExecutionHandler implements RejectedExecutionHandler
 
 | 功能                        | 实现代码                                                     |
 | --------------------------- | ------------------------------------------------------------ |
-| 创建线程执行器              | ThreadPoolExecutor executor = ()Executors.newCachedPool();   |
+| 创建线程执行器              | ThreadPoolExecutor executor = (ThreadPoolExecutor)Executors.newCachedPool(); |
 | 普通执行                    | executor.execute(task);                                      |
 | 返回结果                    | Future<Object> result = executor.submit(task);//执行完可能result 还是空，等会才有值 |
-| 返回第一个成功的结果        | result = executor.invokeAny(taskList);                       |
-| 返回所有结果                | resultList = executor.invokeAll(taskList);                   |
+| 返回第一个成功的结果        | result = (ExecutorService)executor.invokeAny(taskList);      |
+| 返回所有结果                | resultList = (ExecutorService)executor.invokeAll(taskList);  |
 | 取消任务                    | result.cancel(true);//true 时，表示任务正在运行也要被取消    |
 | [控制任务完成][1]           | 继承 FutureTask，复写 done() 方法                            |
 | [分离任务启动与结果处理][2] | 使用 CompletionService 类                                    |
