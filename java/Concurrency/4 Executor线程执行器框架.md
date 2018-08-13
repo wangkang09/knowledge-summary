@@ -1,5 +1,14 @@
 # ThreadPoolExecutor
 
+* Executor 框架是一种将线程的创建和执行分离的机制
+* 它基于Executor和ExecutorService接口，及这两个接口的实现类ThreadPoolExecutor展开
+* Executor有一个内部线程池，并提供了将任务传递到池中线程以获得执行的方法
+* 可传递的任务有
+  * Runnable接口实现的任务，不返回结果
+  * Callable接口实现的任务，返回结果
+
+
+
 ## newFixedThreadPool 
 
 ```java
