@@ -28,9 +28,20 @@ TestObject deTest = (TestObject) ois.readObject();//从二进制数据中反序�
 
 
 
+## 序列化步骤
+
+* 先通过ObjectOutPutStream.writeObject(object);序列化
+* 在通过ObjectInputStream.readObject();反序列化
+* readObject先将二进制数据解析成beanDifinition那样的格式
+* 之后的初始化就和Spring差不多了，有基本属于的赋值和依赖对象的初始化
+
+
+
 ## 序列化总结
 
 * static,transient后的变量不能被序列化，这是代码中的if逻辑
+  * 静态成员是类变量，而序列化的是对象，类变量序列化的时候可能被其它实例改变
+  * transient应该是不让一些敏感信息被别人知道
 * 当父类继承Serializable接口时，所有子类都可以被序列化 
 * 子类实现了Serializable接口，父类没有，父类中的属性不能被序列化（不报错，数据不会丢失），但是在子类中的属性仍能正确序列化
 * 如果序列化的属性是对象，则这个对象也必须实现Serializable接口，否则会报错 
