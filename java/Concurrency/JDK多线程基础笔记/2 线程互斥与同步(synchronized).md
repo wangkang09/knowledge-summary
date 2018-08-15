@@ -1,3 +1,5 @@
+[TOC]
+
 ## 线程互斥（线程安全）
 
 ### synchronized 简介

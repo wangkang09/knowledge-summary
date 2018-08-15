@@ -10,7 +10,7 @@
 
 1. ForkJoinTask:我们要使用Fork/Join框架，首先需要创建一个ForkJoin任务。该类提供了在任务中执行fork和join的机制。通常情况下我们不需要直接集成ForkJoinTask类，只需要继承它的子类，Fork/Join框架提供了两个子类： 
    1. RecursiveAction：用于没有返回结果的任务 
-   2. RecursiveTask:用于有返回结果的任务 
+   2. RecursiveTask：用于有返回结果的任务 
 
 ## Fork/Join模式优缺点及应用场景 
 
@@ -141,7 +141,7 @@ public class CountTask extends RecursiveTask<Integer>{
             left.fork();
             right.fork();
             //获取子任务结果
-            int lResult = left.join();
+            int lResult = left.join();//在这里采用工作窃取算法
             int rResult = right.join();
             sum = lResult + rResult;
         }
@@ -181,7 +181,7 @@ class Fib extends FJTask {
     public void run() {
         int n = number;
         //可以考虑在这里加个hashMap，如果有值直接返回！
-        //if((Integer a = map.get(n))!=null) return a;
+        //if((Integer a = map.get(n))!=null) number = a;
         if (n <= threshold) // granularity ctl
             number = seqFib(n);
         else {
@@ -204,7 +204,7 @@ class Fib extends FJTask {
         } catch (InterruptedException ex) {
         }
     }
- 
+
     int seqFib(int n) {
         if (n <= 1) return n;
         else return seqFib(n − 1) + seqFib(n − 2);

@@ -1,3 +1,5 @@
+[TOC]
+
 ## ReentrantLock实现原理 ##
 
 ### 1 synchronized和lock ###
@@ -14,7 +16,7 @@
 
 #### 1.3 Lock 简介 ####
     Lock api 如下:
-	---
+    ---
     void lock();
     void lockInterruptibly() throws InterruptedException;
     boolean tryLock();
@@ -49,8 +51,8 @@
 ### 3 lock()与unlock()实现原理 ###
 
 #### 3.1 基础知识 ####
-* **可重入锁**。可重入锁是指同一个线程可以多次获取同一把锁。ReentrantLock和synchronized都是可重入锁。
-* **可中断锁**。可中断锁是指线程尝试获取锁的过程中，是否可以响应中断。
+* **可重入锁**。可重入锁是指同一个线程可以多次获取同一把锁。ReentrantLock和synchronized都是可重入锁
+* **可中断锁**。可中断锁是指线程尝试获取锁的过程中，是否可以响应中断
 	* synchronized是不可中断锁
 	* ReentrantLock则提供了中断功能
 
@@ -60,7 +62,7 @@
 	* synchronized是非公平锁
 	* ReentrantLock的默认实现是非公平锁，但是也可以设置为公平锁
 
-* **CAS操作**(CompareAndSwap)。CAS 操作包含三个操作数 —— 内存位置（V）、预期原值（A）和新值(B)。如果内存位置的值与预期原值相匹配，那么处理器会自动将该位置值更新为新值。否则，处理器不做任何操作。
+* **CAS操作**(CompareAndSwap)。CAS 操作包含三个操作数 —— 内存位置（V）、偏移量（O）、预期原值（A）和新值(B)。如果内存位置的值与预期原值相匹配，那么处理器会自动将该位置值更新为新值。否则，处理器不做任何操作
 
 #### 3.2 内部结构 ####
     public ReentrantLock() {
@@ -108,13 +110,13 @@
     }
       
     public final boolean release(int arg) {
-	    if (tryRelease(arg)) {
-		    Node h = head;
-		    if (h != null && h.waitStatus != 0)
-		    	unparkSuccessor(h);
-		    return true;
-	    }
-	    return false;
+        if (tryRelease(arg)) {
+    	    Node h = head;
+    	    if (h != null && h.waitStatus != 0)
+    	    	unparkSuccessor(h);
+    	    return true;
+        }
+        return false;
     }
 
 * 先尝试释放锁
@@ -129,21 +131,21 @@
      * @return 是否释放成功
      */
     protected final boolean tryRelease(int releases) {
-	    // 计算释放后state值
-	    int c = getState() - releases;
-	    // 如果不是当前线程占用锁,那么抛出异常
-	    if (Thread.currentThread() != getExclusiveOwnerThread())
-	    	throw new IllegalMonitorStateException();
-	    boolean free = false;
-	    if (c == 0) {
-		    // 锁被重入次数为0,表示释放成功
-		    free = true;
-		    // 清空独占线程
-		    setExclusiveOwnerThread(null);
-	    }
-	    // 更新state值
-	    setState(c);
-	    return free;
+        // 计算释放后state值
+        int c = getState() - releases;
+        // 如果不是当前线程占用锁,那么抛出异常
+        if (Thread.currentThread() != getExclusiveOwnerThread())
+        	throw new IllegalMonitorStateException();
+        boolean free = false;
+        if (c == 0) {
+    	    // 锁被重入次数为0,表示释放成功
+    	    free = true;
+    	    // 清空独占线程
+    	    setExclusiveOwnerThread(null);
+        }
+        // 更新state值
+        setState(c);
+        return free;
     }
 
 * 当前线程若不持有锁，抛出异常
@@ -174,13 +176,13 @@
     throws InterruptedException {
     	return sync.tryAcquireNanos(1, unit.toNanos(timeout));
     }
-
+    
     public final boolean tryAcquireNanos(int arg, long nanosTimeout)
     throws InterruptedException {
     	if (Thread.interrupted())
-	    	throw new InterruptedException();
-	    	return tryAcquire(arg) ||
-	    		doAcquireNanos(arg, nanosTimeout);
+        	throw new InterruptedException();
+        	return tryAcquire(arg) ||
+        		doAcquireNanos(arg, nanosTimeout);
     }
 
 * 如果线程被中断，直接抛异常
@@ -195,43 +197,43 @@
      */
     private boolean doAcquireNanos(int arg, long nanosTimeout)
     throws InterruptedException {
-	    // 起始时间
-	    long lastTime = System.nanoTime();
-	    // 线程入队
-	    final Node node = addWaiter(Node.EXCLUSIVE);
-	    boolean failed = true;
-	    try {
-		    // 又是自旋!
-		    for (;;) {
-			    // 获取前驱节点
-			    final Node p = node.predecessor();
-			    // 如果前驱是头节点并且占用锁成功,则将当前节点变成头结点
-			    if (p == head && tryAcquire(arg)) {
-				    setHead(node);
-				    p.next = null; // help GC
-				    failed = false;
-				    return true;
-			    }
-			    // 如果已经超时,返回false
-			    if (nanosTimeout <= 0)
-			    	return false;
-			    // 超时时间未到,且需要挂起
-			    if (shouldParkAfterFailedAcquire(p, node) &&
-			    	nanosTimeout > spinForTimeoutThreshold)
-				    // 阻塞当前线程直到超时时间到期
-				    LockSupport.parkNanos(this, nanosTimeout);
-			    long now = System.nanoTime();
-			    // 更新nanosTimeout
-			    nanosTimeout -= now - lastTime;
-			    lastTime = now;
-			    if (Thread.interrupted())
-				    //相应中断
-				    throw new InterruptedException();
-		    }
-	    } finally {
-	    if (failed)
-	    cancelAcquire(node);
-	    }
+        // 起始时间
+        long lastTime = System.nanoTime();
+        // 线程入队
+        final Node node = addWaiter(Node.EXCLUSIVE);
+        boolean failed = true;
+        try {
+    	    // 又是自旋!
+    	    for (;;) {
+    		    // 获取前驱节点
+    		    final Node p = node.predecessor();
+    		    // 如果前驱是头节点并且占用锁成功,则将当前节点变成头结点
+    		    if (p == head && tryAcquire(arg)) {
+    			    setHead(node);
+    			    p.next = null; // help GC
+    			    failed = false;
+    			    return true;
+    		    }
+    		    // 如果已经超时,返回false
+    		    if (nanosTimeout <= 0)
+    		    	return false;
+    		    // 超时时间未到,且需要挂起
+    		    if (shouldParkAfterFailedAcquire(p, node) &&
+    		    	nanosTimeout > spinForTimeoutThreshold)
+    			    // 阻塞当前线程直到超时时间到期
+    			    LockSupport.parkNanos(this, nanosTimeout);
+    		    long now = System.nanoTime();
+    		    // 更新nanosTimeout
+    		    nanosTimeout -= now - lastTime;
+    		    lastTime = now;
+    		    if (Thread.interrupted())
+    			    //相应中断
+    			    throw new InterruptedException();
+    	    }
+        } finally {
+        if (failed)
+        cancelAcquire(node);
+        }
     }
 
 * 线程先入队列，然后自旋，尝试获取锁
@@ -244,4 +246,4 @@
 ### 总结 ###
 **理解AQS，就很容易理解ReentrantLock的实现原理**
 
-[1]:https://github.com/wangkang09/knowledge-summary/blob/master/java/Concurrency/acquires%E4%BB%A3%E7%A0%81%E9%80%BB%E8%BE%91.md
+[1]:cite/acquires代码逻辑.md

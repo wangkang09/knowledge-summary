@@ -1,3 +1,5 @@
+[TOC]
+
 # ThreadPoolExecutor
 
 * Executor 框架是一种将线程的创建和执行分离的机制
@@ -137,9 +139,9 @@ private class CustomRejectedExecutionHandler implements RejectedExecutionHandler
 
 | 功能                        | 实现代码                                                     |
 | --------------------------- | ------------------------------------------------------------ |
-| 创建线程执行器              | ThreadPoolExecutor executor = (ThreadPoolExecutor)Executors.newCachedPool(); |
-| 普通执行                    | executor.execute(task);                                      |
-| 返回结果                    | Future<Object> result = executor.submit(task);//执行完可能result 还是空，等会才有值 |
+| 创建线程执行器              | ThreadPoolExecutor executor = (ThreadPoolExecutor)Executors.newCachedThreadPool(); |
+| 普通执行                    | executor.execute(task);//execute中的参数只能是runnable类型   |
+| 返回结果                    | Future<Object> result = executor.submit(task);//执行完可能result 还是空，等会才有值，submit中的参数是runnable时，执行完返回null |
 | 返回第一个成功的结果        | result = (ExecutorService)executor.invokeAny(taskList);      |
 | 返回所有结果                | resultList = (ExecutorService)executor.invokeAll(taskList);  |
 | 取消任务                    | result.cancel(true);//true 时，表示任务正在运行也要被取消    |
