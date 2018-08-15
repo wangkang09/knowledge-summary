@@ -8,7 +8,7 @@
 2. 建议：
 
 - `SynchronizedList` 实现效率比较慢，不建议使用；
-- `CopyOnWriteArrayList` 的实现原理是减少锁竞争，读方法没有任何锁操作，所以效率很高（牺牲了写）。适合读多写好的环境。
+- `CopyOnWriteArrayList` 的实现原理是减少锁竞争，读方法没有任何锁操作，所以效率很高（牺牲了写）。适合读多写少的环境。
 - `Vector` 写的效率比 `CopyOnWriteArrayList` 好，写多读少的情况可以考虑
 - vector是队列形式，`CopyOnWriteArrayList` 是列表形式
 
