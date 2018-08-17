@@ -519,6 +519,18 @@ public E peekFirst() {
 
 # 6 JVM
 
+## 6.1 JVM基本概念
+
+JVM是可运行Java代码的虚拟计算机，包括一套字节码指令集、一组寄存器、一个栈、一个垃圾回收器、一个堆和一个存储方法域。JVM运行在操作系统之上，与硬件没有直接交互，所以实现了一处编译，处处运行
+
+## 6.2 JVM内存区域
+
+JVM内存区域分为：**方法区**、**虚拟机栈**、**堆**、**本地方法栈**、**程序计数器**
+
+* **方法区**：主要存储已被虚拟机加载的类信息、常量、静态变量和即时编译器编译后的代码等数据。**是线程共享的**。方法区里有一个运行时常量池，用于存放今天编译产生的字面量和符号引用，具有动态性，运行时生成的常量也在这个池里，String.intern()
+* 虚拟机栈：就是栈内存，每个方法在执行的时候都会创建一个栈帧，用于存放局部变量表、操作数栈、动态链接和方法出口等信息。**是线程私有的**。局部
+* 
+
 # 7 JavaWeb
 
 ## 7.1 Session与Cookie
@@ -561,4 +573,291 @@ Listener 用于监听 java web程序中的事件，例如创建、修改、删�
 
 # 8 tomcat
 
+* tomcat由一个Server，多个Service组成
+* Service由一个Container和多个Connector组成
+* Container中包含四个容器组件：Engine/Host/Context/Wrapper，属于父子关系
+* Tomcat组件的生命周期是通过Lifecycle接口来控制的
+* 主要由观察者模式和责任链模式
+
 # 9 八大排序算法
+
+排序关键是已经给了不会改变的数组给我了，不会向里面插入值了
+
+## 9.1 简单选择排序
+
+```java
+public class SimpleSelectSort {
+    
+    public static void sort(int[] a) {
+        doSort(a);
+    }
+    
+    private static void doSort(int[] a) {
+        for(int i=0,iMax=a.length-1; i<iMax; i++) {
+            int min = i;
+            
+            for(int temp=i+1,tMax=a.length; temp<tMax; temp++) {
+                if(a[temp]<a[min]) {
+                    min = temp;
+                }
+            }
+            
+            if(i!=min) {
+                swap(a,i,min);
+            }
+        }
+    }
+}
+```
+
+- 从给定的数组中每次选择一个最小的数和第一个数交换
+- 每次都要有一个基准，即外围for
+- 长度为N的数组，最多交换N-1次，即选择N-1个最小的，就可以排序完
+- 所以外围for范围是，i=[0,N-1)
+- 内部for范围是，temp=[i+1,N)
+- 外围for中要定义一个min变量，标记最小下标
+- 内部for中和a[min]比较，如果有更小的，替换min = temp
+- 交换基准i和min的元素
+- **当数组基本有序时，效率比较高**
+- 相比简单交换排序，每次交换相邻两个元素，这个效率高多了
+
+
+
+## 9.2 插入排序
+
+```java
+public class InsertSort {
+    
+    //直接插入
+    public static void straightSort(int[] a) {
+        doSort(a,1)
+    }
+    
+    //希尔排序
+    public static void shellSort(int[] a,int[] dks) {//dk是每次排序的步长，不同dk效率相差很大
+        for(int i=0,iMax=dk.length; i<iMax; i++) {
+            doSort(a,dks[i]);
+        }
+        //int[] dk = {5,3,1};dk最后一次步长一定要是1，一般就是a.length/2
+    }
+    
+    private static void doSort(int[] a, int dk) {
+        for(int i=dk,iMax=a.length; i<iMax; i++) {
+            
+            if(a[i]<a[i-dk]) {//只有当待排序的值，小于已排序的最大值时，才进入排序，否则a[i]直接成了现在的最大值，不用排序了
+                
+            	int temp = a[i];//保留基准值
+                int j = i;//把i赋给j，是为了不改变i
+                
+                for(;(j>dk-1)&&(temp<a[j-dk]);j=j-dk) {
+                    a[j] = a[j-dk];//不断的用前面的值，覆盖后面的值，可以看出覆盖的时候，数组中只有a[i]的值被覆盖没了，其他值都保留着，而且最后一个覆盖的值有双份
+                    //所以之前我们保持了temp
+                }
+                //现在的j是之前的j-dk了
+                a[j] = temp;//因为a[j]=a[j-dk]，又temp<a[j-dk]，所以a[j-dk]=temp
+            }
+        }
+    }
+}
+```
+
+- 主要思想是，把一段数据当成已排序的数组，每次取得是待排序的
+- 将前一个数直接覆盖后一个数，直到待排序的数大于后一个数为止
+- 最后将待排序的数，插入对应的位置
+- 直接插入排序是覆盖，而选择排序是交换，但一次交换可能抵得过多次移动带来的顺序程度
+- 所以希尔排序，调大移动步长，达到交换的优点（一次移动带来的顺序程度）
+- 但不同dk效率相差很大
+
+
+
+## 9.3 归并排序
+
+```java
+public class MergeSort {
+    private static int[] tempArray;
+    
+    public static void sort(int[] a) {
+        tempArray = new int[a.length];
+        doSort(a,0,a.length-1);
+    }
+    
+    private static void doSort(int[] a, int left, int right) {
+        if(left>=right) return; //递归退出条件
+        
+        int center = (rigth+left)/2;//找出中间索引    
+        doSort(a,left,center);// 对左边数组进行递归 
+        doSort(a,center+1,rigth);// 对右边边数组进行递归 	
+        
+        merge(a,left,center,rigth);//对递归拆分的数组，进行递归合并
+    }
+    
+    //这是左右两边数组，各自都已经排序完成了，只需要合并两个排序完成的数组
+    private static void merge(int[] a, int left, int center, int rigth) {
+        
+        int second = center+1;//标记右边数组第一位
+        int first = left;//标记左边数组第一位
+        
+        System.arraycopy(a,left,tempArray,left,rigth-left+1);//复制一个a
+        
+        for(int k=left;k<=right;k++){
+			if(first>center) a[k] = tempArray[second++];//当第一个数组使用完后，直接使用第二个数组即可
+			else if(second>right) a[k] = tempArray[first++];//当第二个数组使用完后，直接使用第一个数组即可
+			else if(tempArray[second]>=tempArray[first]) a[k] = tempArray[first++];//第二个数组数值大于等于第一个，则使用第一个
+			else a[k] = tempArray[second++];//否则使用第二个
+		}
+    }
+}
+```
+
+- 关键是合并两个已排序的数组
+- 有一个和a数组等大小的数组，用来保存a各个阶段的数据，每次都复制，可能会效率不高
+- 用两个指针遍历tempArray数组，给a数组赋值
+
+
+
+## 9.4 交换排序
+
+```java
+public class ExchangeSort {
+    
+    //快排
+    pubilc static void quickSort(int[] a) {
+        doSort(a,0,a.length-1);
+    }
+    
+    private static void doSort(int[] a, int left, int rigth) {
+        if(left>=right) return;//递归退出条件
+        
+        int middle = getMiddle(a,left,rigth);//成功排完一个数，并返回该数的下标
+        doSort(a,low,middle-1);//递归排这个数左边的数组
+        doSort(a,middle+1,high);//递归排这个数右边的数组
+    }
+    
+    //鸡尾酒排序
+    public static void shakerSort(int[] a) {
+        int left = 0, rigth = a.length-1, shift = 0, i=0;
+        
+        while(left < rigth) {
+            for(i=left; i< rigth; i++) {//因为i<high，所以high = shift -1;不行，要不然会少判断
+                if(a[i]>a[i+1]) {
+                    swap(a,i,i+1);
+                    shift = i;//记录最后交换的位置，i=4,4、5换了，但以后都没换了
+                }
+            }
+            
+            rigth = shift;//right后面已经有序了！！
+            
+            for(i=rigth-1; i>=left; i--) {
+                if(a[i]>a[i+1]) {
+                    swap(a,i,i+1);
+                    shift = i+1;
+                }
+            }
+            
+            left = shift;//left前面已经有序了
+        }
+        
+    }
+    
+    private static void getMiddle(int[] a, int left, int rigth) {
+        int temp = a[left];//基准元素
+        
+        while(left<rigth) {
+            
+            while(left<rigth&&a[rigth]>temp) rigth--;//取得第一个小于temp的最右边下标
+            a[left] = a[high];//将此下标的值覆盖掉基准下标
+            while(left<rigth&&a[left]<=temp) left++;首先现在第一个值肯定小于temp，再取得第一个大于基准元素的下标
+            a[right] = a[left];//将此下标的值覆盖掉，第一个小于temp值的下标          		   //到这里时，a[rigth]>temp，所以又开始rigth--!!
+            //现在a[left]>temp，但是下次循环后肯定不是了，除非退出循环
+        }
+        //到这里后，left===rigth
+        a[left] = temp;
+        return left;
+    }
+    
+    //选择最大几个数
+    private static void doSort0() {
+        if(right <= left + dk) {
+            insertSort(a,low,high);//简单排序
+            return;
+        }
+
+        int middle = getMiddle(a, low, high);
+        doSort0(a, low, middle-1,dk);
+        doSort0(a, middle+1, high,dk);
+    }
+    
+    //三向切分
+    private static int[] getMiddle0() {
+        int lt = left, i=left+1, gt = right;
+        int temp = a[left];//基准元素
+        
+        while(i<=gt) {//从基准元素下一个开始比较
+            int flag = a[i] - temp;
+            if(flag<0) swap(a,lt++,i++);//基准元素大，则交换
+            else if(flag>0) swap(a,i,gt--);//基准元素小，则和最后一个交换，关键是i，不变，下一次比较的就是最后一个元素和temp了
+            else i++;
+        }
+        //至此就简单的把小于temp的都移到了左边，大于temp的都移到了右边，中间的就是等于temp的
+        return new int[]{lt-1,gt+1};
+    }
+    
+    /**
+	 * 三切面法快排，适用于很多重复元素的数组
+	 * @param a
+	 */
+	public static void sort1(int[] a){
+		doSort1(a, 0, a.length-1);
+	}
+    
+    private static void doSort1(int[] a,int low,int high){
+        if(low>=high) return;
+
+        int[] middles = getMiddle0(a, low, high);
+        doSort1(a, low, middles[0]);
+        doSort1(a, middles[1], high);
+    }
+}
+```
+
+- 关键是shift的位置，每次都是选择范围更小的i
+- 比如往后排时，shift = i，往前排时，shift = i+1
+- 鸡尾酒排序还是相邻元素比较交换，所以效率不会太高
+- 从交换规则看，快排是最左和最右交换的，所以效率很高
+- 且快排没有像归并一样用到额外内存
+
+
+
+## 9.5 堆排序
+
+```java
+public class HeapSort {
+    
+    public static void sort(int[] a) {
+        int aMax = a.length-1;
+        //先通过下沉操作建堆，不是排序，因为aMax/2往下的节点的子节点都只有一个了，所以可以用sink来进行平衡，所以可以从这个节点开始建堆
+        for(int k=aMax/2; k>=1 ;K--) {
+            sink(a,k,aMax);
+        }
+        
+        while(aMax>1) {//因为只有大于1，aMax--才大于0，堆是不能考虑0下标的
+            swap(a,1,aMax--);//将最大值放到数组最后，并使堆大小减1,每一个循环取得一个最大值
+            sink(a,1,aMax);//建堆的时候，已经不考虑最大值了，且除了第一层，所有的已经平衡了，所以可以用sin操作，重新平衡第一层
+        }
+    }
+    
+    //sink操作如果深度超过2层，则只会有一边达到平衡，所以要保证下一层之后的节点已经平衡了
+    private static void sink(int[] a, int k, int aMax) {
+        while(2*k<=aMax) {
+            int j = 2*k;
+            if(j<N&&a[j]<a[j+1]) j++;//取得值是最大的节点下标
+            if(a[k]>=a[j]) return;//如果比最大的还大，说明已经平衡了
+            swap(a,k,j);//否则交换最大节点值
+            k = j;//在以该节点往下平衡
+        }
+    }
+}
+```
+
+- 建堆过程，不需要左节点大于右节点，只要父节点最大就行
+- 堆不能考虑0下标，要从1开始
