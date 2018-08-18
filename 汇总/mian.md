@@ -485,7 +485,7 @@ public E peekFirst() {
 }
 ```
 
-4.7 非阻塞集合
+## 4.7 非阻塞集合
 
 非阻塞集合内部使用循环CAS来保证线程安全，如，ConcurrentLinkedQueue(单向链表)，ConcurrentLinkedDeque，它从尾部添加元素，同步移除元素
 
