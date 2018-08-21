@@ -15,12 +15,27 @@ Spring是一个轻量级的应用程序开发框架，目的是解决企业应�
 ### 代理模式
 
 * 说到spring AOP就要先说一下设计模式中的代理模式，代理模式首先有一个目标类，并且这个目标类要实现一些接口，我们要创建一个代理类，这个代理类实现了目标类相同的接口，并且依赖了抽象接口对象。这样我们把目标类注入进去，并在代理类方法中调用目标类的方法，并且实现一些横切代码，如写日志等。这样这个代理类就可以实现目标类的所有方法，并且增加一些功能。这就是一个简单的静态代理模式。但是这个代理模式明显有一个缺陷，如果一些类实现相同的横切代码，但是这些类实现的接口不一样，我们就必须要为不同的接口实现不同的代理类
+
+```java
+public class Target implement ITarget {}
+public class Proxy implement ITarget {
+    private ITarget target;
+    @Override
+    public void method0() {
+        //todo
+        target.method0();
+        //todo
+    } 
+}
+```
+
+
+
 * 之后就有了动态代理的机制，它主要由java提供的反射包中的Proxy类和InvocationHandler接口组成。首先，我们要创建一个invocationHandler的实现类，这个类里面依赖了一个Object对象，用来接收目标对象。还重写了invoke方法，在这个方法中，我们插入横切代码，并通过method.invoke()方法反射调用目标对象对应的方法
 * 最后使用Proxy.newProxyInstance()方法，根据我们实现的invocationHandler类，动态生成代理对象
 
 ```java
 public class MyInvocationHandler implements InvocationHandler {
-
     private Object object;
 
     public MyInvocationHandler(Object object){
@@ -276,21 +291,64 @@ Java实现多线程大体有三种简单方式：继承`Thread`类，实现`Runn
 
 ### countDownLatch
 
-有一个线程调用countDownLatch.await()方法，进入阻塞状态；多个线程调用countDownLatch.countDown()方法，当所有线程都调用countDown方法后，唤醒主线程
+- 可以分为两组线程，A组线程执行countDownLatch.countdown()，B组线程执行countDownLatch.await()方法等待A组线程执行countdown方法使，countDownLatch对象的state为0，state不可能小于0
+- A组线程执行countdown**位置可以不一样**，只要是同一个countDownLatch对象就行，同理B组线程
 
-可以简单实现fork/join的功能
+```java
+protected boolean tryReleaseShared(int releases) {
+    for (;;) {//循环CAS操作，实现线程安全
+        int c = getState();
+        if (c == 0)
+            return false;
+        int nextc = c-1;
+        if (compareAndSetState(c, nextc))//将c原子递减
+            return nextc == 0;//等于0时返回true
+    }
+}
+```
 
 ### CyclicBarrier
 
-多个线程共同调用cyclicBarrier.await()方法进入阻塞状态，当调用的次数达到时，唤醒所有线程阻塞的线程，**且还有线程再次调用await方法，则重新计算次数**
+- 有1组或两组线程，A组线程执行cyclicBarrier.await()方法，阻塞自己，B组线程只能是一个线程，也可以没有B组线程。
+- cyclicBarrier有一个初始值，A组中每一个线程执行await方法时，这个初始值递减1，当为0时，执行B组线程，唤醒A组**执行了await方法**的所有线程，并重置初始值，若A组还有其他线程，则继续
+- A组线程执行await的位置可以不同，只要使用的是同一个cyclicBarrier对象即可
+
+```java
+int index = --count;
+if (index == 0) {  // 当count等于0是
+    boolean ranAction = false;
+    try {
+        final Runnable command = barrierCommand;
+        if (command != null)
+            command.run();//如果有B组线程，则执行
+        ranAction = true;
+        nextGeneration();//关键
+        return 0;
+    } finally {
+        if (!ranAction)
+            breakBarrier();
+    }
+}
+private void nextGeneration() {
+    // signal completion of last generation
+    trip.signalAll();//唤醒所有线程
+    // set up next generation
+    count = parties;//关键！重设初始值
+    generation = new Generation();
+}
+```
 
 ### Phaser
 
-并发阶段任务，用来控制多个线程分阶段共同完成任务的情形，如所有学生都考完，才能进行下一场考试
+- 并发阶段任务
+- 有一组线程，这些线程在**同一个同步点**上执行phaser.arriveAndAwaitAdvance()阻塞自己，当所有达到的线程数等于初始化的维护线程数时，唤醒所有线程
+- 当在phaser中初始化的维护线程数小于实际调用arriveAndAwaitAdvanve方法的线程时，会抛出异常，并且结果会混乱，大于时将阻塞在第一阶段
 
 ### Exchanger
 
-它提供一个同步点，当两个线程都达到这个同步点时，进行数据交换，可以用于遗传算法和两人互相校对工作
+* 有两个线程，A与B。有两个同步点，当A与B线程都达到指定的同步点时进行数据交换，并继续向下执行
+
+* 可以用于遗传算法和两人互相校对工作
 
 ## 4.3 线程池框架
 
@@ -321,8 +379,8 @@ Java实现多线程大体有三种简单方式：继承`Thread`类，实现`Runn
 
 | 方法        | 说明                                                         |
 | ----------- | ------------------------------------------------------------ |
-| submit      | submit有三种参数类型 `submit(Runnable a)` `sumbit(Callabe a)` `submit(Runnable a, Object result)`，返回的都是Future类型，submit底层统一将任务转换成FutureTask类型，如果是Runnable任务，但不带参数，则get()方法返回的是null，带result的话，就返回result对象 |
-| execute     | execute只有一种参数类型 `execute(Runnable a)` ，只能接受实现了Runanble接口的任务，如FutureTask，无返回值。execute中有个addWorker方法，将任务交给线程池，在线程池了创建一个线程来运行任务，所以是异步的，submit方法中调用了execute方法，将任务加入线程池 |
+| submit      | submit有三种参数类型 `submit(Runnable a)` `sumbit(Callabe a)` `submit(Runnable a, Object result)`，返回的都是Future类型，submit底层统一将任务转换成FutureTask类型，如果是Runnable任务，但不带参数，则get()方法返回的是null，带result的话，就返回result对象，submit方法中调用了execute方法，将任务加入线程池，是异步的 |
+| execute     | execute只有一种参数类型 `execute(Runnable a)` ，只能接受实现了Runanble接口的任务，如FutureTask，无返回值。execute中有个addWorker方法，将任务交给线程池，在线程池了创建一个线程来运行任务，所以是异步的， |
 | invokeAll   | invokeAll传递的是一个继承了Callable接口的集合，底层调用get方法阻塞等待任务结果，只有所有任务都完成后，才返回，是同步方法 |
 | invokeAny   | invokeAny传递的是一个继承了Callable接口的集合，底层用completionService包装了线程池，使得可以得到第一个完成的任务，立马返回 |
 | shutdown    | 不在接受新的线程，并且等待之前提交的线程都执行完在关闭       |
@@ -437,7 +495,7 @@ public <T> List<Future<T>> invokeAll(Collection<? extends Callable<T>> tasks)
 
 ## 4.5 Fork/Join框架
 
-* Fork/Join框架主要由两个概念组成：ForkJoinPoll和ForkJoinTask
+* Fork/Join框架主要由两个概念组成：ForkJoinPool和ForkJoinTask
 
 * 其中ForkJoinPoll和ThreadPoolExecutor一样，也实现了ExecutorService接口，是一个特殊的线程池。它使用一个无限队列来保存需要执行的任务，线程池线程的数量通过构造函数传入，默认可用CPU数量
 
