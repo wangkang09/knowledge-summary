@@ -10,7 +10,13 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Test1 {
     public static void main(String[] args) {
-
+        new Test1().mm();
+        Thread.yield();
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     public void mm() {
         synchronized (this) {
