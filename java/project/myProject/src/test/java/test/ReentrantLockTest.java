@@ -1,5 +1,7 @@
 package test;
 
+import sun.awt.Mutex;
+
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -11,7 +13,6 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ReentrantLockTest {
     ReentrantLock aa = new ReentrantLock();
-
     public static void main(String[] args) {
         ReentrantLockTest b = new ReentrantLockTest();
 
@@ -35,12 +36,7 @@ public class ReentrantLockTest {
         aa.lock();
 
         try {
-            aa.lockInterruptibly();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        try {
-            TimeUnit.SECONDS.sleep(300000);
+            TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
