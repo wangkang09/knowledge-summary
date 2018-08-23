@@ -33,8 +33,11 @@ public class ReentrantLockTest {
     }
 
     public void w() {
-        aa.lock();
-
+        try {
+            aa.lockInterruptibly();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         try {
             TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
