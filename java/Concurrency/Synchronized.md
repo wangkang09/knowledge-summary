@@ -19,7 +19,7 @@
 | -------- | ------------ | ------------ | ---------------- | ------------- |
 | 无锁状态 | 对象HashCode | 对象分代年龄 | 0                | 01            |
 
-![dd](D:\github\repository\knowledge-summary\java\JVM\img\对象头的锁标识.png)
+![dd](https://raw.githubusercontent.com/wangkang09/knowledge-summary/master/java/JVM/img/%E5%AF%B9%E8%B1%A1%E5%A4%B4%E7%9A%84%E9%94%81%E6%A0%87%E8%AF%86.png)
 
 锁标识位为10，其中指针指向的是monitor对象（也称为管程或监视器锁）的起始地址。每个对象都存在着一个 monitor 与之关联，对象与其 monitor 之间的关系有存在多种实现方式，如monitor可以与对象一起创建销毁或当线程试图获取对象锁时自动生成，但当一个 monitor 被某个线程持有后，它便处于锁定状态。在Java虚拟机(HotSpot)中，monitor是由ObjectMonitor实现的，其主要数据结构如下（位于HotSpot虚拟机源码ObjectMonitor.hpp文件，C++实现的）
 
