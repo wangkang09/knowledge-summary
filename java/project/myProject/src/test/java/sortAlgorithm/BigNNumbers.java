@@ -10,23 +10,24 @@ import java.util.Random;
  */
 public class BigNNumbers {
 
-    public static void insert(int[] a,int temp) {
-        int flag = -1;
-        for(int i=0;i<a.length;i++) {
-            if(temp>a[i]) flag = i;
-            else break;
+    public static void sink(int[] a,int k,int aMax) {
+        while(2*k<=aMax) {
+            int j = 2*k;
+            if(j<aMax&&a[j]>a[j+1]) j++;//取得值是最大的节点下标
+            if(a[k]<=a[j]) return;//如果比最大的还大，说明已经平衡了
+            swap(a,k,j);//否则交换最大节点值
+            k = j;//在以该节点往下平衡
         }
-
-        if(flag!=-1) {
-            System.arraycopy(a,1,a,0,flag);
-            a[flag] = temp;
-        }
-
     }
 
+    public static void swap(int[] a, int i, int j) {
+        int temp = a[i];
+        a[i] = a[j];
+        a[j] = temp;
+    }
     public static void main(String[] args) {
         int N = 10;
-        int count = 30;
+        int count = 3000000;
         int max = 100000;
         Random random = new Random();
 
@@ -34,9 +35,19 @@ public class BigNNumbers {
         for(int i=0;i<N;i++) {
             a[i] = Integer.MIN_VALUE;
         }
-
+        int aMax = N - 1;
+        //循环建堆
         for(int i=0;i<count;i++) {
-            insert(a,random.nextInt(max));
+            int temp = random.nextInt(max);
+            if(temp>a[1]) {
+                a[1] = temp;
+                sink(a,1,aMax);
+            }
+        }
+
+        while(aMax>1) {
+            swap(a,1,aMax--);//将最小的放到最后
+            sink(a,1,aMax);
         }
 
         for(int i=0;i<N;i++){
@@ -45,4 +56,3 @@ public class BigNNumbers {
         System.out.println();
     }
 }
-
