@@ -40,9 +40,9 @@ public final void acquire(int arg) {
     //再次获取失败后，把自己加入等待队列，然后acquireQueued
     if (!tryAcquire(arg) &&
         acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
-        //无论线程是否被挂起，或者挂起后被激活，都应该返回当前线程的中断状态，如果处于中断状态，需要中断当前线程
-        //既然走到这一步了，肯定是获取到锁了
-        selfInterrupt();//设置自己为中断状态
+		//只有线程被标记为中断状态，acquireQueue才返回true，才到这里来
+        //既然走到这一步了，肯定是获取到锁了,且线程被标记为中断状态，
+        selfInterrupt();//设置自己为中断状态，自己重写设置为中断状态
 }
 
 //这个方法很关键
@@ -61,12 +61,12 @@ final boolean acquireQueued(final Node node, int arg) {
                 setHead(node);//关键！这样的话头结点一定是null
                 p.next = null; // help GC
                 failed = false;
-                return interrupted;
+                return interrupted;//如果线程没有被标记为中断状态，返回false
             }
             //死循环，直到线程挂起停在parkAndCheckInterrupt方法中，获取获取锁后的线程才继续往下执行
             if (shouldParkAfterFailedAcquire(p, node) &&
                 parkAndCheckInterrupt())//如果线程是中断状态，清除中断状态，并进入if条件
-                interrupted = true;
+                interrupted = true;//到了这里说明该线程已经被标记为中断状态
         }
     } finally {
         if (failed)
@@ -84,7 +84,7 @@ private void setHead(Node node) {
 private static boolean shouldParkAfterFailedAcquire(Node pred, Node node) {
     int ws = pred.waitStatus;
     if (ws == Node.SIGNAL)
-        return true;
+        return true;//只有它前面节点是-1时，它才能加入队列，如果前面节点>0，删除；=0，修改为-1
     if (ws > 0) {
         do {
             node.prev = pred = pred.prev;
@@ -216,6 +216,7 @@ public final boolean release(int arg) {
 //tryRelease
 protected final boolean tryRelease(int releases) {
     int c = getState() - releases;
+    //看占有锁的线程是不是当前线程，如果不是抛出异常
     if (Thread.currentThread() != getExclusiveOwnerThread())
         throw new IllegalMonitorStateException();
     boolean free = false;

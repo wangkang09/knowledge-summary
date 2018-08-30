@@ -102,3 +102,52 @@ AQS的本质上是一个同步器/阻塞锁的基础框架，其作用主要是�
 * lock 必须在 finally 块中释放。否则，如果受保护的代码将抛出异常，锁就有可能永远得不到释放！ 
 
 如果你需要实现ReenTrantLock的三个独有功能时 ，才使用ReentranLock，否则使用Synchronzied
+
+
+
+**lockInterruptibly**
+
+* **lockInterruptibly**在获取前先查看是否为中断状态，如果是抛出中断异常
+* 在被唤醒后
+
+```java
+//aa.lockInterruptibly();nonfairTryAcquire
+public void lockInterruptibly() throws InterruptedException {
+    sync.acquireInterruptibly(1);
+}
+public final void acquireInterruptibly(int arg)
+        throws InterruptedException {
+    if (Thread.interrupted())
+        throw new InterruptedException();
+    if (!tryAcquire(arg))//nonfairTryAcquire
+        doAcquireInterruptibly(arg);
+}
+if (shouldParkAfterFailedAcquire(p, node) &&
+                    parkAndCheckInterrupt())
+                    throw new InterruptedException();//
+
+//nonfairLock
+static final class NonfairSync extends Sync {
+    final void lock() {
+        //就是因为有这个CAS方法获取锁，才使这个为非公平锁
+        if (compareAndSetState(0, 1))           setExclusiveOwnerThread(Thread.currentThread());//为了重入机制设置
+        else
+            if (!tryAcquire(arg) &&
+        acquireQueued(addWaiter(Node.EXCLUSIVE), arg))
+    }
+}    
+
+//fair
+static final class FairSync extends Sync {
+    //lock是没有cas
+    final void lock() {
+        acquire(1);//qcquire方法一样，只是方法里的tryAcquire重写了
+    }
+}
+
+private final boolean parkAndCheckInterrupt() {
+    LockSupport.park(this);
+    return Thread.interrupted();
+}
+
+```

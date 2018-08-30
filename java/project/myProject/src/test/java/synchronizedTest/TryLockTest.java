@@ -1,6 +1,4 @@
-package test;
-
-import sun.awt.Mutex;
+package synchronizedTest;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
@@ -8,48 +6,55 @@ import java.util.concurrent.locks.ReentrantLock;
 /**
  * @Description:
  * @Author: wangkang
- * @Date: Created in 22:00 2018/8/22
+ * @Date: Created in 15:40 2018/8/28
  * @Modified By:
  */
-public class ReentrantLockTest {
+public class TryLockTest {
     ReentrantLock aa = new ReentrantLock();
-    public static void main(String[] args) {
-        ReentrantLockTest b = new ReentrantLockTest();
+    static Thread thread1 = null;
+    static Thread thread2 = null;
 
-        new Thread(new Runnable() {
+    public static void main(String[] args) {
+        TryLockTest b = new TryLockTest();
+
+        thread1 =   new Thread(new Runnable() {
             @Override
             public void run() {
                 b.w();
             }
-        }).start();
+        });
+        thread1.start();
 
         try {
-            Thread.sleep(2000);
+            Thread.sleep(20000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        b.w();
+        thread2 =   new Thread(new Runnable() {
+            @Override
+            public void run() {
+                b.w();
+            }
+        });
+        thread2.start();
 
     }
 
     public void w() {
         try {
-            aa.lockInterruptibly();
+            aa.tryLock(2,TimeUnit.HOURS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         try {
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(31);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally {
+            System.out.println(Thread.currentThread()==thread1);
+            thread2.interrupt();
             aa.unlock();
         }
-    }
-}
-class MyThread1 extends Thread {
-    @Override
-    public void run() {
-
     }
 }

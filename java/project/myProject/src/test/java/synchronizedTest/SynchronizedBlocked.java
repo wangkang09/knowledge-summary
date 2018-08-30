@@ -1,12 +1,10 @@
-package test;
-
-import java.util.concurrent.TimeUnit;
+package synchronizedTest;
 
 /**
  * Created by zejian on 2017/6/2.
  * Blog : http://blog.csdn.net/javazejian [原文地址,请尊重原创]
  */
-public class SynchronizedBlocked implements Runnable{
+public class SynchronizedBlocked implements Runnable {
 
     public synchronized void f() {
         System.out.println("Trying to call f()");
@@ -23,6 +21,7 @@ public class SynchronizedBlocked implements Runnable{
      */
     public SynchronizedBlocked() {
     }
+
     public void run() {
 //中断判断
         while (true) {

@@ -33,7 +33,7 @@ public class Test1 {
         r1.lock();
         try {
         }finally {
-            r1.lock();
+            r1.unlock();
         }
     }
 
