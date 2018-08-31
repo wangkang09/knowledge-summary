@@ -17,6 +17,8 @@ public class ArrayBlockingQueueTest {
 
         ArrayBlockingQueue queue = new ArrayBlockingQueue(3);
         LinkedBlockingQueue linkQ = new LinkedBlockingQueue(3);
+        PriorityBlockingQueue pri = new PriorityBlockingQueue(2);
+
         try {
             queue.put(1);
             linkQ.put(2);
