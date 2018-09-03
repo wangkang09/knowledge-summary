@@ -19,9 +19,17 @@ public class ArrayBlockingQueueTest {
         LinkedBlockingQueue linkQ = new LinkedBlockingQueue(3);
         PriorityBlockingQueue pri = new PriorityBlockingQueue(2);
 
+        pri.put(1);
         try {
-            queue.put(1);
+            pri.take();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        try {
             linkQ.put(2);
+            queue.put(1);
+
 
         } catch (InterruptedException e) {
             e.printStackTrace();
