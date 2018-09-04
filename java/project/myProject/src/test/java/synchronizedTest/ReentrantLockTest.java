@@ -12,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @Modified By:
  */
 public class ReentrantLockTest {
-    ReentrantLock aa = new ReentrantLock();
+    ReentrantLock aa = new ReentrantLock(false);
     static Thread thread = null;
     static Thread thread1 = null;
 

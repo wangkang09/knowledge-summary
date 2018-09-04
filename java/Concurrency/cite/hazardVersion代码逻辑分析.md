@@ -1,8 +1,8 @@
 ## 读取操作 ##
-    g_hv_array[thread_id] = g_version;
+    g_hv_array[thread_id] = g_version;//先取全局版本，放入线程
     ret = g_conf;
-    // 读取逻辑代码…
-    g_hv_array[thread_id] = INT64_MAX;
+    // 读取逻辑代码…//对对象改变
+    g_hv_array[thread_id] = INT64_MAX;//完成替换后，将当前线程的version置最大
 
 * 先读取全局对象 g_version
 * 在缓存 g_conf，这时的 g_conf 的 g_version 可能大于 缓存的 g_version
@@ -11,18 +11,18 @@
 ## 使用新的对象替换旧对象 ##
 
     set_new_conf(new_conf) {
-
-      retired_ptr = atomic_store_and_fetch_old(&g_conf, new_conf);
-      retired_ptr->set_version(atomic_fetch_and_add(&g_version, 1));
-
-      reclaim_version = INT64_MAX;
-
+    
+      retired_ptr = atomic_store_and_fetch_old(&g_conf, new_conf);//对比的是版本好是否一致
+      retired_ptr->set_version(atomic_fetch_and_add(&g_version, 1));//将全局version置最大
+    
+      reclaim_version = INT64_MAX;//将当前线程的version设为最大，说明可回收
+    
       for (i = 0; i < g_hv_array.length(); i++) {
-	    if (reclaim_version > g_hv_array[i]) {
-	      reclaim_version = g_hv_array[i];
-	    }
+        if (reclaim_version > g_hv_array[i]) {
+          reclaim_version = g_hv_array[i];
+        }
       }
-
+    
       if (reclaim_version > retired_ptr->get_version()) {
     	free(retired_ptr);
       }
