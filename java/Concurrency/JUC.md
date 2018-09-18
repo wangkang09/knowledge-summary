@@ -33,7 +33,7 @@
 ## HashMap
 
 * get(key)：对key做hash(先取key的hash值，在用取出来的hash值的高16位与低16位异或得到)，如果table[hash]有值，再判断key的地址，和key的值（key的地址相同就不用判断key的值了！），hash不同肯定没有，key值也必须相同。如果key值不相同，再看看有没有形成链表或树，如果有，遍历链表或树，判断hash和key
-* put(key,value)：同样是对key做hash，看对应的table[hash]有没有值，如果没有直接插入，如果有，**判断key的地址和值**是否相等，相同则覆盖旧值，不相等，再做链表或树的操作。作链表是尾插法，作树是红黑树；返回的是旧值，如果没有相等的返回null，如果有新值插入，插入后要判断是否resize
+* put(key,value)：同样是对key做hash，看对应的**hash桶**有没有值，如果没有直接插入，如果有，**判断key的地址和值**是否相等，相同则覆盖旧值，不相等，再做链表或树的操作。作链表是尾插法，作树是红黑树；返回的是旧值，如果没有相等的返回null，如果有新值插入，插入后要判断是否resize
 * containKey(key)：就是get(key)的值是否为null
 * containsValue(value)：外出for循环遍历table数组，内层for循环遍历table[i]链表，仅仅是e.next，可能即使是红黑数，也对链表进行了维护，只是get的时候走的是红黑树
 * entrySet与keySet内部维护了一个entrySet和keySet

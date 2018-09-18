@@ -34,7 +34,10 @@ class B extends A{
     
 public class Test {
     public static void main(String[] args) {
-        A a1 = new A();    
+        B bb = new B();
+        A a1 = new A();
+        A aa = (A)bb;//b->a!!!
+        System.out.println(aa.show(a1));
         A a2 = new B();//这种情况只能执行，A,B都有的B中的方法，及B重写父类的方法，所以只可能执行，A--D 和 B--A
         				
         				//a2调用 show(b)方法，   这里的this是B对象，因为没有继承关系，所以this.show(b)不会调用。 在查找super.show(b),没有，再查this.(super(b)),这里有继承关系了所以成功调用

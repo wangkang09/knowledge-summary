@@ -10,13 +10,10 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Test1 {
     public static void main(String[] args) {
-        new Test1().mm();
-        Thread.yield();
-        try {
-            Thread.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        String str = "54321";
+        System.out.println(str.substring(0,str.length()-4));
+        System.out.println(str.substring(str.length()-4,str.length()));
+
     }
     public void mm() {
         synchronized (this) {

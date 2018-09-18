@@ -31,6 +31,8 @@ public class ArrayBlockingQueueTest {
 
         pri.put(1);
         try {
+            queue.take();
+            queue.put(1);
             pri.take();
             pri.put(1);
             pri.add(1);
