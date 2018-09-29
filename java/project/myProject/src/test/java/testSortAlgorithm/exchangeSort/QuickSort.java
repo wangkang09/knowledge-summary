@@ -33,8 +33,11 @@ public class QuickSort {
 	
 	//ֻ�Գ��ȴ���dk�ǵ������н����������Ŵ����8
 	private static void doSort0(int[] a,int low,int high,int dk){
-		if(high <= low + dk){
-			StraightInsertionSort.sort(a,low,high);
+//		if(high <= low + dk){
+//			StraightInsertionSort.sort(a,low,high);
+//			return;
+//		}
+		if(high <= low ){
 			return;
 		}
 		int middle = getMiddle(a, low, high);

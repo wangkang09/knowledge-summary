@@ -69,7 +69,7 @@ class SolutionKKuaiPai {
     private int getMiddle(int begin, int end) {
         int temp = target[begin];
         while (begin<end) {
-            while(begin<end&&temp<=target[end]) end--;
+            while(begin<end&&temp<target[end]) end--;
             target[begin] = target[end];
             while (begin<end&&temp>=target[begin]) begin++;
             target[end] = target[begin];

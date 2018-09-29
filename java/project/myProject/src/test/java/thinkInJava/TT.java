@@ -1,18 +1,17 @@
-package test;
+package thinkInJava;
 
 import thinkInJava.test.TestPrivate;
 
 /**
  * @Description:
  * @Author: wangkang
- * @Date: Created in 19:38 2018/9/3
+ * @Date: Created in 16:44 2018/9/28
  * @Modified By:
  */
-public class aryy2 {
+public class TT extends TestPrivate {
     public static void main(String[] args) {
-        int[][] a = new int[2][3];
-        System.out.println(a.length);
-        System.out.println(a[0].length);
         TestPrivate t = new TestPrivate();
+        TT tt = new TT();
+        tt.protec++;
     }
 }

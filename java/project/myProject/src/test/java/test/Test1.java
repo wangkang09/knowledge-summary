@@ -1,5 +1,7 @@
 package test;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -10,9 +12,9 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class Test1 {
     public static void main(String[] args) {
-        String str = "54321";
-        System.out.println(str.substring(0,str.length()-4));
-        System.out.println(str.substring(str.length()-4,str.length()));
+        Map<Integer,Integer> map = new LinkedHashMap<>();
+        map.put(0,1);
+        map.put(-1,3);
 
     }
     public void mm() {
