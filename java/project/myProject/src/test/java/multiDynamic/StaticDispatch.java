@@ -11,19 +11,19 @@ public class StaticDispatch {
         void say() {
             System.out.println("human");
         }
-    };
+    }
     static class Man extends Human{
         @Override
         void say() {
             System.out.println("man");
         }
-    };
+    }
     static class Woman extends Human{
         @Override
         void say() {
             System.out.println("woman");
         }
-    };
+    }
     public void sayHello(Human guy) {
         guy.say();
         System.out.println("hello,guy");
@@ -40,8 +40,10 @@ public class StaticDispatch {
     public static void main(String[] args) {
         Human man = new Man();
         Human woman = new Woman();
+        Woman wo = new Woman();
         StaticDispatch st = new StaticDispatch();
         st.sayHello(man);
         st.sayHello(woman);
+        st.sayHello(wo);
     }
 }
