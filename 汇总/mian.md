@@ -100,6 +100,21 @@ public final boolean equals(Object var1) throws  {
 
 首先，IOC（Inversion Of Control）是一个控制反转的概念，它把创建对象的任务交给容器，让容器来管理对象和管理对象之间的依赖。
 
+1. 本来对象-对象的关系，变成了对象-容器-对象的关系。对象与对象之间解耦了，这样使维护更加方便
+
+2. Spring通过定义BeanDefinition来管理基于Spring的应用中的各种对象以及它们之间的相互依赖关系。
+
+3. 依赖反转功能都是围绕对这个BeanDefinition的处理来完成的。BeanDefinition就像容器中的水。
+
+```java
+ClassPathResource res = new ClassPathResource("beans.xml");//获取Resource资源
+DefaultListableBeanFactory factory = new DefaultListableBeanFactory();//创建一个BeanFactory
+xmlBeanDefinitionReader reader = new xmlBeanDefinitionReader(factory);//创建一个BeanDefinition读取器，并将工厂注入到读取器中
+reader.loadBeanDefinitions(res);//通过读取器继续Resource，并将解析后的BeanDefinition注册到BeanFactory中
+```
+
+
+
 ### 容器管理对象的方式
 
 管理对象的方式大致可以分为3种
@@ -119,6 +134,14 @@ public final boolean equals(Object var1) throws  {
 
 
 ## 1.3 spring Bean 生命周期
+
+```java
+this.prepareContext(context, environment, listeners, applicationArguments, printedBanner);//定位资源
+this.refreshContext(context);
+this.afterRefresh(context, applicationArguments);
+```
+
+
 
 * 通过xmlBeanDefinitionReader解析xml文件，将解析后的内容映射到BeanDefinition中
 * 将生成的BeanDefinition类注册到BeanDefinitionRegistry中
