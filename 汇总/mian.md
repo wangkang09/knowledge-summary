@@ -136,12 +136,37 @@ reader.loadBeanDefinitions(res);//通过读取器继续Resource，并将解析�
 ## 1.3 spring Bean 生命周期
 
 ```java
-this.prepareContext(context, environment, listeners, applicationArguments, printedBanner);//定位资源
+this.prepareContext(context, environment, listeners, applicationArguments, printedBanner);
 this.refreshContext(context);
 this.afterRefresh(context, applicationArguments);
 ```
 
+```java
+BeanDefinition oldBeanDefinition = (BeanDefinition)this.beanDefinitionMap.get(beanName);//如果已有beanName对应的beanDefinition，则进入已有逻辑，没有就正确创建
+```
 
+```java
+//无论哪种解析到最后都到这里来注册了
+
+BeanDefinitionHolder definitionHolder = new BeanDefinitionHolder(abd, beanName);
+definitionHolder = AnnotationConfigUtils.applyScopedProxyMode(scopeMetadata, definitionHolder, this.registry);
+BeanDefinitionReaderUtils.registerBeanDefinition(definitionHolder, this.registry);
+
+public static void registerBeanDefinition(
+    BeanDefinitionHolder definitionHolder, BeanDefinitionRegistry registry)
+    throws BeanDefinitionStoreException {
+    // 在主名称下注册bean定义。
+    String beanName = definitionHolder.getBeanName();
+    registry.registerBeanDefinition(beanName, definitionHolder.getBeanDefinition());
+    // 如果有的话，注册bean名称的别名，
+    String[] aliases = definitionHolder.getAliases();
+    if (aliases != null) {
+        for (String alias : aliases) {
+            registry.registerAlias(beanName, alias);
+        }
+    }
+}
+```
 
 * 通过xmlBeanDefinitionReader解析xml文件，将解析后的内容映射到BeanDefinition中
 * 将生成的BeanDefinition类注册到BeanDefinitionRegistry中
@@ -151,6 +176,47 @@ this.afterRefresh(context, applicationArguments);
 * 如果bean实现了beanPostProcessor，对bean进行相关配置，如aop
 * 如果bean实现了initializingBean接口或者指定了init-method方法，就调用相关方法
 * 如果bean实现了DisposableBean接口或者指定了destory-method方法，在bean生命周期结束时，调用相关方法
+
+
+
+## 1.4 解决循环依赖
+
+```java
+protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+    //先从一级缓存中获取
+    Object singletonObject = this.singletonObjects.get(beanName);
+    //如果获取不到，且所获取的bean正在创建则
+    if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+        synchronized (this.singletonObjects) {
+            //从2级缓存中获取
+            singletonObject = this.earlySingletonObjects.get(beanName);
+            //如果二级缓存也没有且允许从3级缓存中获取，则
+            if (singletonObject == null && allowEarlyReference) {
+                //从3级缓存中获取
+                ObjectFactory<?> singletonFactory = this.singletonFactories.get(beanName);
+                if (singletonFactory != null) {
+                    singletonObject = singletonFactory.getObject();
+                    //在3级缓存中获取成功，则将得到的bean从3级缓存移入2级缓存
+                    this.earlySingletonObjects.put(beanName, singletonObject);
+                    this.singletonFactories.remove(beanName);
+                }
+            }
+        }
+    }
+    return (singletonObject != NULL_OBJECT ? singletonObject : null);
+}
+new ObjectFactory<Object>() {
+    @Override   public Object getObject() throws BeansException {
+        try {
+            return createBean(beanName, mbd, args);
+        }      catch (BeansException ex) {
+            destroySingleton(beanName);
+            throw ex;
+        }  
+    }
+
+}
+```
 
 
 
@@ -592,7 +658,119 @@ public E peekFirst() {
 
 # 5 设计模式
 
-* **工厂模式**：将对象的创建交给工厂，有利于对象的修改，如果IOC一样
+### 基本原则
+
+**单一职责原则：**
+
+一个类只负责一项职责，当必须添加必要的属性时，尽量不要修改之前的代码，而是独立的增加代码
+
+```java
+public class DesignMode {
+    public static void main(String[] args) {
+        Animal a = new Animal();
+        a.breath("牛");
+        a.breath("羊");
+        a.breath0("鱼");
+        a.breath00("鳄鱼");
+    }
+}
+
+class Animal extends Animal0{
+    public void breath(String animal) {
+        System.out.println(animal + "呼吸空气。");
+    }
+}
+
+abstract class Animal0 extends Animal00{
+    public void breath0(String animal) {
+        System.out.println(animal + "呼吸水。");
+    }
+}
+
+abstract class Animal00 {
+    public void breath00(String animal) {
+        System.out.println(animal + "呼吸水水。");
+    }
+
+}
+//或者Animal变成抽象类
+abstract class Animal {
+    public void breath(String animal);
+}
+
+abstract class WaterAnimal extends Animal {
+    public void breath(String animal) {
+        System.out.println(animal + "呼吸空气。");
+    }
+}
+```
+
+**开发闭合原则**
+
+即软件实体可以被扩展（具有很强的灵活性和适应性），但是不可被修改（稳定性）。
+
+```java
+interface Computer {}
+class Macbook implements Computer {}
+class Surface implements Computer {}
+class Factory {
+    public Computer produceComputer(String type) {
+        Computer c = null;
+        if(type.equals("macbook")){
+            c = new Macbook();
+        }else if(type.equals("surface")){
+            c = new Surface();
+        }
+        return c;
+    }   
+}
+interface Computer {}
+class Macbook implements Computer {}
+class Surface implements Computer {}
+interface Factory {
+    public Computer produceComputer();
+}
+class AppleFactory implements Factory {
+    public Computer produceComputer() {
+        return new Macbook();
+    }
+}
+class MSFactory implements Factory {
+    public Computer produceComputer() {
+        return new Surface();
+    }
+}
+```
+
+**里氏替换原则**
+
+只要父类能出现的地方子类就能出现
+
+如果子类不能完整地实现父类的方法，或者父类的某些方法在子类中已经发生“畸变”，则建议断开父子继承关系 采用依赖、聚合、组合等关系代替继承
+
+子类可以扩展父类**已实现**的功能，但是不能**覆盖**
+
+**依赖倒转原则**
+
+核心就是面向接口编程。
+
+**接口隔离原则**
+
+核心就是：尽可能的细化接口，接口中的方法尽可能少
+
+**迪米特法则**
+
+最少知道原则：一个对象应该与其他对象保持最少的了解
+
+**组合/聚合复用原则**
+
+在面向对象的设计中，如果**直接继承基类，会破坏封装**，因为继承将基类的实现细节暴露给子类；如果基类的实现发生了改变，则子类的实现也不得不改变；从基类继承而来的实现是静态的，不可能在运行时发生改变，没有足够的灵活性。于是就提出了组合/聚合复用原则，也就是在实际开发设计中，尽量使用组合/聚合，不要使用类继承。
+
+
+
+
+
+* 工厂模式**：将对象的创建交给工厂，有利于对象的修改，如果IOC一样
 * **适配器模式**：将服务端的接口，适配成客户端需要的接口，解决了客户端接口和服务端接口的耦合
 * **装饰器模式**：写一个装饰类，封装目标类，并添加装饰功能
 * **代理模式**：静态代理装饰模式差不多，但和动态代理不一样，动态代理主要依赖于Proxy类和InvocationHandler接口实现的在程序运行期间动态创建类
