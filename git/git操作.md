@@ -1,7 +1,7 @@
 ## git命令
 
 ```bash
-git clone https://github.com/wangkang09/config-repo.git # 克隆远程仓库到本地
+git clone https://github.com/wangkang09/JavaTest.git # 克隆远程仓库到本地
 git clone -o configRepo https://github.com/wangkang09/config-repo.git # 克隆并指定主机名为configRepo，默认是origin
 
 # 获取仓库状态

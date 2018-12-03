@@ -11,6 +11,7 @@ import java.util.*;
 public class ListTest {
     public static void main(String[] args) {
         List<Integer> l = new ArrayList<>();
+        l.add(1);
 //        l.iterator();
 //        l.remove(1);
 //        l.add(1);
@@ -34,6 +35,8 @@ public class ListTest {
         q.offer(-10);
         q.offer(2);
 
+        List<Integer> ll = new LinkedList<>();
+        ll.add(1);
 
     }
 }
