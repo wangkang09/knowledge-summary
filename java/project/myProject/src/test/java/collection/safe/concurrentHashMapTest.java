@@ -9,6 +9,8 @@ import java.util.concurrent.ConcurrentHashMap;
  * @Modified By:
  */
 public class concurrentHashMapTest {
+
+
     public static void main(String[] args) {
         ConcurrentHashMap<Integer,Integer> map = new ConcurrentHashMap<>();
         map.put(1,1);
@@ -25,5 +27,6 @@ public class concurrentHashMapTest {
         map.size();
         map.values();
 
+        String a = "a";
     }
 }

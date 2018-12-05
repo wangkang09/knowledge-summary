@@ -22,6 +22,8 @@ public class TestCAS {
         turn.compareAndSet(p1,p2);//这一步之后，cas和turn的内容同时变了，这很特别
 
         System.out.println(1);
+
+
     }
 
     public static class Person {
