@@ -21,16 +21,30 @@ public class TestStream {
 
     public static void main(String[] args) {
 
-        testForeach();
-        testReduce();
-        testFlatMap();
-        testMap();
-        testGenerateStream();
-        testIterator();
-        testFlatMap0();
-        testGroupBy();
-        testPartitionBy();
+//        testForeach();
+//        testReduce();
+//        testFlatMap();
+//        testMap();
+//        testGenerateStream();
+//        testIterator();
+//        testFlatMap0();
+//        testGroupBy();
+//        testPartitionBy();
 
+        testSorted();
+
+    }
+
+    private static void testSorted() {
+        List<String> sort = new ArrayList<>();
+        sort.add("aw124");
+        sort.add("0123ad");
+        sort.add("zwzsg");
+        sort.add("zwzsga");
+
+        List list = sort.stream().sorted().collect(Collectors.toList());
+
+        System.out.println(1);
     }
 
     private static void testPartitionBy() {
