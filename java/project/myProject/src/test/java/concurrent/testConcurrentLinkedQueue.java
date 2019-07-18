@@ -14,6 +14,10 @@ public class testConcurrentLinkedQueue {
     public static void main(String[] args) {
         ConcurrentLinkedQueue c = new ConcurrentLinkedQueue();
         ConcurrentLinkedDeque d = new ConcurrentLinkedDeque();
+        c.remove();//没有就报错
+        c.peek();
+        c.poll();
+
         d.pollFirst();
         c.add(1);
         c.add(2);
